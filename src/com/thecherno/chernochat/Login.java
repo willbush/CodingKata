@@ -44,7 +44,6 @@ public class Login extends JFrame {
 		contentPane.setLayout(null);
 
 		txtName = new JTextField();
-		txtName.setText("name");
 		txtName.setBounds(64, 51, 165, 25);
 		contentPane.add(txtName);
 		txtName.setColumns(10);
