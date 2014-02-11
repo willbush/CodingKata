@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -31,10 +33,11 @@ public class Client extends JFrame {
 	private JTextField txtMessage;
 	private JTextArea history;
 	private DefaultCaret caret;
-	
+
 	private DatagramSocket socket;
 	private InetAddress ip;
-	
+
+	private Thread send;
 
 	public Client(String name, String address, int port) {
 		setTitle("Cherno Chat Client");
@@ -50,10 +53,38 @@ public class Client extends JFrame {
 		console("Attempting connection with " + address + ":" + port
 				+ ", user: " + name);
 	}
-	
+
+	private String receive() {
+		byte[] data = new byte[1024];
+		DatagramPacket packet = new DatagramPacket(data, data.length);
+
+		try {
+			socket.receive(packet);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String message = new String(packet.getData());
+		return message;
+	}
+
+	private void send(final byte[] data) {
+		send = new Thread("Send") {
+			public void run() {
+				DatagramPacket packet = new DatagramPacket(data, data.length,
+						ip, port);
+				try {
+					socket.send(packet);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		send.start();
+	}
+
 	private boolean openConnection(String addres, int port) {
 		try {
-			socket = new DatagramSocket();
+			socket = new DatagramSocket(port);
 			ip = InetAddress.getByName(address);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -80,7 +111,8 @@ public class Client extends JFrame {
 		setContentPane(contentPane);
 
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 20, 825, 30, 5 }; // sum = 880
+		gbl_contentPane.columnWidths = new int[] { 20, 825, 30, 5 }; // sum =
+																		// 880
 		gbl_contentPane.rowHeights = new int[] { 35, 475, 40 }; // sum = 550
 		gbl_contentPane.columnWeights = new double[] { 1.0, 1.0 };
 		gbl_contentPane.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
@@ -142,7 +174,7 @@ public class Client extends JFrame {
 
 	public void console(String messages) {
 		history.append(messages + "\r\n");
-		
+
 		// sets caret to the bottom of the scroll pane after sending.
 		history.setCaretPosition(history.getDocument().getLength());
 	}
