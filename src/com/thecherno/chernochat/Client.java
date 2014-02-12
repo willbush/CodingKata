@@ -44,7 +44,7 @@ public class Client extends JFrame {
 		this.name = name;
 		this.address = address;
 		this.port = port;
-		boolean connect = openConnection(address, port);
+		boolean connect = openConnection(address);
 		if (!connect) {
 			System.err.println("Connection failed!");
 			console("Connection failed!");
@@ -52,6 +52,9 @@ public class Client extends JFrame {
 		createWindow();
 		console("Attempting connection with " + address + ":" + port
 				+ ", user: " + name);
+		String connection = name + " connected from " + address + ":" + port;
+		send(connection.getBytes());
+
 	}
 
 	private String receive() {
@@ -82,9 +85,9 @@ public class Client extends JFrame {
 		send.start();
 	}
 
-	private boolean openConnection(String addres, int port) {
+	private boolean openConnection(String addres) {
 		try {
-			socket = new DatagramSocket(port);
+			socket = new DatagramSocket();
 			ip = InetAddress.getByName(address);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -111,8 +114,7 @@ public class Client extends JFrame {
 		setContentPane(contentPane);
 
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 20, 825, 30, 5 }; // sum =
-																		// 880
+		gbl_contentPane.columnWidths = new int[] { 20, 825, 30, 5 };// sum = 880
 		gbl_contentPane.rowHeights = new int[] { 35, 475, 40 }; // sum = 550
 		gbl_contentPane.columnWeights = new double[] { 1.0, 1.0 };
 		gbl_contentPane.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
@@ -169,6 +171,7 @@ public class Client extends JFrame {
 			return;
 		message = name + ": " + message;
 		console(message);
+		send(message.getBytes());
 		txtMessage.setText("");
 	}
 
