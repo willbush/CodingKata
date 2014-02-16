@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server implements Runnable {
+
+	private List<ServerClient> clients = new ArrayList<ServerClient>();
 
 	private DatagramSocket socket;
 	private int port;
@@ -56,12 +60,27 @@ public class Server implements Runnable {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					String string = new String(packet.getData());
-					System.out.println(string);
+					process(packet);
+
+					clients.add(new ServerClient("Will", packet.getAddress(),
+							packet.getPort(), 50));
+					System.out.println(clients.get(0).address.toString() + ":"
+							+ clients.get(0).port);
 				}
 			}
 		};
 		receive.start();
+	}
+
+	private void process(DatagramPacket packet) {
+		String string = new String(packet.getData());
+		if (string.startsWith("/c/")) {
+			clients.add(new ServerClient(string.substring(3, string.length()),
+					packet.getAddress(), packet.getPort(), 50));
+			System.out.println(string.substring(3, string.length()));
+		} else {
+			System.out.println(string);
+		}
 	}
 
 }
