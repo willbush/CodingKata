@@ -16,7 +16,7 @@ public class ServerClient {
 		this.port = port;
 		this.ID = ID;
 	}
-	
+
 	public int getID() {
 		return ID;
 	}
