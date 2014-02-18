@@ -14,7 +14,7 @@ public class Server implements Runnable {
 	private DatagramSocket socket;
 	private int port;
 	private boolean running = false;
-	private Thread run, manage, send, receive;
+	private Thread run, manage, receive;
 
 	public Server(int port) {
 		this.port = port;
@@ -75,8 +75,10 @@ public class Server implements Runnable {
 	private void process(DatagramPacket packet) {
 		String string = new String(packet.getData());
 		if (string.startsWith("/c/")) {
+			int id = UniqueIdentifier.getIdentifier();
+			System.out.println("Identifier: " + id);
 			clients.add(new ServerClient(string.substring(3, string.length()),
-					packet.getAddress(), packet.getPort(), 50));
+					packet.getAddress(), packet.getPort(), id));
 			System.out.println(string.substring(3, string.length()));
 		} else {
 			System.out.println(string);
