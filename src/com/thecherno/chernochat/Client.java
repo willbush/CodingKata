@@ -12,7 +12,7 @@ public class Client {
 	private DatagramSocket socket;
 
 	private String name, address;
-	private int port;
+	private int port, ID;
 	private InetAddress ip;
 	private Thread send;
 
@@ -74,6 +74,14 @@ public class Client {
 			}
 		};
 		send.start();
+	}
+
+	public void setID(int ID) {
+		this.ID = ID;
+	}
+
+	public int getID() {
+		return ID;
 	}
 
 }

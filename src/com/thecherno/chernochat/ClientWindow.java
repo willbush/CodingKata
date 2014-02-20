@@ -17,15 +17,16 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-public class ClientWindow extends JFrame {
+public class ClientWindow extends JFrame implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
 	private JTextField txtMessage;
 	private JTextArea history;
-
+	private Thread run, listen;
 	private Client client;
+	private boolean running;
 
 	public ClientWindow(String name, String address, int port) {
 		setTitle("Cherno Chat Client");
@@ -40,6 +41,9 @@ public class ClientWindow extends JFrame {
 				+ ", user: " + name);
 		String connection = "/c/" + name;
 		client.send(connection.getBytes());
+		running = true;
+		run = new Thread(this, "Running");
+		run.start();
 
 	}
 
@@ -110,6 +114,10 @@ public class ClientWindow extends JFrame {
 		txtMessage.requestFocusInWindow();
 	}
 
+	public void run() {
+		listen();
+	}
+
 	private void send(String message) {
 		if (message.equals(""))
 			return;
@@ -118,6 +126,22 @@ public class ClientWindow extends JFrame {
 		message = "/m/" + message;
 		client.send(message.getBytes());
 		txtMessage.setText("");
+	}
+
+	public void listen() {
+		listen = new Thread("Listen") {
+			public void run() {
+				while (running) {
+					String message = client.receive();
+					if (message.startsWith("/c/")) {
+						client.setID(Integer.parseInt(message.split("/c/|/e/")[1]));
+						console("User ID:" + client.getID()
+								+ " Successfully connected to the server!");
+					}
+				}
+			}
+		};
+		listen.start();
 	}
 
 	public void console(String messages) {
