@@ -28,7 +28,6 @@ public class Server implements Runnable {
 		run.start();
 	}
 
-	@Override
 	public void run() {
 		running = true;
 		System.out.println("Server started on port " + port);
@@ -62,11 +61,6 @@ public class Server implements Runnable {
 						e.printStackTrace();
 					}
 					process(packet);
-
-					clients.add(new ServerClient("Will", packet.getAddress(),
-							packet.getPort(), 50));
-					System.out.println(clients.get(0).address.toString() + ":"
-							+ clients.get(0).port);
 				}
 			}
 		};
@@ -113,10 +107,31 @@ public class Server implements Runnable {
 			send(ID, packet.getAddress(), packet.getPort());
 		} else if (string.startsWith("/m/")) {
 			sendToAll(string);
+		} else if (string.startsWith("/d/")) {
+			String id = string.split("/d/|/e/")[1];
+			disconnect(Integer.parseInt(id), true);
 		} else {
-			System.out.println(string);
-
+			System.out.println("Error string dump:" + string);
 		}
 	}
 
+	private void disconnect(int id, boolean status) {
+		ServerClient c = null;
+		for (int i = 0; i < clients.size(); i++) {
+			if (clients.get(i).getID() == id) {
+				c = clients.get(i);
+				clients.remove(i);
+				break;
+			}
+		}
+		String message = "";
+		if (status) {
+			message = "Client " + c.name + " (" + c.getID() + ") @ "
+					+ c.address.toString() + ":" + c.port + " disconnected.";
+		} else {
+			message = "Client " + c.name + " (" + c.getID() + ") @ "
+					+ c.address.toString() + ":" + c.port + " timed out.";
+		}
+		System.out.println(message);
+	}
 }

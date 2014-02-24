@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -85,7 +87,7 @@ public class ClientWindow extends JFrame implements Runnable {
 		txtMessage.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					send(txtMessage.getText());
+					send(txtMessage.getText(), true);
 				}
 			}
 		});
@@ -101,7 +103,7 @@ public class ClientWindow extends JFrame implements Runnable {
 		JButton btnNewButton = new JButton("Send");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				send(txtMessage.getText());
+				send(txtMessage.getText(), true);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -109,6 +111,15 @@ public class ClientWindow extends JFrame implements Runnable {
 		gbc_btnNewButton.gridx = 2;
 		gbc_btnNewButton.gridy = 2;
 		contentPane.add(btnNewButton, gbc_btnNewButton);
+
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				String disconnect = "/d/" + client.getID() + "/e/";
+				send(disconnect, false);
+				running = false;
+				client.close();
+			}
+		});
 
 		setVisible(true);
 		txtMessage.requestFocusInWindow();
@@ -118,12 +129,13 @@ public class ClientWindow extends JFrame implements Runnable {
 		listen();
 	}
 
-	private void send(String message) {
+	private void send(String message, boolean isMessage) {
 		if (message.equals(""))
 			return;
-		message = client.getName() + ": " + message;
-		console(message);
-		message = "/m/" + message;
+		if (isMessage) {
+			message = client.getName() + ": " + message;
+			message = "/m/" + message;			
+		}
 		client.send(message.getBytes());
 		txtMessage.setText("");
 	}
@@ -137,6 +149,9 @@ public class ClientWindow extends JFrame implements Runnable {
 						client.setID(Integer.parseInt(message.split("/c/|/e/")[1]));
 						console("User ID:" + client.getID()
 								+ " Successfully connected to the server!");
+					} else if (message.startsWith("/m/")) {
+						String text = message.split("/m/|/e/")[1];
+						console(text);
 					}
 				}
 			}
