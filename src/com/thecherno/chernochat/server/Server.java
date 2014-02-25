@@ -11,11 +11,14 @@ import java.util.List;
 public class Server implements Runnable {
 
 	private List<ServerClient> clients = new ArrayList<ServerClient>();
+	private List<Integer> clientResponse = new ArrayList<Integer>();
 
 	private DatagramSocket socket;
 	private int port;
 	private boolean running = false;
 	private Thread run, manage, send, receive;
+
+	private final int MAX_ATTEMPTS = 5;
 
 	public Server(int port) {
 		this.port = port;
@@ -40,7 +43,25 @@ public class Server implements Runnable {
 		manage = new Thread("Manage") {
 			public void run() {
 				while (running) {
-					// Managing happens here
+					sendToAll("/i/server");
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					for (int i = 0; i < clients.size(); i++) {
+						ServerClient c = clients.get(i);
+						if (!clientResponse.contains(c.getID())) {
+							if (c.attempt >= MAX_ATTEMPTS) {
+								disconnect(c.getID(), false);
+							} else {
+								c.attempt++;
+							}
+						} else {
+							clientResponse.remove(new Integer(c.getID()));
+							c.attempt = 0;
+						}
+					}
 				}
 
 			}
@@ -70,7 +91,7 @@ public class Server implements Runnable {
 	private void sendToAll(String message) {
 		for (int i = 0; i < clients.size(); i++) {
 			ServerClient client = clients.get(i);
-			send(message.getBytes(), client.address, client.port);
+			send(message.getBytes(), client.getAddress(), client.getPort());
 		}
 	}
 
@@ -110,6 +131,8 @@ public class Server implements Runnable {
 		} else if (string.startsWith("/d/")) {
 			String id = string.split("/d/|/e/")[1];
 			disconnect(Integer.parseInt(id), true);
+		} else if (string.startsWith("/i/")) {
+			clientResponse.add(Integer.parseInt(string.split("/i/|/e/")[1]));
 		} else {
 			System.out.println("Error string dump:" + string);
 		}
@@ -126,11 +149,13 @@ public class Server implements Runnable {
 		}
 		String message = "";
 		if (status) {
-			message = "Client " + c.name + " (" + c.getID() + ") @ "
-					+ c.address.toString() + ":" + c.port + " disconnected.";
+			message = "Client " + c.getName() + " (" + c.getID() + ") @ "
+					+ c.getAddress().toString() + ":" + c.getPort()
+					+ " disconnected.";
 		} else {
-			message = "Client " + c.name + " (" + c.getID() + ") @ "
-					+ c.address.toString() + ":" + c.port + " timed out.";
+			message = "Client " + c.getName() + " (" + c.getID() + ") @ "
+					+ c.getAddress().toString() + ":" + c.getPort()
+					+ " timed out.";
 		}
 		System.out.println(message);
 	}

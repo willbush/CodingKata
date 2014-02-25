@@ -134,7 +134,7 @@ public class ClientWindow extends JFrame implements Runnable {
 			return;
 		if (isMessage) {
 			message = client.getName() + ": " + message;
-			message = "/m/" + message;			
+			message = "/m/" + message;
 		}
 		client.send(message.getBytes());
 		txtMessage.setText("");
@@ -150,8 +150,12 @@ public class ClientWindow extends JFrame implements Runnable {
 						console("User ID:" + client.getID()
 								+ " Successfully connected to the server!");
 					} else if (message.startsWith("/m/")) {
-						String text = message.split("/m/|/e/")[1];
+						String text = message.substring(3);
+						text = text.split("/e/")[0];
 						console(text);
+					} else if (message.startsWith("/i/")) {
+						String text = "/i/" + client.getID() + "/e/";
+						send(text, false);
 					}
 				}
 			}
