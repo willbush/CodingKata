@@ -66,8 +66,6 @@ public class ClientWindow extends JFrame implements Runnable {
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 20, 825, 30, 5 };// sum = 880
 		gbl_contentPane.rowHeights = new int[] { 35, 475, 40 }; // sum = 550
-		gbl_contentPane.columnWeights = new double[] { 1.0, 1.0 };
-		gbl_contentPane.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
 		history = new JTextArea();
@@ -80,6 +78,8 @@ public class ClientWindow extends JFrame implements Runnable {
 		scrollConstraints.gridy = 0;
 		scrollConstraints.gridwidth = 3;
 		scrollConstraints.gridheight = 2;
+		scrollConstraints.weightx = 1;
+		scrollConstraints.weighty = 1;
 		scrollConstraints.insets = new Insets(0, 5, 0, 0);
 		contentPane.add(scroll, scrollConstraints);
 
@@ -97,6 +97,8 @@ public class ClientWindow extends JFrame implements Runnable {
 		gbc_txtMessage.gridx = 0;
 		gbc_txtMessage.gridy = 2;
 		gbc_txtMessage.gridwidth = 2;
+		gbc_txtMessage.weightx = 1;
+		gbc_txtMessage.weighty = 0;
 		contentPane.add(txtMessage, gbc_txtMessage);
 		txtMessage.setColumns(10);
 
@@ -106,11 +108,13 @@ public class ClientWindow extends JFrame implements Runnable {
 				send(txtMessage.getText(), true);
 			}
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 2;
-		gbc_btnNewButton.gridy = 2;
-		contentPane.add(btnNewButton, gbc_btnNewButton);
+		GridBagConstraints gbc_btnSend = new GridBagConstraints();
+		gbc_btnSend.insets = new Insets(0, 0, 0, 5);
+		gbc_btnSend.gridx = 2;
+		gbc_btnSend.gridy = 2;
+		gbc_btnSend.weightx = 0;
+		gbc_btnSend.weighty = 0;
+		contentPane.add(btnNewButton, gbc_btnSend);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
