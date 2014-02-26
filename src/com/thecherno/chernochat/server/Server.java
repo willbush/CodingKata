@@ -121,9 +121,9 @@ public class Server implements Runnable {
 		if (string.startsWith("/c/")) {
 			int id = UniqueIdentifier.getIdentifier();
 			System.out.println("Identifier: " + id);
-			clients.add(new ServerClient(string.substring(3, string.length()),
-					packet.getAddress(), packet.getPort(), id));
-			System.out.println(string.substring(3, string.length()));
+			clients.add(new ServerClient(string.split("/c/|/e/")[1], packet
+					.getAddress(), packet.getPort(), id));
+			System.out.println(string.split("/c/|/e/")[1]);
 			String ID = "/c/" + id;
 			send(ID, packet.getAddress(), packet.getPort());
 		} else if (string.startsWith("/m/")) {

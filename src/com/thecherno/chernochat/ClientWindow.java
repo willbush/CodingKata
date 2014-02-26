@@ -41,7 +41,7 @@ public class ClientWindow extends JFrame implements Runnable {
 		createWindow();
 		console("Attempting connection with " + address + ":" + port
 				+ ", user: " + name);
-		String connection = "/c/" + name;
+		String connection = "/c/" + name + "/e/";
 		client.send(connection.getBytes());
 		running = true;
 		run = new Thread(this, "Running");
