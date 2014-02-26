@@ -57,6 +57,42 @@ public class Server implements Runnable {
 							+ ":" + c.getPort());
 				}
 				System.out.println("===========");
+			} else if (text.startsWith("kick")) {
+				String name = text.split(" ")[1];
+				int id = -1;
+				boolean number = true;
+				try {
+					id = Integer.parseInt(name);
+				} catch (NumberFormatException e) {
+					number = false;
+				}
+				if (number) {
+					boolean exists = false;
+					for (int i = 0; i < clients.size(); i++) {
+						if (clients.get(i).getID() == id) {
+							exists = true;
+							break;
+						}
+					}
+					if (exists)
+						disconnect(id, true);
+					else
+						System.out.println("Client ID: " + id
+								+ " does not exists, check ID number.");
+				} else if (!number) {
+					boolean exists = false;
+					for (int i = 0; i < clients.size(); i++) {
+						ServerClient c = clients.get(i);
+						if (name.equals(c.getName())) {
+							disconnect(c.getID(), true);
+							exists = true;
+							break;
+						}
+					}
+					if (!exists)
+						System.out.println("Client username: " + name
+								+ " does not exists, check user name.");
+				}
 			}
 		}
 		scanner.close();
@@ -150,10 +186,10 @@ public class Server implements Runnable {
 			System.out.println(string);
 		if (string.startsWith("/c/")) {
 			int id = UniqueIdentifier.getIdentifier();
-			System.out.println("Identifier: " + id);
-			clients.add(new ServerClient(string.split("/c/|/e/")[1], packet
-					.getAddress(), packet.getPort(), id));
-			System.out.println(string.split("/c/|/e/")[1]);
+			String name = string.split("/c/|/e/")[1];
+			System.out.println("USER:" + name + " ID:" + id + " connected.");
+			clients.add(new ServerClient(name, packet.getAddress(), packet
+					.getPort(), id));
 			String ID = "/c/" + id;
 			send(ID, packet.getAddress(), packet.getPort());
 		} else if (string.startsWith("/m/")) {
@@ -170,13 +206,17 @@ public class Server implements Runnable {
 
 	private void disconnect(int id, boolean status) {
 		ServerClient c = null;
+		boolean exists = true;
 		for (int i = 0; i < clients.size(); i++) {
 			if (clients.get(i).getID() == id) {
 				c = clients.get(i);
 				clients.remove(i);
+				exists = false;
 				break;
 			}
 		}
+		if (exists)
+			return;
 		String message = "";
 		if (status) {
 			message = "Client " + c.getName() + " (" + c.getID() + ") @ "
