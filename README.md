@@ -6,7 +6,8 @@ ChernoChat
 Support his series and get rewards! ► http://www.patreon.com/thecherno
 
 ----------------------------------------­----------------------------------------­--------------------------------
-Github: github.com/TheCherno/ChernoChat
+
+Github: http://www.github.com/TheCherno/ChernoChat
 
 Website: http://www.thecherno.com
 
