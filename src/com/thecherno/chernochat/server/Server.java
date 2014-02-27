@@ -46,6 +46,10 @@ public class Server implements Runnable {
 			}
 			text = text.substring(1);
 			if (text.equals("rawMode")) {
+				if (rawMode)
+					System.out.println("Raw mode off.");
+				else
+					System.out.println("Raw mode on");
 				rawMode = !rawMode;
 			} else if (text.equals("clients")) {
 				System.out.println("Clients:");
@@ -93,9 +97,27 @@ public class Server implements Runnable {
 						System.out.println("Client username: " + name
 								+ " does not exists, check user name.");
 				}
+			} else if (text.equals("help")) {
+				printHelp();
+			} else if (text.equals("quit")) {
+				quit();
+			} else {
+				System.out.println("Unknown Command!");
+				printHelp();
 			}
 		}
 		scanner.close();
+	}
+
+	private void printHelp() {
+		System.out.println("Available commands:");
+		System.out.println("===========================");
+		System.out.println("/rawMode - enables raw mode where the server"
+				+ " outputs all incoming packets to console.");
+		System.out.println("/clients - displays all connected clients.");
+		System.out.println("/kick [users ID or username] - kicks a user");
+		System.out.println("/help - prints this help message");
+		System.out.println("/quit - clean shut down of the server.");
 	}
 
 	private void manageClients() {
@@ -149,6 +171,8 @@ public class Server implements Runnable {
 							data.length);
 					try {
 						socket.receive(packet);
+					} catch (SocketException e) {
+						// blank to catch socket.close() exception message.
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -212,8 +236,16 @@ public class Server implements Runnable {
 		} else if (string.startsWith("/i/")) {
 			clientResponse.add(Integer.parseInt(string.split("/i/|/e/")[1]));
 		} else {
-			System.out.println("Error string dump:" + string);
+			System.out.println(string);
 		}
+	}
+
+	private void quit() {
+		for (int i = 0; i < clients.size(); i++) {
+			disconnect(clients.get(i).getID(), true);
+		}
+		running = false;
+		socket.close();
 	}
 
 	private void disconnect(int id, boolean status) {

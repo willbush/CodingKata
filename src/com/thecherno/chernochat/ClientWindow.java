@@ -86,6 +86,11 @@ public class ClientWindow extends JFrame implements Runnable {
 		mnFile.add(mntmOnlineUsers);
 
 		mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		mnFile.add(mntmExit);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -166,7 +171,7 @@ public class ClientWindow extends JFrame implements Runnable {
 			return;
 		if (isMessage) {
 			message = client.getName() + ": " + message;
-			message = "/m/" + message;
+			message = "/m/" + message + "/e/";
 			txtMessage.setText("");
 		}
 		client.send(message.getBytes());
