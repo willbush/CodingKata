@@ -1,4 +1,4 @@
-package com.qualiaqq.bloodrain.graphics;
+package com.thecherno.rain.graphics;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

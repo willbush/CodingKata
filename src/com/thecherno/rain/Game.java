@@ -1,4 +1,4 @@
-package com.qualiaqq.bloodrain;
+package com.thecherno.rain;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -10,8 +10,8 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
-import com.qualiaqq.bloodrain.graphics.Screen;
-import com.qualiaqq.bloodrain.input.Keyboard;
+import com.thecherno.rain.graphics.Screen;
+import com.thecherno.rain.input.Keyboard;
 
 public class Game extends Canvas implements Runnable {
 
