@@ -13,12 +13,19 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     private static final long serialVersionUID = 1L;
     private Robot robot;
-    private Image image, robotImage;
+    private Image image, robotImageState, robotStand, robotDuck, robotJump,
+            background;
     private Graphics second;
     private URL base;
+    private static Background bg1, bg2;
 
     @Override
     public void init() {
+        setupFrame();
+        setupImage();
+    }
+
+    private void setupFrame() {
         setSize(800, 480);
         setBackground(Color.BLACK);
         setFocusable(true);
@@ -30,12 +37,20 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         } catch (Exception e) {
             // TODO: handle exception
         }
+    }
 
-        robotImage = getImage(base, "data/character.png");
+    private void setupImage() {
+        robotStand = getImage(base, "data/character.png");
+        robotImageState = robotStand;
+        robotDuck = getImage(base, "data/duck.png");
+        robotJump = getImage(base, "data/jumped.png");
+        background = getImage(base, "data/background.png");
     }
 
     @Override
     public void start() {
+        bg1 = new Background(0, 0);
+        bg2 = new Background(2160, 0);
         robot = new Robot();
         Thread thread = new Thread(this);
         thread.start();
@@ -57,12 +72,25 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public void run() {
         while (true) {
             robot.update();
+            handleImageState();
+            bg1.update();
+            bg2.update();
             repaint();
             try {
                 Thread.sleep(17);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void handleImageState() {
+        if (robot.hasJumped()) {
+            robotImageState = robotJump;
+        } else if (robot.isDucked()) {
+            robotImageState = robotDuck;
+        } else if (robot.hasJumped() == false && robot.isDucked() == false) {
+            robotImageState = robotStand;
         }
     }
 
@@ -83,8 +111,18 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(robotImage, robot.getCenterX() - 61,
+        drawBackground(g);
+        drawRobot(g);
+    }
+
+    private void drawRobot(Graphics g) {
+        g.drawImage(robotImageState, robot.getCenterX() - 61,
                 robot.getCenterY() - 63, this);
+    }
+
+    private void drawBackground(Graphics g) {
+        g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
+        g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
     }
 
     @Override
@@ -96,15 +134,20 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             break;
         case KeyEvent.VK_DOWN:
         case KeyEvent.VK_S:
-            System.out.println("move down");
+            if (robot.hasJumped() == false) {
+                robot.setDucked(true);
+                robot.setRobotSpeedX(0);
+            }
             break;
         case KeyEvent.VK_LEFT:
         case KeyEvent.VK_A:
             robot.moveLeft();
+            robot.setMovingLeft(true);
             break;
         case KeyEvent.VK_RIGHT:
         case KeyEvent.VK_D:
             robot.moveRight();
+            robot.setMovingRight(true);
             break;
         case KeyEvent.VK_SPACE:
             robot.jump();
@@ -121,18 +164,17 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             break;
         case KeyEvent.VK_DOWN:
         case KeyEvent.VK_S:
-            System.out.println("Stop moving down");
+            robot.setDucked(false);
             break;
         case KeyEvent.VK_LEFT:
         case KeyEvent.VK_A:
-            robot.stop();
+            robot.stopLeft();
             break;
         case KeyEvent.VK_RIGHT:
         case KeyEvent.VK_D:
-            robot.stop();
+            robot.stopRight();
             break;
         case KeyEvent.VK_SPACE:
-            System.out.println("Stop jumping");
             break;
         }
     }
@@ -140,6 +182,13 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         // TODO Auto-generated method stub
+    }
 
+    public static Background getBg1() {
+        return bg1;
+    }
+
+    public static Background getBg2() {
+        return bg2;
     }
 }
