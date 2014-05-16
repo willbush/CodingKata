@@ -8,7 +8,7 @@ public class Projectile {
     public Projectile(int startPosX, int startPosY) {
         xPosition = startPosX;
         yPosition = startPosY;
-        startPosX = 7;
+        projectileSpeedX = 7;
         visible = true;
     }
 
