@@ -39,12 +39,12 @@ public class Robot {
 
     private void handleBackgroundScrolling() {
         if (robotSpeedX == 0 || robotSpeedX < 0) {
-            bg1.setSpeedX(0);
-            bg2.setSpeedX(0);
+            bg1.setBgSpeedX(0);
+            bg2.setBgSpeedX(0);
         }
         if (robotSpeedX > 0 && robotPositionX > START_SCROLLING_POS) {
-            bg1.setSpeedX(-MOVE_SPEED);
-            bg2.setSpeedX(-MOVE_SPEED);
+            bg1.setBgSpeedX(-MOVE_SPEED);
+            bg2.setBgSpeedX(-MOVE_SPEED);
         }
     }
 

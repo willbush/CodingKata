@@ -13,8 +13,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     private static final long serialVersionUID = 1L;
     private Robot robot;
+    private Heliboy hb, hb2;
     private Image image, robotImageState, robotStand, robotDuck, robotJump,
-            background;
+            background, heliboy;
     private Graphics second;
     private URL base;
     private static Background bg1, bg2;
@@ -44,6 +45,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         robotImageState = robotStand;
         robotDuck = getImage(base, "data/duck.png");
         robotJump = getImage(base, "data/jumped.png");
+        heliboy = getImage(base, "data/heliboy.png");
         background = getImage(base, "data/background.png");
     }
 
@@ -52,6 +54,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         bg1 = new Background(0, 0);
         bg2 = new Background(2160, 0);
         robot = new Robot();
+        hb = new Heliboy(340, 360);
+        hb2 = new Heliboy(700, 370);
         Thread thread = new Thread(this);
         thread.start();
     }
@@ -72,6 +76,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public void run() {
         while (true) {
             robot.update();
+            hb.update();
+            hb2.update();
             handleImageState();
             bg1.update();
             bg2.update();
@@ -113,6 +119,14 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public void paint(Graphics g) {
         drawBackground(g);
         drawRobot(g);
+        drawHeliboy(g);
+    }
+
+    private void drawHeliboy(Graphics g) {
+        g.drawImage(heliboy, hb.getEnemyPositionX() - 48,
+                hb.getEnemyPositionY() - 48, this);
+        g.drawImage(heliboy, hb2.getEnemyPositionX() - 48,
+                hb2.getEnemyPositionY() - 48, this);
     }
 
     private void drawRobot(Graphics g) {

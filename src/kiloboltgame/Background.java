@@ -1,16 +1,16 @@
 package kiloboltgame;
 
 public class Background {
-    private int bgX, bgY, speedX;
+    private int bgX, bgY, bGspeedX;
 
     public Background(int x, int y) {
         bgX = x;
         bgY = y;
-        speedX = 0;
+        bGspeedX = 0;
     }
 
     public void update() {
-        bgX += speedX;
+        bgX += bGspeedX;
 
         if (bgX <= -2160)
             bgX += 4320;
@@ -24,8 +24,8 @@ public class Background {
         return bgY;
     }
 
-    public int getSpeedX() {
-        return speedX;
+    public int getBgSpeedX() {
+        return bGspeedX;
     }
 
     public void setBackgroundX(int backgroundX) {
@@ -36,7 +36,7 @@ public class Background {
         this.bgY = backgroundY;
     }
 
-    public void setSpeedX(int speedX) {
-        this.speedX = speedX;
+    public void setBgSpeedX(int speedX) {
+        this.bGspeedX = speedX;
     }
 }
