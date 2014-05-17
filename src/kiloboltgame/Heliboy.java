@@ -6,5 +6,4 @@ public class Heliboy extends Enemy {
         setEnemyPositionX(enemyPositionX);
         setEnemyPositionY(enemyPositionY);
     }
-
 }
