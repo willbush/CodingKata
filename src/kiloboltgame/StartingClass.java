@@ -8,14 +8,15 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class StartingClass extends Applet implements Runnable, KeyListener {
 
     private static final long serialVersionUID = 1L;
     private Robot robot;
     private Heliboy hb, hb2;
-    private Image image, robotImageState, robotStand, robotDuck, robotJump,
-            background, heliboy;
+    private Image image, robotImageState, robotStanding, robotDucking,
+            robotJumping, background, heliboy;
     private Graphics second;
     private URL base;
     private static Background bg1, bg2;
@@ -41,10 +42,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     }
 
     private void setupImage() {
-        robotStand = getImage(base, "data/character.png");
-        robotImageState = robotStand;
-        robotDuck = getImage(base, "data/duck.png");
-        robotJump = getImage(base, "data/jumped.png");
+        robotStanding = getImage(base, "data/character.png");
+        robotImageState = robotStanding;
+        robotDucking = getImage(base, "data/duck.png");
+        robotJumping = getImage(base, "data/jumped.png");
         heliboy = getImage(base, "data/heliboy.png");
         background = getImage(base, "data/background.png");
     }
@@ -79,6 +80,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             hb.update();
             hb2.update();
             handleImageState();
+            handleProjectiles();
             bg1.update();
             bg2.update();
             repaint();
@@ -90,14 +92,25 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         }
     }
 
-    private void handleImageState() {
-        if (robot.hasJumped()) {
-            robotImageState = robotJump;
-        } else if (robot.isDucked()) {
-            robotImageState = robotDuck;
-        } else if (robot.hasJumped() == false && robot.isDucked() == false) {
-            robotImageState = robotStand;
+    private void handleProjectiles() {
+        ArrayList<Projectile> projectiles = robot.getProjectiles();
+        for (int i = 0; i < projectiles.size(); i++) {
+            Projectile p = (Projectile) projectiles.get(i);
+            if (p.isVisible())
+                p.update();
+            else
+                projectiles.remove(i);
         }
+    }
+
+    private void handleImageState() {
+        if (robot.hasJumped())
+            robotImageState = robotJumping;
+        else if (robot.hasDucked())
+            robotImageState = robotDucking;
+        else if (robot.hasJumped() == false && robot.hasDucked() == false)
+            robotImageState = robotStanding;
+
     }
 
     @Override
@@ -118,8 +131,18 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     @Override
     public void paint(Graphics g) {
         drawBackground(g);
+        ArrayList<Projectile> projectiles = robot.getProjectiles();
+        drawProjectiles(g, projectiles);
         drawRobot(g);
         drawHeliboy(g);
+    }
+
+    private void drawProjectiles(Graphics g, ArrayList<Projectile> projectiles) {
+        for (int i = 0; i < projectiles.size(); i++) {
+            Projectile p = (Projectile) projectiles.get(i);
+            g.setColor(Color.YELLOW);
+            g.fillRect(p.getxPosition(), p.getyPosition(), 10, 5);
+        }
     }
 
     private void drawHeliboy(Graphics g) {
@@ -165,6 +188,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             break;
         case KeyEvent.VK_SPACE:
             robot.jump();
+            break;
+        case KeyEvent.VK_CONTROL:
+            if (robot.hasDucked() == false)
+                robot.shoot();
             break;
         }
     }

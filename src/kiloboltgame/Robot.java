@@ -1,8 +1,10 @@
 package kiloboltgame;
 
+import java.util.ArrayList;
+
 public class Robot {
     private static final int JUMP_SPEED = -15;
-    private static final int MOVE_SPEED = 5;
+    private static final int WALK_SPEED = 5;
     private static final int GROUND_POS = 382;
     private static final int STARTING_POS = 100;
     private static final int START_SCROLLING_POS = 390;
@@ -21,11 +23,13 @@ public class Robot {
     private static Background bg1 = StartingClass.getBg1();
     private static Background bg2 = StartingClass.getBg2();
 
+    private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+
     public void update() {
         handleWalking();
         handleBackgroundScrolling();
         handleJumping();
-        preventXCordTraversingZero();
+        preventRobotMovingOutOfFrame();
     }
 
     private void handleWalking() {
@@ -43,8 +47,8 @@ public class Robot {
             bg2.setBgSpeedX(0);
         }
         if (robotSpeedX > 0 && robotPositionX > START_SCROLLING_POS) {
-            bg1.setBgSpeedX(-MOVE_SPEED);
-            bg2.setBgSpeedX(-MOVE_SPEED);
+            bg1.setBgSpeedX(-WALK_SPEED);
+            bg2.setBgSpeedX(-WALK_SPEED);
         }
     }
 
@@ -68,7 +72,7 @@ public class Robot {
         return robotPositionY + robotSpeedY >= GROUND_POS;
     }
 
-    private void preventXCordTraversingZero() {
+    private void preventRobotMovingOutOfFrame() {
         if (robotPositionX + robotSpeedX <= 60) {
             robotPositionX = 61;
         }
@@ -76,12 +80,12 @@ public class Robot {
 
     public void moveRight() {
         if (!ducked)
-            robotSpeedX = MOVE_SPEED;
+            robotSpeedX = WALK_SPEED;
     }
 
     public void moveLeft() {
         if (!ducked)
-            robotSpeedX = -MOVE_SPEED;
+            robotSpeedX = -WALK_SPEED;
     }
 
     public void stopRight() {
@@ -110,6 +114,11 @@ public class Robot {
         }
     }
 
+    public void shoot() {
+        Projectile p = new Projectile(robotPositionX + 50, robotPositionY - 25);
+        projectiles.add(p);
+    }
+
     public int getCenterX() {
         return robotPositionX;
     }
@@ -126,7 +135,11 @@ public class Robot {
         return robotSpeedY;
     }
 
-    public boolean isDucked() {
+    public ArrayList<Projectile> getProjectiles() {
+        return projectiles;
+    }
+
+    public boolean hasDucked() {
         return ducked;
     }
 
