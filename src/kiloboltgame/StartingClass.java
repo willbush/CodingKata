@@ -22,8 +22,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     private static Background bg1, bg2;
     private static final long serialVersionUID = 1L;
+    private boolean debugMode = true;
 
-    private Robot robot;
+    private static Robot robot;
     private Heliboy hb, hb2;
     private Animation robotAnim, heliAnim;
     private Graphics second;
@@ -117,8 +118,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public void start() {
         bg1 = new Background(0, 0);
         bg2 = new Background(2160, 0);
-        initializeTiles();
         robot = new Robot();
+        initializeTiles();
         hb = new Heliboy(340, 360);
         hb2 = new Heliboy(700, 370);
         Thread thread = new Thread(this);
@@ -254,8 +255,18 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         drawBackground(g);
         paintTiles(g);
         drawProjectiles(g);
+        drawCollisionBox(g);
         drawRobot(g);
         drawHeliboy(g);
+    }
+
+    private void drawCollisionBox(Graphics g) {
+        if (debugMode == true) {
+            g.drawRect((int) Robot.rect.getX(), (int) Robot.rect.getY(),
+                    (int) Robot.rect.getWidth(), (int) Robot.rect.getHeight());
+            g.drawRect((int) Robot.rect2.getX(), (int) Robot.rect2.getY(),
+                    (int) Robot.rect2.getWidth(), (int) Robot.rect2.getHeight());
+        }
     }
 
     private void drawBackground(Graphics g) {
@@ -319,8 +330,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             robot.jump();
             break;
         case KeyEvent.VK_CONTROL:
-            if (robot.hasDucked() == false)
+            if (robot.hasDucked() == false) {
                 robot.shoot();
+                robot.setReadyToFire(false);
+            }
             break;
         }
     }
@@ -347,6 +360,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             break;
         case KeyEvent.VK_SPACE:
             break;
+        case KeyEvent.VK_CONTROL:
+            robot.setReadyToFire(true);
         }
     }
 
@@ -361,5 +376,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     public static Background getBg2() {
         return bg2;
+    }
+
+    public static Robot getRobot() {
+        return robot;
     }
 }
