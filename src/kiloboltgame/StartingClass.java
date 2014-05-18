@@ -7,13 +7,18 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+
 import kiloboltgame.framework.Animation;
 
 public class StartingClass extends Applet implements Runnable, KeyListener {
 
-    public static Image tiledirt, tileocean;
+    public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
+            tilegrassRight, tiledirt;
 
     private static Background bg1, bg2;
     private static final long serialVersionUID = 1L;
@@ -58,7 +63,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     private void environmentImages() {
         background = getImage(base, "data/background.png");
         tiledirt = getImage(base, "data/tiledirt.png");
-        tileocean = getImage(base, "data/tileocean.png");
+        tilegrassTop = getImage(base, "data/tilegrasstop.png");
+        tilegrassBot = getImage(base, "data/tilegrassbot.png");
+        tilegrassLeft = getImage(base, "data/tilegrassleft.png");
+        tilegrassRight = getImage(base, "data/tilegrassright.png");
     }
 
     private void enemyImages() {
@@ -118,14 +126,42 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     }
 
     private void initializeTiles() {
-        for (int x = 0; x < 200; x++) {
-            for (int y = 10; y < 12; y++) {
-                if (y == 10) {
-                    Tile t = new Tile(x, y, 1);
-                    tilearray.add(t);
-                }
-                if (y == 11) {
-                    Tile t = new Tile(x, y, 2);
+        try {
+            loadMap("data/map1.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadMap(String filename) throws IOException {
+        ArrayList<String> lines = new ArrayList<String>();
+        int width = 0;
+        int height = 0;
+
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+
+        while (true) {
+            String line = reader.readLine();
+
+            if (line == null) {
+                reader.close();
+                break;
+            }
+            if (!line.startsWith("!")) {
+                lines.add(line);
+                width = Math.max(width, line.length());
+            }
+
+        }
+
+        height = lines.size();
+
+        for (int y = 0; y < 12; y++) {
+            String line = (String) lines.get(y);
+            for (int x = 0; x < width; x++) {
+                if (x < line.length()) {
+                    char ch = line.charAt(x);
+                    Tile t = new Tile(x, y, Character.getNumericValue(ch));
                     tilearray.add(t);
                 }
             }
