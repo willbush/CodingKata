@@ -9,6 +9,9 @@ public class Robot {
     private static final int STARTING_POS = 100;
     private static final int START_SCROLLING_POS = 390;
 
+    private static Background bg1 = StartingClass.getBg1();
+    private static Background bg2 = StartingClass.getBg2();
+
     private int robotPositionX = STARTING_POS;
     private int robotPositionY = GROUND_POS;
 
@@ -19,9 +22,6 @@ public class Robot {
     private boolean movingLeft = false;
     private boolean movingRight = false;
     private boolean ducked = false;
-
-    private static Background bg1 = StartingClass.getBg1();
-    private static Background bg2 = StartingClass.getBg2();
 
     private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
@@ -47,8 +47,8 @@ public class Robot {
             bg2.setBgSpeedX(0);
         }
         if (robotSpeedX > 0 && robotPositionX > START_SCROLLING_POS) {
-            bg1.setBgSpeedX(-WALK_SPEED);
-            bg2.setBgSpeedX(-WALK_SPEED);
+            bg1.setBgSpeedX(-WALK_SPEED / 5);
+            bg2.setBgSpeedX(-WALK_SPEED / 5);
         }
     }
 

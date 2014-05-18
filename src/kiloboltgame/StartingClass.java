@@ -13,16 +13,20 @@ import kiloboltgame.framework.Animation;
 
 public class StartingClass extends Applet implements Runnable, KeyListener {
 
+    public static Image tiledirt, tileocean;
+
+    private static Background bg1, bg2;
     private static final long serialVersionUID = 1L;
+
     private Robot robot;
     private Heliboy hb, hb2;
-    private Image image, robotImageState, robotStanding, robotStanding2,
-            robotStanding3, robotDucking, robotJumping, background, heliboy,
-            heliboy2, heliboy3, heliboy4, heliboy5;
     private Animation robotAnim, heliAnim;
     private Graphics second;
     private URL base;
-    private static Background bg1, bg2;
+    private Image image, robotImageState, robotStanding, robotStanding2,
+            robotStanding3, robotDucking, robotJumping, background, heliboy,
+            heliboy2, heliboy3, heliboy4, heliboy5;
+    private ArrayList<Tile> tilearray = new ArrayList<Tile>();
 
     @Override
     public void init() {
@@ -46,20 +50,32 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     }
 
     private void setupImages() {
+        robotImages();
+        enemyImages();
+        environmentImages();
+    }
+
+    private void environmentImages() {
+        background = getImage(base, "data/background.png");
+        tiledirt = getImage(base, "data/tiledirt.png");
+        tileocean = getImage(base, "data/tileocean.png");
+    }
+
+    private void enemyImages() {
+        heliboy = getImage(base, "data/heliboy.png");
+        heliboy2 = getImage(base, "data/heliboy2.png");
+        heliboy3 = getImage(base, "data/heliboy3.png");
+        heliboy4 = getImage(base, "data/heliboy4.png");
+        heliboy5 = getImage(base, "data/heliboy5.png");
+    }
+
+    private void robotImages() {
         robotStanding = getImage(base, "data/character.png");
         robotStanding2 = getImage(base, "data/character2.png");
         robotStanding3 = getImage(base, "data/character3.png");
 
         robotDucking = getImage(base, "data/duck.png");
         robotJumping = getImage(base, "data/jumped.png");
-
-        heliboy = getImage(base, "data/heliboy.png");
-        heliboy2 = getImage(base, "data/heliboy2.png");
-        heliboy3 = getImage(base, "data/heliboy3.png");
-        heliboy4 = getImage(base, "data/heliboy4.png");
-        heliboy5 = getImage(base, "data/heliboy5.png");
-
-        background = getImage(base, "data/background.png");
     }
 
     private void setupAnimations() {
@@ -93,11 +109,27 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public void start() {
         bg1 = new Background(0, 0);
         bg2 = new Background(2160, 0);
+        initializeTiles();
         robot = new Robot();
         hb = new Heliboy(340, 360);
         hb2 = new Heliboy(700, 370);
         Thread thread = new Thread(this);
         thread.start();
+    }
+
+    private void initializeTiles() {
+        for (int x = 0; x < 200; x++) {
+            for (int y = 10; y < 12; y++) {
+                if (y == 10) {
+                    Tile t = new Tile(x, y, 1);
+                    tilearray.add(t);
+                }
+                if (y == 11) {
+                    Tile t = new Tile(x, y, 2);
+                    tilearray.add(t);
+                }
+            }
+        }
     }
 
     @Override
@@ -116,14 +148,16 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public void run() {
         while (true) {
             robot.update();
+            handleRobotImageState();
+            handleProjectiles();
+            updateTiles();
             hb.update();
             hb2.update();
-            handleImageState();
-            handleProjectiles();
             bg1.update();
             bg2.update();
             animate();
             repaint();
+
             try {
                 Thread.sleep(17);
             } catch (InterruptedException e) {
@@ -137,6 +171,13 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         heliAnim.update(50);
     }
 
+    private void updateTiles() {
+        for (int i = 0; i < tilearray.size(); i++) {
+            Tile t = (Tile) tilearray.get(i);
+            t.update();
+        }
+    }
+
     private void handleProjectiles() {
         ArrayList<Projectile> projectiles = robot.getProjectiles();
         for (int i = 0; i < projectiles.size(); i++) {
@@ -148,7 +189,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         }
     }
 
-    private void handleImageState() {
+    private void handleRobotImageState() {
         if (robot.hasJumped())
             robotImageState = robotJumping;
         else if (robot.hasDucked())
@@ -175,13 +216,26 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     @Override
     public void paint(Graphics g) {
         drawBackground(g);
-        ArrayList<Projectile> projectiles = robot.getProjectiles();
-        drawProjectiles(g, projectiles);
+        paintTiles(g);
+        drawProjectiles(g);
         drawRobot(g);
         drawHeliboy(g);
     }
 
-    private void drawProjectiles(Graphics g, ArrayList<Projectile> projectiles) {
+    private void drawBackground(Graphics g) {
+        g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
+        g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
+    }
+
+    private void paintTiles(Graphics g) {
+        for (int i = 0; i < tilearray.size(); i++) {
+            Tile t = (Tile) tilearray.get(i);
+            g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
+        }
+    }
+
+    private void drawProjectiles(Graphics g) {
+        ArrayList<Projectile> projectiles = robot.getProjectiles();
         for (int i = 0; i < projectiles.size(); i++) {
             Projectile p = (Projectile) projectiles.get(i);
             g.setColor(Color.YELLOW);
@@ -189,21 +243,16 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         }
     }
 
-    private void drawHeliboy(Graphics g) {
-        g.drawImage(heliAnim.getImage(), hb.getEnemyPositionX() - 48,
-                hb.getEnemyPositionY() - 48, this);
-        g.drawImage(heliAnim.getImage(), hb2.getEnemyPositionX() - 48,
-                hb2.getEnemyPositionY() - 48, this);
-    }
-
     private void drawRobot(Graphics g) {
         g.drawImage(robotImageState, robot.getCenterX() - 61,
                 robot.getCenterY() - 63, this);
     }
 
-    private void drawBackground(Graphics g) {
-        g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
-        g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
+    private void drawHeliboy(Graphics g) {
+        g.drawImage(heliAnim.getImage(), hb.getEnemyPositionX() - 48,
+                hb.getEnemyPositionY() - 48, this);
+        g.drawImage(heliAnim.getImage(), hb2.getEnemyPositionX() - 48,
+                hb2.getEnemyPositionY() - 48, this);
     }
 
     @Override

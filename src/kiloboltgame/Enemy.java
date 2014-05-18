@@ -7,7 +7,7 @@ public class Enemy {
 
     public void update() {
         enemyPositionX += enemySpeedX;
-        enemySpeedX = bg.getBgSpeedX();
+        enemySpeedX = bg.getBgSpeedX() * 5;
     }
 
     public void die() {
