@@ -1,6 +1,11 @@
 package kiloboltgame;
 
+import java.awt.Rectangle;
+
 public class Enemy {
+
+    public Rectangle enemyCollisionBox = new Rectangle(0, 0, 0, 0);
+
     private int maxHealth, currentHealth, damageOutput, enemySpeedX,
             enemyPositionX, enemyPositionY;
     private Background bg = StartingClass.getBg1();
@@ -8,6 +13,18 @@ public class Enemy {
     public void update() {
         enemyPositionX += enemySpeedX;
         enemySpeedX = bg.getBgSpeedX() * 5;
+        enemyCollisionBox.setBounds(enemyPositionX - 25, enemyPositionY - 25, 50, 60);
+
+        if (enemyCollisionBox.intersects(Robot.checkCollisionBox)) {
+            checkCollision();
+        }
+    }
+
+    private void checkCollision() {
+        if (enemyCollisionBox.intersects(Robot.headBox) || enemyCollisionBox.intersects(Robot.rightTorsoBox)
+                || enemyCollisionBox.intersects(Robot.leftTorsoBox)) {
+            System.out.println("enemy collision");
+        }
     }
 
     public void die() {

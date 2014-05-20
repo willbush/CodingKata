@@ -2,6 +2,7 @@ package kiloboltgame;
 
 import java.applet.Applet;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -19,13 +20,15 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
             tilegrassRight, tiledirt;
+    public static int score = 0;
 
+    private Font font = new Font(null, Font.BOLD, 30);
     private static Background bg1, bg2;
     private static final long serialVersionUID = 1L;
     private boolean debugMode = false;
 
     private static Robot robot;
-    private Heliboy hb, hb2;
+    public static Heliboy hb, hb2;
     private Animation robotAnim, heliAnim;
     private Graphics second;
     private URL base;
@@ -255,6 +258,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         drawCollisionBox(g);
         drawRobot(g);
         drawHeliboy(g);
+        drawScore(g);
     }
 
     private void drawCollisionBox(Graphics g) {
@@ -319,6 +323,12 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                 hb.getEnemyPositionY() - 48, this);
         g.drawImage(heliAnim.getImage(), hb2.getEnemyPositionX() - 48,
                 hb2.getEnemyPositionY() - 48, this);
+    }
+
+    private void drawScore(Graphics g) {
+        g.setFont(font);
+        g.setColor(Color.WHITE);
+        g.drawString(Integer.toString(score), 740, 30);
     }
 
     @Override
