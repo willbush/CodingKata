@@ -137,7 +137,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     private void loadMap(String filename) throws IOException {
         ArrayList<String> lines = new ArrayList<String>();
         int width = 0;
-        int height = 0;
 
         BufferedReader reader = new BufferedReader(new FileReader(filename));
 
@@ -154,8 +153,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             }
 
         }
-
-        height = lines.size();
 
         for (int y = 0; y < 12; y++) {
             String line = (String) lines.get(y);
@@ -262,10 +259,26 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     private void drawCollisionBox(Graphics g) {
         if (debugMode == true) {
-            g.drawRect((int) Robot.rect.getX(), (int) Robot.rect.getY(),
-                    (int) Robot.rect.getWidth(), (int) Robot.rect.getHeight());
-            g.drawRect((int) Robot.rect2.getX(), (int) Robot.rect2.getY(),
-                    (int) Robot.rect2.getWidth(), (int) Robot.rect2.getHeight());
+            g.drawRect((int) Robot.upperTorsoBox.getX(),
+                    (int) Robot.upperTorsoBox.getY(),
+                    (int) Robot.upperTorsoBox.getWidth(),
+                    (int) Robot.upperTorsoBox.getHeight());
+            g.drawRect((int) Robot.lowerTorsoBox.getX(),
+                    (int) Robot.lowerTorsoBox.getY(),
+                    (int) Robot.lowerTorsoBox.getWidth(),
+                    (int) Robot.lowerTorsoBox.getHeight());
+            g.drawRect((int) Robot.rightHandBox.getX(),
+                    (int) Robot.rightHandBox.getY(),
+                    (int) Robot.rightHandBox.getWidth(),
+                    (int) Robot.rightHandBox.getHeight());
+            g.drawRect((int) Robot.leftHandBox.getX(),
+                    (int) Robot.leftHandBox.getY(),
+                    (int) Robot.leftHandBox.getWidth(),
+                    (int) Robot.leftHandBox.getHeight());
+            g.drawRect((int) Robot.checkCollisionBox.getX(),
+                    (int) Robot.checkCollisionBox.getY(),
+                    (int) Robot.checkCollisionBox.getWidth(),
+                    (int) Robot.checkCollisionBox.getHeight());
         }
     }
 
@@ -291,8 +304,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     }
 
     private void drawRobot(Graphics g) {
-        g.drawImage(robotImageState, robot.getCenterX() - 61,
-                robot.getCenterY() - 63, this);
+        g.drawImage(robotImageState, robot.getRobotPosX() - 61,
+                robot.getRobotPosY() - 63, this);
     }
 
     private void drawHeliboy(Graphics g) {

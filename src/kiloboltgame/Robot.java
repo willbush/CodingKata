@@ -5,20 +5,23 @@ import java.util.ArrayList;
 
 public class Robot {
 
-    public static Rectangle rect = new Rectangle(0, 0, 0, 0);
-    public static Rectangle rect2 = new Rectangle(0, 0, 0, 0);
+    public static Rectangle upperTorsoBox = new Rectangle(0, 0, 0, 0);
+    public static Rectangle lowerTorsoBox = new Rectangle(0, 0, 0, 0);
+    public static Rectangle rightHandBox = new Rectangle(0, 0, 0, 0);
+    public static Rectangle leftHandBox = new Rectangle(0, 0, 0, 0);
+    public static Rectangle checkCollisionBox = new Rectangle(0, 0, 0, 0);
 
     private static final int JUMP_SPEED = -15;
     private static final int WALK_SPEED = 5;
-    private static final int STARTING_POS = 100;
+    private static final int STARTING_X_POS = 100;
+    private static final int STARTING_Y_POS = 377;
     private static final int START_SCROLLING_POS = 390;
 
     private static Background bg1 = StartingClass.getBg1();
     private static Background bg2 = StartingClass.getBg2();
 
-    private int groundPos = 382;
-    private int robotPositionX = STARTING_POS;
-    private int robotPositionY = groundPos;
+    private int robotPosX = STARTING_X_POS;
+    private int robotPosY = STARTING_Y_POS;
 
     private int robotSpeedX = 0;
     private int robotSpeedY = 0;
@@ -36,15 +39,16 @@ public class Robot {
         handleBackgroundScrolling();
         handleJumping();
         preventRobotMovingOutOfFrame();
-        collisionBox();
+        robotCollisionBoxes();
+        robotCheckColisionBox();
     }
 
     private void handleWalking() {
         if (robotSpeedX < 0) {
-            robotPositionX += robotSpeedX;
+            robotPosX += robotSpeedX;
         }
-        if (robotPositionX <= START_SCROLLING_POS && robotSpeedX > 0) {
-            robotPositionX += robotSpeedX;
+        if (robotPosX <= START_SCROLLING_POS && robotSpeedX > 0) {
+            robotPosX += robotSpeedX;
         }
     }
 
@@ -53,40 +57,36 @@ public class Robot {
             bg1.setBgSpeedX(0);
             bg2.setBgSpeedX(0);
         }
-        if (robotSpeedX > 0 && robotPositionX > START_SCROLLING_POS) {
+        if (robotSpeedX > 0 && robotPosX > START_SCROLLING_POS) {
             bg1.setBgSpeedX(-WALK_SPEED / 5);
             bg2.setBgSpeedX(-WALK_SPEED / 5);
         }
     }
 
     private void handleJumping() {
-        if (jumped) {
-            whatGoesUpMustComeDown();
-            /**
-             * if (robotHasLanded()) { robotPositionY = groundPos; robotSpeedY =
-             * 0; jumped = false; }
-             */
-        }
-    }
-
-    private void whatGoesUpMustComeDown() {
+        robotPosY += robotSpeedY;
         robotSpeedY += 1;
-        robotPositionY += robotSpeedY;
-    }
-
-    private boolean robotHasLanded() {
-        return robotPositionY + robotSpeedY >= groundPos;
+        if (robotSpeedY > 3)
+            jumped = true;
     }
 
     private void preventRobotMovingOutOfFrame() {
-        if (robotPositionX + robotSpeedX <= 60) {
-            robotPositionX = 61;
+        if (robotPosX + robotSpeedX <= 60) {
+            robotPosX = 61;
         }
     }
 
-    private void collisionBox() {
-        rect.setRect(robotPositionX - 34, robotPositionY - 63, 68, 63);
-        rect2.setRect(rect.getX(), rect.getY() + 63, 68, 64);
+    private void robotCollisionBoxes() {
+        upperTorsoBox.setRect(robotPosX - 34, robotPosY - 63, 68, 64);
+        lowerTorsoBox.setRect(upperTorsoBox.getX(), robotPosY, 68, 64);
+        leftHandBox.setRect(upperTorsoBox.getX() - 26,
+                upperTorsoBox.getY() + 32, 26, 20);
+        rightHandBox.setRect(upperTorsoBox.getX() + 68,
+                upperTorsoBox.getY() + 32, 26, 20);
+    }
+
+    private void robotCheckColisionBox() {
+        checkCollisionBox.setRect(robotPosX - 90, robotPosY - 90, 180, 180);
     }
 
     public void moveRight() {
@@ -101,15 +101,15 @@ public class Robot {
 
     public void stopRight() {
         setMovingRight(false);
-        updateMovement();
+        updateHorizontalMovement();
     }
 
     public void stopLeft() {
         setMovingLeft(false);
-        updateMovement();
+        updateHorizontalMovement();
     }
 
-    private void updateMovement() {
+    private void updateHorizontalMovement() {
         if (isMovingRight() == false && isMovingLeft() == false)
             robotSpeedX = 0;
         if (isMovingRight() == false && isMovingLeft())
@@ -127,25 +127,24 @@ public class Robot {
 
     public void shoot() {
         if (isReadyToFire()) {
-            Projectile p = new Projectile(robotPositionX + 50,
-                    robotPositionY - 25);
+            Projectile p = new Projectile(robotPosX + 50, robotPosY - 25);
             projectiles.add(p);
         }
     }
 
-    public int getCenterX() {
-        return robotPositionX;
+    public int getRobotPosX() {
+        return robotPosX;
     }
 
-    public int getCenterY() {
-        return robotPositionY;
+    public int getRobotPosY() {
+        return robotPosY;
     }
 
-    public int getSpeedX() {
+    public int getRobotSpeedX() {
         return robotSpeedX;
     }
 
-    public int getSpeedY() {
+    public int getRobotSpeedY() {
         return robotSpeedY;
     }
 
@@ -181,12 +180,12 @@ public class Robot {
         this.movingLeft = movingLeft;
     }
 
-    public void setCenterX(int centerX) {
-        this.robotPositionX = centerX;
+    public void setRobotPosX(int robotPosX) {
+        this.robotPosX = robotPosX;
     }
 
-    public void setCenterY(int centerY) {
-        this.robotPositionY = centerY;
+    public void setRobotPosY(int robotPosY) {
+        this.robotPosY = robotPosY;
     }
 
     public void setRobotSpeedX(int robotSpeedX) {

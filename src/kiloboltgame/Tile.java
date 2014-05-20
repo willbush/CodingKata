@@ -3,60 +3,86 @@ package kiloboltgame;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-import org.w3c.dom.css.Rect;
-
 public class Tile {
 
     public Image tileImage;
 
-    private int tileX, tileY, tileSpeedX, type;
+    private int tilePosX, tilePosY, tileSpeedX, tileType;
     private Robot robot = StartingClass.getRobot();
     private Background bg = StartingClass.getBg1();
     private Rectangle tileCollisionBox;
 
     public Tile(int x, int y, int typeInt) {
-        tileX = x * 40;
-        tileY = y * 40;
+        tilePosX = x * 40;
+        tilePosY = y * 40;
 
-        type = typeInt;
+        tileType = typeInt;
 
         tileCollisionBox = new Rectangle();
 
-        if (type == 5) {
+        handleTileType();
+    }
+
+    private void handleTileType() {
+        if (tileType == 5) {
             tileImage = StartingClass.tiledirt;
-        } else if (type == 8) {
+        } else if (tileType == 8) {
             tileImage = StartingClass.tilegrassTop;
-        } else if (type == 4) {
+        } else if (tileType == 4) {
             tileImage = StartingClass.tilegrassLeft;
-        } else if (type == 6) {
+        } else if (tileType == 6) {
             tileImage = StartingClass.tilegrassRight;
-        } else if (type == 2) {
+        } else if (tileType == 2) {
             tileImage = StartingClass.tilegrassBot;
         } else {
-            type = 0;
+            tileType = 0;
         }
     }
 
     public void update() {
         tileSpeedX = bg.getBgSpeedX() * 5;
-        tileX += tileSpeedX;
+        tilePosX += tileSpeedX;
         handleTileCollision();
     }
 
     private void handleTileCollision() {
-        tileCollisionBox.setBounds(tileX, tileY, 40, 40);
+        tileCollisionBox.setBounds(tilePosX, tilePosY, 40, 40);
 
-        if (type != 0) {
-            checkVerticleCollision(Robot.rect, Robot.rect2);
+        if (tileCollisionBox.intersects(Robot.checkCollisionBox)
+                && tileType != 0) {
+            checkVerticleCollision(Robot.upperTorsoBox, Robot.lowerTorsoBox);
+            checkSideCollision(Robot.leftHandBox, Robot.rightHandBox);
+        }
+    }
+
+    public void checkVerticleCollision(Rectangle rTop, Rectangle rBot) {
+        if (rBot.intersects(tileCollisionBox) && tileType == 8) {
+            robot.setJumped(false);
+            robot.setRobotSpeedY(0);
+            robot.setRobotPosY(tilePosY - 63);
+        }
+    }
+
+    private void checkSideCollision(Rectangle leftHandBox,
+            Rectangle rightHandBox) {
+        if (tileType != 5 && tileType != 2 && tileType != 0) {
+            if (leftHandBox.intersects(tileCollisionBox)) {
+                robot.setRobotPosX(tilePosX + 102);
+                robot.setRobotSpeedX(0);
+            }
+            if (rightHandBox.intersects(tileCollisionBox)) {
+                robot.setRobotPosX(tilePosX - 62);
+                robot.setRobotSpeedX(0);
+            }
         }
     }
 
     public int getTileX() {
-        return tileX;
+        return tilePosX;
     }
 
     public int getTileY() {
-        return tileY;
+        return tilePosY;
     }
 
     public Image getTileImage() {
@@ -64,25 +90,14 @@ public class Tile {
     }
 
     public void setTileX(int tileX) {
-        this.tileX = tileX;
+        this.tilePosX = tileX;
     }
 
     public void setTileY(int tileY) {
-        this.tileY = tileY;
+        this.tilePosY = tileY;
     }
 
     public void setTileImage(Image tileImage) {
         this.tileImage = tileImage;
     }
-
-    public void checkVerticleCollision(Rectangle rtop, Rectangle rbot) {
-        if (rtop.intersects(tileCollisionBox)) {
-            System.out.println("upper collision");
-        }
-        if (rbot.intersects(tileCollisionBox)) {
-            System.out.println("lower collision");
-        }
-
-    }
-
 }
