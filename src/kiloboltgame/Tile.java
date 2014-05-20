@@ -40,7 +40,7 @@ public class Tile {
     }
 
     public void update() {
-        tileSpeedX = bg.getBgSpeedX() * 5;
+        tileSpeedX = bg.getbGspeedX() * 5;
         tilePosX += tileSpeedX;
         handleTileCollision();
     }
@@ -76,27 +76,15 @@ public class Tile {
         }
     }
 
-    public int getTileX() {
-        return tilePosX;
-    }
-
-    public int getTileY() {
-        return tilePosY;
-    }
-
     public Image getTileImage() {
         return tileImage;
     }
 
-    public void setTileX(int tileX) {
-        this.tilePosX = tileX;
+    public int getTilePosX() {
+        return tilePosX;
     }
 
-    public void setTileY(int tileY) {
-        this.tilePosY = tileY;
-    }
-
-    public void setTileImage(Image tileImage) {
-        this.tileImage = tileImage;
+    public int getTilePosY() {
+        return tilePosY;
     }
 }

@@ -18,6 +18,12 @@ import kiloboltgame.framework.Animation;
 
 public class StartingClass extends Applet implements Runnable, KeyListener {
 
+    enum GameState {
+        DEAD, RUNNING
+    }
+
+    GameState state = GameState.RUNNING;
+
     public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
             tilegrassRight, tiledirt;
     public static int score = 0;
@@ -54,7 +60,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
         try {
             base = getDocumentBase();
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     }
 
@@ -183,23 +189,32 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        while (true) {
-            robot.update();
-            handleRobotImageState();
-            handleProjectiles();
-            updateTiles();
-            hb.update();
-            hb2.update();
-            bg1.update();
-            bg2.update();
-            animate();
-            repaint();
-
-            try {
-                Thread.sleep(17);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        if (state == GameState.RUNNING) {
+            while (true) {
+                robot.update();
+                handleRobotImageState();
+                handleProjectiles();
+                updateTiles();
+                hb.update();
+                hb2.update();
+                bg1.update();
+                bg2.update();
+                animate();
+                repaint();
+                keepGamePace();
             }
+        }
+    }
+
+    /**
+     * The intention here to is slow down the run method with sleep in order to
+     * create a playable game pace.
+     */
+    private void keepGamePace() {
+        try {
+            Thread.sleep(17);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -227,11 +242,11 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     }
 
     private void handleRobotImageState() {
-        if (robot.hasJumped())
+        if (robot.isJumped())
             robotImageState = robotJumping;
-        else if (robot.hasDucked())
+        else if (robot.isDucked())
             robotImageState = robotDucking;
-        else if (robot.hasJumped() == false && robot.hasDucked() == false)
+        else if (robot.isJumped() == false && robot.isDucked() == false)
             robotImageState = robotAnim.getImage();
     }
 
@@ -300,7 +315,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     private void paintTiles(Graphics g) {
         for (int i = 0; i < tilearray.size(); i++) {
             Tile t = (Tile) tilearray.get(i);
-            g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
+            g.drawImage(t.getTileImage(), t.getTilePosX(), t.getTilePosY(),
+                    this);
         }
     }
 
@@ -319,10 +335,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     }
 
     private void drawHeliboy(Graphics g) {
-        g.drawImage(heliAnim.getImage(), hb.getEnemyPositionX() - 48,
-                hb.getEnemyPositionY() - 48, this);
-        g.drawImage(heliAnim.getImage(), hb2.getEnemyPositionX() - 48,
-                hb2.getEnemyPositionY() - 48, this);
+        g.drawImage(heliAnim.getImage(), hb.getEnemyPosX() - 48,
+                hb.getEnemyPosY() - 48, this);
+        g.drawImage(heliAnim.getImage(), hb2.getEnemyPosX() - 48,
+                hb2.getEnemyPosY() - 48, this);
     }
 
     private void drawScore(Graphics g) {
@@ -340,7 +356,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             break;
         case KeyEvent.VK_DOWN:
         case KeyEvent.VK_S:
-            if (robot.hasJumped() == false) {
+            if (robot.isJumped() == false) {
                 robot.setDucked(true);
                 robot.setRobotSpeedX(0);
             }
@@ -359,7 +375,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             robot.jump();
             break;
         case KeyEvent.VK_CONTROL:
-            if (robot.hasDucked() == false) {
+            if (robot.isDucked() == false) {
                 robot.shoot();
                 robot.setReadyToFire(false);
             }

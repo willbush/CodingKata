@@ -6,14 +6,13 @@ public class Enemy {
 
     public Rectangle enemyCollisionBox = new Rectangle(0, 0, 0, 0);
 
-    private int maxHealth, currentHealth, damageOutput, enemySpeedX,
-            enemyPositionX, enemyPositionY;
+    private int enemySpeedX, enemyPosX, enemyPosY;
     private Background bg = StartingClass.getBg1();
 
     public void update() {
-        enemyPositionX += enemySpeedX;
-        enemySpeedX = bg.getBgSpeedX() * 5;
-        enemyCollisionBox.setBounds(enemyPositionX - 25, enemyPositionY - 25, 50, 60);
+        enemyPosX += enemySpeedX;
+        enemySpeedX = bg.getbGspeedX() * 5;
+        enemyCollisionBox.setBounds(enemyPosX - 25, enemyPosY - 25, 50, 60);
 
         if (enemyCollisionBox.intersects(Robot.checkCollisionBox)) {
             checkCollision();
@@ -21,71 +20,26 @@ public class Enemy {
     }
 
     private void checkCollision() {
-        if (enemyCollisionBox.intersects(Robot.headBox) || enemyCollisionBox.intersects(Robot.rightTorsoBox)
+        if (enemyCollisionBox.intersects(Robot.headBox)
+                || enemyCollisionBox.intersects(Robot.rightTorsoBox)
                 || enemyCollisionBox.intersects(Robot.leftTorsoBox)) {
             System.out.println("enemy collision");
         }
     }
 
-    public void die() {
+    public int getEnemyPosX() {
+        return enemyPosX;
     }
 
-    public void attack() {
+    public int getEnemyPosY() {
+        return enemyPosY;
     }
 
-    public int getMaxHealth() {
-        return maxHealth;
+    public void setEnemyPosX(int enemyPosX) {
+        this.enemyPosX = enemyPosX;
     }
 
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public int getDamageOutput() {
-        return damageOutput;
-    }
-
-    public int getEnemySpeedX() {
-        return enemySpeedX;
-    }
-
-    public int getEnemyPositionX() {
-        return enemyPositionX;
-    }
-
-    public int getEnemyPositionY() {
-        return enemyPositionY;
-    }
-
-    public Background getBg() {
-        return bg;
-    }
-
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
-    }
-
-    public void setDamageOutput(int damageOutput) {
-        this.damageOutput = damageOutput;
-    }
-
-    public void setEnemySpeedX(int enemySpeedX) {
-        this.enemySpeedX = enemySpeedX;
-    }
-
-    public void setEnemyPositionX(int enemyPositionX) {
-        this.enemyPositionX = enemyPositionX;
-    }
-
-    public void setEnemyPositionY(int enemyPositionY) {
-        this.enemyPositionY = enemyPositionY;
-    }
-
-    public void setBg(Background bg) {
-        this.bg = bg;
+    public void setEnemyPosY(int enemyPosY) {
+        this.enemyPosY = enemyPosY;
     }
 }

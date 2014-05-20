@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 public class Projectile {
 
-    private int xPosition, yPosition, projectileSpeedX, projectileSpeedY;
+    private int xPosition, yPosition, projectileSpeedX;
     private boolean visible;
     private Rectangle projectileCollisionBox;
 
@@ -49,35 +49,7 @@ public class Projectile {
         return yPosition;
     }
 
-    public int getProjectileSpeedX() {
-        return projectileSpeedX;
-    }
-
-    public int getProjectileSpeedY() {
-        return projectileSpeedY;
-    }
-
     public boolean isVisible() {
         return visible;
-    }
-
-    public void setxPosition(int xPosition) {
-        this.xPosition = xPosition;
-    }
-
-    public void setyPosition(int yPosition) {
-        this.yPosition = yPosition;
-    }
-
-    public void setProjectileSpeedX(int projectileSpeedX) {
-        this.projectileSpeedX = projectileSpeedX;
-    }
-
-    public void setProjectileSpeedY(int projectileSpeedY) {
-        this.projectileSpeedY = projectileSpeedY;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 }

@@ -56,12 +56,12 @@ public class Robot {
 
     private void handleBackgroundScrolling() {
         if (robotSpeedX == 0 || robotSpeedX < 0) {
-            bg1.setBgSpeedX(0);
-            bg2.setBgSpeedX(0);
+            bg1.setbGspeedX(0);
+            bg2.setbGspeedX(0);
         }
         if (robotSpeedX > 0 && robotPosX > START_SCROLLING_POS) {
-            bg1.setBgSpeedX(-WALK_SPEED / 5);
-            bg2.setBgSpeedX(-WALK_SPEED / 5);
+            bg1.setbGspeedX(-WALK_SPEED / 5);
+            bg2.setbGspeedX(-WALK_SPEED / 5);
         }
     }
 
@@ -102,19 +102,19 @@ public class Robot {
     }
 
     public void stopRight() {
-        setMovingRight(false);
+        movingRight = false;
         updateHorizontalMovement();
     }
 
     public void stopLeft() {
-        setMovingLeft(false);
+        movingLeft = false;
         updateHorizontalMovement();
     }
 
     private void updateHorizontalMovement() {
-        if (isMovingRight() == false && isMovingLeft() == false)
+        if (movingRight == false && movingLeft == false)
             robotSpeedX = 0;
-        if (isMovingRight() == false && isMovingLeft())
+        if (movingRight == false && isMovingLeft())
             moveLeft();
         if (isMovingRight() && isMovingLeft())
             moveRight();
@@ -150,36 +150,28 @@ public class Robot {
         return robotSpeedY;
     }
 
-    public ArrayList<Projectile> getProjectiles() {
-        return projectiles;
-    }
-
-    public boolean hasDucked() {
-        return ducked;
-    }
-
-    public boolean hasJumped() {
+    public boolean isJumped() {
         return jumped;
-    }
-
-    public boolean isMovingRight() {
-        return movingRight;
     }
 
     public boolean isMovingLeft() {
         return movingLeft;
     }
 
+    public boolean isMovingRight() {
+        return movingRight;
+    }
+
+    public boolean isDucked() {
+        return ducked;
+    }
+
     public boolean isReadyToFire() {
         return readyToFire;
     }
 
-    public void setMovingRight(boolean movingRight) {
-        this.movingRight = movingRight;
-    }
-
-    public void setMovingLeft(boolean movingLeft) {
-        this.movingLeft = movingLeft;
+    public ArrayList<Projectile> getProjectiles() {
+        return projectiles;
     }
 
     public void setRobotPosX(int robotPosX) {
@@ -198,12 +190,20 @@ public class Robot {
         this.robotSpeedY = robotSpeedY;
     }
 
-    public void setDucked(boolean ducked) {
-        this.ducked = ducked;
-    }
-
     public void setJumped(boolean jumped) {
         this.jumped = jumped;
+    }
+
+    public void setMovingLeft(boolean movingLeft) {
+        this.movingLeft = movingLeft;
+    }
+
+    public void setMovingRight(boolean movingRight) {
+        this.movingRight = movingRight;
+    }
+
+    public void setDucked(boolean ducked) {
+        this.ducked = ducked;
     }
 
     public void setReadyToFire(boolean readyToFire) {

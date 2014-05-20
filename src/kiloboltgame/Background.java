@@ -11,7 +11,10 @@ public class Background {
 
     public void update() {
         bgX += bGspeedX;
+        recycleOutOfFrameBg();
+    }
 
+    private void recycleOutOfFrameBg() {
         if (bgX <= -2160)
             bgX += 4320;
     }
@@ -24,19 +27,19 @@ public class Background {
         return bgY;
     }
 
-    public int getBgSpeedX() {
+    public int getbGspeedX() {
         return bGspeedX;
     }
 
-    public void setBackgroundX(int backgroundX) {
-        this.bgX = backgroundX;
+    public void setBgX(int bgX) {
+        this.bgX = bgX;
     }
 
-    public void setBackgroundY(int backgroundY) {
-        this.bgY = backgroundY;
+    public void setBgY(int bgY) {
+        this.bgY = bgY;
     }
 
-    public void setBgSpeedX(int speedX) {
-        this.bGspeedX = speedX;
+    public void setbGspeedX(int bGspeedX) {
+        this.bGspeedX = bGspeedX;
     }
 }
