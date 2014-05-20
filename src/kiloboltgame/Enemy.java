@@ -3,7 +3,7 @@ package kiloboltgame;
 import java.awt.Rectangle;
 
 public class Enemy {
-
+    
     public Rectangle enemyCollisionBox = new Rectangle(0, 0, 0, 0);
 
     private int enemySpeedX, enemyPosX, enemyPosY;

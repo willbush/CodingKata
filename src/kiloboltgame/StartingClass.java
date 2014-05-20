@@ -191,6 +191,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     public void run() {
         if (state == GameState.RUNNING) {
             while (true) {
+                checkGameState();
                 robot.update();
                 handleRobotImageState();
                 handleProjectiles();
@@ -204,6 +205,11 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                 keepGamePace();
             }
         }
+    }
+
+    private void checkGameState() {
+        if (robot.getRobotPosY() > 500)
+            state = GameState.DEAD;
     }
 
     /**
@@ -267,13 +273,20 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     @Override
     public void paint(Graphics g) {
-        drawBackground(g);
-        paintTiles(g);
-        drawProjectiles(g);
-        drawCollisionBox(g);
-        drawRobot(g);
-        drawHeliboy(g);
-        drawScore(g);
+        if (state == GameState.RUNNING) {
+            drawBackground(g);
+            paintTiles(g);
+            drawProjectiles(g);
+            drawCollisionBox(g);
+            drawRobot(g);
+            drawHeliboy(g);
+            drawScore(g);
+        } else if (state == GameState.DEAD) {
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, 840, 480);
+            g.setColor(Color.WHITE);
+            g.drawString("Game Over", 310, 240);
+        }
     }
 
     private void drawCollisionBox(Graphics g) {

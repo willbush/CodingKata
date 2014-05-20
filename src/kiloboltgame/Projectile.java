@@ -29,11 +29,26 @@ public class Projectile {
 
     private void collisionCheck() {
         if (projectileCollisionBox
-                .intersects(StartingClass.hb.enemyCollisionBox)
-                || projectileCollisionBox
-                        .intersects(StartingClass.hb2.enemyCollisionBox)) {
+                .intersects(StartingClass.hb.enemyCollisionBox)) {
             visible = false;
             StartingClass.score += 1;
+            if (StartingClass.hb.health > 0)
+                StartingClass.hb.health -= 1;
+            if (StartingClass.hb.health == 0) {
+                StartingClass.hb.setEnemyPosX(-200);
+                StartingClass.score += 5;
+            }
+        }
+        if (projectileCollisionBox
+                .intersects(StartingClass.hb2.enemyCollisionBox)) {
+            visible = false;
+            StartingClass.score += 1;
+            if (StartingClass.hb2.health > 0)
+                StartingClass.hb2.health -= 1;
+            if (StartingClass.hb2.health == 0) {
+                StartingClass.hb2.setEnemyPosX(-200);
+                StartingClass.score += 5;
+            }
         }
     }
 
