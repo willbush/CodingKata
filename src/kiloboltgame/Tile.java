@@ -50,8 +50,8 @@ public class Tile {
 
         if (tileCollisionBox.intersects(Robot.checkCollisionBox)
                 && tileType != 0) {
-            checkVerticleCollision(Robot.upperTorsoBox, Robot.lowerTorsoBox);
-            checkSideCollision(Robot.leftHandBox, Robot.rightHandBox);
+            checkVerticleCollision(Robot.headBox, Robot.feetBox);
+            checkHorizontalCollision(Robot.leftTorsoBox, Robot.rightTorsoBox);
         }
     }
 
@@ -63,15 +63,14 @@ public class Tile {
         }
     }
 
-    private void checkSideCollision(Rectangle leftHandBox,
-            Rectangle rightHandBox) {
+    private void checkHorizontalCollision(Rectangle rLeft, Rectangle rRight) {
         if (tileType != 5 && tileType != 2 && tileType != 0) {
-            if (leftHandBox.intersects(tileCollisionBox)) {
-                robot.setRobotPosX(tilePosX + 102);
+            if (rLeft.intersects(tileCollisionBox)) {
+                robot.setRobotPosX(tilePosX + 70);
                 robot.setRobotSpeedX(0);
             }
-            if (rightHandBox.intersects(tileCollisionBox)) {
-                robot.setRobotPosX(tilePosX - 62);
+            if (rRight.intersects(tileCollisionBox)) {
+                robot.setRobotPosX(tilePosX - 30);
                 robot.setRobotSpeedX(0);
             }
         }

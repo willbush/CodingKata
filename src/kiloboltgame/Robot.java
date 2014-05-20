@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 public class Robot {
 
-    public static Rectangle upperTorsoBox = new Rectangle(0, 0, 0, 0);
-    public static Rectangle lowerTorsoBox = new Rectangle(0, 0, 0, 0);
+    public static Rectangle headBox = new Rectangle(0, 0, 0, 0);
+    public static Rectangle rightTorsoBox = new Rectangle(0, 0, 0, 0);
+    public static Rectangle leftTorsoBox = new Rectangle(0, 0, 0, 0);
+    public static Rectangle feetBox = new Rectangle(0, 0, 0, 0);
     public static Rectangle rightHandBox = new Rectangle(0, 0, 0, 0);
     public static Rectangle leftHandBox = new Rectangle(0, 0, 0, 0);
     public static Rectangle checkCollisionBox = new Rectangle(0, 0, 0, 0);
@@ -77,12 +79,12 @@ public class Robot {
     }
 
     private void robotCollisionBoxes() {
-        upperTorsoBox.setRect(robotPosX - 34, robotPosY - 63, 68, 64);
-        lowerTorsoBox.setRect(upperTorsoBox.getX(), robotPosY, 68, 64);
-        leftHandBox.setRect(upperTorsoBox.getX() - 26,
-                upperTorsoBox.getY() + 32, 26, 20);
-        rightHandBox.setRect(upperTorsoBox.getX() + 68,
-                upperTorsoBox.getY() + 32, 26, 20);
+        headBox.setRect(robotPosX - 14, robotPosY - 65, 28, 28);
+        leftTorsoBox.setRect(robotPosX - 26, robotPosY - 32, 26, 84);
+        rightTorsoBox.setRect(robotPosX, robotPosY - 32, 26, 84);
+        leftHandBox.setRect(robotPosX - 60, robotPosY - 31, 26, 20);
+        rightHandBox.setRect(robotPosX + 34, robotPosY - 31, 26, 20);
+        feetBox.setRect(robotPosX - 29, robotPosY + 54, 58, 10);
     }
 
     private void robotCheckColisionBox() {

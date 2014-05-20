@@ -22,7 +22,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     private static Background bg1, bg2;
     private static final long serialVersionUID = 1L;
-    private boolean debugMode = true;
+    private boolean debugMode = false;
 
     private static Robot robot;
     private Heliboy hb, hb2;
@@ -259,14 +259,17 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
     private void drawCollisionBox(Graphics g) {
         if (debugMode == true) {
-            g.drawRect((int) Robot.upperTorsoBox.getX(),
-                    (int) Robot.upperTorsoBox.getY(),
-                    (int) Robot.upperTorsoBox.getWidth(),
-                    (int) Robot.upperTorsoBox.getHeight());
-            g.drawRect((int) Robot.lowerTorsoBox.getX(),
-                    (int) Robot.lowerTorsoBox.getY(),
-                    (int) Robot.lowerTorsoBox.getWidth(),
-                    (int) Robot.lowerTorsoBox.getHeight());
+            g.drawRect((int) Robot.headBox.getX(), (int) Robot.headBox.getY(),
+                    (int) Robot.headBox.getWidth(),
+                    (int) Robot.headBox.getHeight());
+            g.drawRect((int) Robot.rightTorsoBox.getX(),
+                    (int) Robot.rightTorsoBox.getY(),
+                    (int) Robot.rightTorsoBox.getWidth(),
+                    (int) Robot.rightTorsoBox.getHeight());
+            g.drawRect((int) Robot.leftTorsoBox.getX(),
+                    (int) Robot.leftTorsoBox.getY(),
+                    (int) Robot.leftTorsoBox.getWidth(),
+                    (int) Robot.leftTorsoBox.getHeight());
             g.drawRect((int) Robot.rightHandBox.getX(),
                     (int) Robot.rightHandBox.getY(),
                     (int) Robot.rightHandBox.getWidth(),
@@ -275,6 +278,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
                     (int) Robot.leftHandBox.getY(),
                     (int) Robot.leftHandBox.getWidth(),
                     (int) Robot.leftHandBox.getHeight());
+            g.drawRect((int) Robot.feetBox.getX(), (int) Robot.feetBox.getY(),
+                    (int) Robot.feetBox.getWidth(),
+                    (int) Robot.feetBox.getHeight());
             g.drawRect((int) Robot.checkCollisionBox.getX(),
                     (int) Robot.checkCollisionBox.getY(),
                     (int) Robot.checkCollisionBox.getWidth(),
