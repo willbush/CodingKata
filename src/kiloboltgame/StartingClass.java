@@ -31,7 +31,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
     private Font font = new Font(null, Font.BOLD, 30);
     private static Background bg1, bg2;
     private static final long serialVersionUID = 1L;
-    private boolean debugMode = false;
+    private boolean debugMode = true;
 
     private static Robot robot;
     public static Heliboy hb, hb2;

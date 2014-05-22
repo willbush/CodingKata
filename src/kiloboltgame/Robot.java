@@ -80,11 +80,11 @@ public class Robot {
 
     private void robotCollisionBoxes() {
         headBox.setRect(robotPosX - 14, robotPosY - 65, 28, 28);
-        leftTorsoBox.setRect(robotPosX - 26, robotPosY - 32, 26, 84);
-        rightTorsoBox.setRect(robotPosX, robotPosY - 32, 26, 84);
+        leftTorsoBox.setRect(robotPosX - 26, robotPosY - 32, 26, 64);
+        rightTorsoBox.setRect(robotPosX, robotPosY - 32, 26, 64);
         leftHandBox.setRect(robotPosX - 60, robotPosY - 31, 26, 20);
         rightHandBox.setRect(robotPosX + 34, robotPosY - 31, 26, 20);
-        feetBox.setRect(robotPosX - 29, robotPosY + 54, 58, 10);
+        feetBox.setRect(robotPosX - 29, robotPosY + 34, 58, 30);
     }
 
     private void robotCheckColisionBox() {
