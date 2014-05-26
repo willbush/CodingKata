@@ -9,7 +9,7 @@ public interface Graphics {
 
     public Image newImage(String fileName, ImageFormat format);
 
-    public void screenClear(int color);
+    public void clearScreen(int color);
 
     public void drawLine(int x, int y, int x2, int y2, int color);
 
@@ -23,6 +23,8 @@ public interface Graphics {
     void drawString(String text, int x, int y, Paint paint);
 
     public int getWidth();
+
+    public int getHeight();
 
     public void drawARGB(int i, int j, int k, int l);
 

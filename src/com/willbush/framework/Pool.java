@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pool<T> {
-    public interface PoolObjectFactor<T> {
+    public interface PoolObjectFactory<T> {
         public T createObject();
     }
 
     private final List<T> freeObjects;
-    private final PoolObjectFactor<T> factory;
+    private final PoolObjectFactory<T> factory;
     private final int maxSize;
 
-    public Pool(PoolObjectFactor<T> factory, int maxSize) {
+    public Pool(PoolObjectFactory<T> factory, int maxSize) {
         this.factory = factory;
         this.maxSize = maxSize;
         this.freeObjects = new ArrayList<>(maxSize);
     }
 
-    public T newOject() {
+    public T newObject() {
         T object = null;
 
         if (freeObjects.size() == 0)
