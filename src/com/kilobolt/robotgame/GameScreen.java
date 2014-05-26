@@ -423,8 +423,7 @@ public class GameScreen extends Screen {
     }
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() {}
 
     @Override
     public void backButton() {

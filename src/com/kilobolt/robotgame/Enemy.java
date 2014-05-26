@@ -31,8 +31,7 @@ public class Enemy {
         if (Rect.intersects(enemyColisionBox, Robot.rect)
                 || Rect.intersects(enemyColisionBox, Robot.rect2)
                 || Rect.intersects(enemyColisionBox, Robot.rect3)
-                || Rect.intersects(enemyColisionBox, Robot.rect4)) {
-        }
+                || Rect.intersects(enemyColisionBox, Robot.rect4)) {}
     }
 
     public void follow() {
@@ -55,11 +54,9 @@ public class Enemy {
         }
     }
 
-    public void die() {
-    }
+    public void die() {}
 
-    public void attack() {
-    }
+    public void attack() {}
 
     public int getPower() {
         return power;
