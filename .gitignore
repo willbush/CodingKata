@@ -9,6 +9,11 @@
 .settings/**
 */war/**
 */gen/**
+=======
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+>>>>>>> c537dac51f9081cbb57a97f08a0e2473b8746f6b
 
 # Package Files #
 *.jar
