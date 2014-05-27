@@ -18,6 +18,7 @@ public class Bird {
         this.width = width;
         this.height = height;
         position = new Vector2(x, y);
+        velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 240);
     }
 

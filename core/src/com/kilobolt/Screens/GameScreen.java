@@ -10,11 +10,14 @@ public class GameScreen implements Screen {
 
     private GameWorld world;
     private GameRenderer renderer;
+    private float runTime;
+
+    private static final float GAME_WIDTH = 136;
 
     public GameScreen() {
         int midPointY = calculateMidPointY();
         world = new GameWorld(midPointY);
-        renderer = new GameRenderer(world);
+        renderer = new GameRenderer(world, (int) GAME_WIDTH, midPointY);
 
         Gdx.input.setInputProcessor(new InputHandler(world.getBird()));
     }
@@ -22,17 +25,16 @@ public class GameScreen implements Screen {
     private int calculateMidPointY() {
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
-        float gameWidth = 136;
-        float gameHeight = screenHeight / (screenWidth / gameWidth);
+        float gameHeight = screenHeight / (screenWidth / GAME_WIDTH);
         int midPointY = (int) (gameHeight / 2);
         return midPointY;
     }
 
     @Override
     public void render(float delta) {
+        runTime += delta;
         world.update(delta);
-        renderer.render();
-        System.out.println(1 / delta);
+        renderer.render(runTime);
     }
 
     @Override
