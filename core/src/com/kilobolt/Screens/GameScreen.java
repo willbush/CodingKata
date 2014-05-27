@@ -1,8 +1,10 @@
 package com.kilobolt.Screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.kilobolt.GameWorld.GameRenderer;
 import com.kilobolt.GameWorld.GameWorld;
+import com.kilobolt.ZBHelpers.InputHandler;
 
 public class GameScreen implements Screen {
 
@@ -10,9 +12,20 @@ public class GameScreen implements Screen {
     private GameRenderer renderer;
 
     public GameScreen() {
-        System.out.println("GameScreen attached");
-        world = new GameWorld();
+        int midPointY = calculateMidPointY();
+        world = new GameWorld(midPointY);
         renderer = new GameRenderer(world);
+
+        Gdx.input.setInputProcessor(new InputHandler(world.getBird()));
+    }
+
+    private int calculateMidPointY() {
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+        float gameWidth = 136;
+        float gameHeight = screenHeight / (screenWidth / gameWidth);
+        int midPointY = (int) (gameHeight / 2);
+        return midPointY;
     }
 
     @Override
