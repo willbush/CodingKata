@@ -23,12 +23,18 @@ public class Bird {
     }
 
     public void update(float delta) {
-        velocity.add(acceleration.cpy().scl(delta));
+        updateVelocity(delta);
+        updatePosition(delta);
+    }
 
+    private void updatePosition(float delta) {
+        position.add(velocity.cpy().scl(delta));
+    }
+
+    private void updateVelocity(float delta) {
+        velocity.add(acceleration.cpy().scl(delta));
         if (velocity.y > TERMINAL_VELOCITY)
             velocity.y = TERMINAL_VELOCITY;
-
-        position.add(velocity.cpy().scl(delta));
     }
 
     public void onClick() {

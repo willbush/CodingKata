@@ -43,15 +43,15 @@ public class GameRenderer {
         Bird bird = myWorld.getBird();
 
         // fill entire screen with black to prevent potential flickering
-        //Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
-        //Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
+        Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Begin ShapeRenderer
         shapeRenderer.begin(ShapeType.Filled);
 
         // Draw Background color
         shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
-        shapeRenderer.rect(0, 0, 136, midPointY + 66);
+        shapeRenderer.rect(0, 0, GAME_WIDTH, midPointY + 66);
 
         // Draw Grass
         shapeRenderer.setColor(111 / 255.0f, 186 / 255.0f, 45 / 255.0f, 1);
@@ -70,7 +70,7 @@ public class GameRenderer {
         // This is good for performance when drawing images that do not require
         // transparency.
         batcher.disableBlending();
-        batcher.draw(AssetLoader.bg, 0, midPointY + 23, 136, 43);
+        batcher.draw(AssetLoader.bg, 0, midPointY + 23, GAME_WIDTH, 43);
 
         // The bird needs transparency, so we enable that again.
         batcher.enableBlending();

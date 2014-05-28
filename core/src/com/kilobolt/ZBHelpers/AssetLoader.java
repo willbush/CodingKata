@@ -15,20 +15,21 @@ public class AssetLoader {
     public static TextureRegion bird, birdDown, birdUp;
 
     public static TextureRegion skull, skullDown, skullUp, bar;
+    private static final int GAME_WIDTH = 136;
 
     public static void load() {
 
         texture = new Texture(Gdx.files.internal("data/texture.png"));
         texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
-        bg = new TextureRegion(texture, 0, 0, 146, 3);
+        bg = new TextureRegion(texture, 0, 0, GAME_WIDTH, 43);
         // flipping because we are using "Y down" coordinate system.
         bg.flip(false, true);
 
         grass = new TextureRegion(texture, 0, 43, 143, 11);
         grass.flip(false, true);
 
-        birdDown = new TextureRegion(texture, 136, 0, 17, 12);
+        birdDown = new TextureRegion(texture, GAME_WIDTH, 0, 17, 12);
         birdDown.flip(false, true);
 
         bird = new TextureRegion(texture, 153, 0, 17, 12);
@@ -46,7 +47,7 @@ public class AssetLoader {
         skullDown = new TextureRegion(skullUp);
         skullDown.flip(false, true);
 
-        bar = new TextureRegion(texture, 136, 16, 22, 3);
+        bar = new TextureRegion(texture, GAME_WIDTH, 16, 22, 3);
         bar.flip(false, true);
     }
 
