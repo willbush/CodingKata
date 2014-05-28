@@ -25,6 +25,28 @@ public class Bird {
     public void update(float delta) {
         updateVelocity(delta);
         updatePosition(delta);
+        updateRotation(delta);
+    }
+
+    private void updateRotation(float delta) {
+        if (isRising())
+            rotateCounterclockwise(delta);
+        if (isFalling())
+            rotateClockwise(delta);
+    }
+
+    private void rotateClockwise(float delta) {
+        rotation += 480 * delta;
+        final int maxClockwiseRotation = 90;
+        if (rotation > maxClockwiseRotation)
+            rotation = maxClockwiseRotation;
+    }
+
+    private void rotateCounterclockwise(float delta) {
+        rotation -= 600 * delta;
+        final int maxCounterRotation = -20;
+        if (rotation < maxCounterRotation)
+            rotation = maxCounterRotation;
     }
 
     private void updatePosition(float delta) {
@@ -38,7 +60,27 @@ public class Bird {
     }
 
     public void onClick() {
-        velocity.y = -140;
+        flapWings();
+    }
+
+    private void flapWings() {
+        final int flappingVelocity = -140;
+        velocity.y = flappingVelocity;
+    }
+
+    public boolean isFalling() {
+        final int fallingThreshold = 110;
+        return velocity.y > fallingThreshold;
+    }
+
+    public boolean isRising() {
+        final int risingThreshold = 0;
+        return velocity.y < risingThreshold;
+    }
+
+    public boolean isFlapping() {
+        final int flappingThreshold = 70;
+        return velocity.y < flappingThreshold;
     }
 
     public float getX() {
