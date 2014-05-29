@@ -7,31 +7,28 @@ import com.kilobolt.GameWorld.GameWorld;
 import com.kilobolt.ZBHelpers.InputHandler;
 
 public class GameScreen implements Screen {
-
-    private GameWorld world;
-    private GameRenderer renderer;
+    private final GameWorld world;
+    private final GameRenderer renderer;
     private float runTime;
-    private float gameHeight = calculateGameHeight();
-
+    private final float gameHeight = calculateGameHeight();
     private static final float GAME_WIDTH = 136;
 
     public GameScreen() {
-        int midPointY = calculateMidPointY();
+        final int midPointY = calculateMidPointY();
         world = new GameWorld(midPointY);
         renderer = new GameRenderer(world, (int) gameHeight, midPointY);
-
         Gdx.input.setInputProcessor(new InputHandler(world.getBird()));
     }
 
     private int calculateMidPointY() {
-        int midPointY = (int) (gameHeight / 2);
+        final int midPointY = (int) (gameHeight / 2);
         return midPointY;
     }
 
     private float calculateGameHeight() {
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
-        float gameHeight = screenHeight / (screenWidth / GAME_WIDTH);
+        final float screenWidth = Gdx.graphics.getWidth();
+        final float screenHeight = Gdx.graphics.getHeight();
+        final float gameHeight = screenHeight / (screenWidth / GAME_WIDTH);
         return gameHeight;
     }
 
@@ -70,5 +67,4 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
     }
-
 }

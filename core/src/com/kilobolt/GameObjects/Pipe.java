@@ -3,8 +3,7 @@ package com.kilobolt.GameObjects;
 import java.util.Random;
 
 public class Pipe extends Scrollable {
-
-    private Random r;
+    private final Random r;
 
     public Pipe(float x, float y, int width, int height, float scrollSpeed) {
         super(x, y, width, height, scrollSpeed);
@@ -16,5 +15,4 @@ public class Pipe extends Scrollable {
         super.reset(newX);
         height = r.nextInt(90) + 15;
     }
-
 }

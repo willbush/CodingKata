@@ -3,15 +3,12 @@ package com.kilobolt.GameObjects;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bird {
-
-    private Vector2 position;
-    private Vector2 velocity;
-    private Vector2 acceleration;
-
+    private final Vector2 position;
+    private final Vector2 velocity;
+    private final Vector2 acceleration;
     private float rotation;
-    private int height;
-    private int width;
-
+    private final int height;
+    private final int width;
     private static final int TERMINAL_VELOCITY = 200;
 
     public Bird(float x, float y, int width, int height) {
@@ -102,5 +99,4 @@ public class Bird {
     public int getWidth() {
         return width;
     }
-
 }

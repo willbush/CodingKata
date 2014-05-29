@@ -4,8 +4,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.kilobolt.GameObjects.Bird;
 
 public class InputHandler implements InputProcessor {
-
-    private Bird myBird;
+    private final Bird myBird;
 
     public InputHandler(Bird bird) {
         myBird = bird;
@@ -58,5 +57,4 @@ public class InputHandler implements InputProcessor {
         // TODO Auto-generated method stub
         return false;
     }
-
 }

@@ -3,7 +3,6 @@ package com.kilobolt.GameObjects;
 import com.badlogic.gdx.math.Vector2;
 
 public class Scrollable {
-
     protected Vector2 position;
     protected Vector2 velocity;
     protected int width;
@@ -20,7 +19,6 @@ public class Scrollable {
 
     public void update(float delta) {
         position.add(velocity.cpy().scl(delta));
-
         if (!objectIsVisible())
             isScrolledLeft = true;
     }
@@ -57,5 +55,4 @@ public class Scrollable {
     public int getHeight() {
         return height;
     }
-
 }

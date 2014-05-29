@@ -5,7 +5,6 @@ import com.kilobolt.Screens.GameScreen;
 import com.kilobolt.ZBHelpers.AssetLoader;
 
 public class ZBGame extends Game {
-
     @Override
     public void create() {
         System.out.println("Game Created!");
