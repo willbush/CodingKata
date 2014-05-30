@@ -11,6 +11,7 @@ public class DesktopLauncher {
         config.title = "ZombieBird";
         config.width = 272;
         config.height = 408;
+        config.vSyncEnabled = true;
         new LwjglApplication(new ZBGame(), config);
     }
 }

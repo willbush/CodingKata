@@ -1,5 +1,6 @@
 package com.kilobolt.GameObjects;
 
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bird {
@@ -9,6 +10,7 @@ public class Bird {
     private float rotation;
     private final int height;
     private final int width;
+    private final Circle collisionCircle;
     private static final int TERMINAL_VELOCITY = 200;
 
     public Bird(float x, float y, int width, int height) {
@@ -17,12 +19,28 @@ public class Bird {
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 240);
+        collisionCircle = new Circle();
     }
 
     public void update(float delta) {
         updateVelocity(delta);
         updatePosition(delta);
+        updateCollisionCircle();
         updateRotation(delta);
+    }
+
+    private void updateVelocity(float delta) {
+        velocity.add(acceleration.cpy().scl(delta));
+        if (velocity.y > TERMINAL_VELOCITY)
+            velocity.y = TERMINAL_VELOCITY;
+    }
+
+    private void updatePosition(float delta) {
+        position.add(velocity.cpy().scl(delta));
+    }
+
+    private void updateCollisionCircle() {
+        collisionCircle.set(position.x + 9, position.y + 6, 6.5f);
     }
 
     private void updateRotation(float delta) {
@@ -46,16 +64,6 @@ public class Bird {
             rotation = maxCounterRotation;
     }
 
-    private void updatePosition(float delta) {
-        position.add(velocity.cpy().scl(delta));
-    }
-
-    private void updateVelocity(float delta) {
-        velocity.add(acceleration.cpy().scl(delta));
-        if (velocity.y > TERMINAL_VELOCITY)
-            velocity.y = TERMINAL_VELOCITY;
-    }
-
     public void onClick() {
         flapWings();
     }
@@ -77,7 +85,7 @@ public class Bird {
 
     public boolean isFlapping() {
         final int flappingThreshold = 70;
-        return velocity.y < flappingThreshold;
+        return velocity.y <= flappingThreshold;
     }
 
     public float getX() {
@@ -98,5 +106,9 @@ public class Bird {
 
     public int getWidth() {
         return width;
+    }
+
+    public Circle getCollisionCircle() {
+        return collisionCircle;
     }
 }
