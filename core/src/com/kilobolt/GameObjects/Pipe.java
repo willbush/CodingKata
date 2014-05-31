@@ -34,22 +34,24 @@ public class Pipe extends Scrollable {
     }
 
     private void updateBarCollisionBox() {
-        barUp.set(position.x, position.y, width, height);
-        barDown.set(position.x, position.y + height + VERTICAL_PIPE_GAP, width,
-                myGroundY - (position.y + height + VERTICAL_PIPE_GAP));
+        barUp.set(getX(), getY(), getWidth(), getHeight());
+        barDown.set(getX(), getY() + getHeight() + VERTICAL_PIPE_GAP,
+                getWidth(), myGroundY
+                        - (getY() + getHeight() + VERTICAL_PIPE_GAP));
     }
 
     private void updateSkullCollisionBox() {
-        skullUp.set(position.x - (SKULL_WIDTH - width) / 2, position.y + height
+        skullUp.set(getX() - (SKULL_WIDTH - getWidth()) / 2, getY()
+                + getHeight()
                 - SKULL_HEIGHT, SKULL_WIDTH, SKULL_HEIGHT);
-        skullDown.set(position.x - (SKULL_WIDTH - width) / 2, barDown.y,
+        skullDown.set(getX() - (SKULL_WIDTH - getWidth()) / 2, barDown.y,
                 SKULL_WIDTH, SKULL_HEIGHT);
     }
 
     @Override
     public final void reset(final float newX) {
         super.reset(newX);
-        height = r.nextInt(90) + 15;
+        setHeight(r.nextInt(90) + 15);
     }
 
     public final boolean collides(final Bird bird) {
@@ -60,7 +62,7 @@ public class Pipe extends Scrollable {
     }
 
     private boolean birdHasCrossedAPipe(final Bird bird) {
-        return position.x < bird.getX() + bird.getWidth();
+        return getX() < bird.getX() + bird.getWidth();
     }
 
     private boolean birdHasCollidedWithPipe(final Bird bird) {

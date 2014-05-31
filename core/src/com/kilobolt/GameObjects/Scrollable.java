@@ -3,21 +3,22 @@ package com.kilobolt.GameObjects;
 import com.badlogic.gdx.math.Vector2;
 
 public class Scrollable {
-    protected Vector2 position;
-    protected Vector2 velocity;
-    protected int width;
-    protected int height;
-    protected boolean isScrolledLeft;
+    private final Vector2 position;
+    private final Vector2 velocity;
+    private final int myWidth;
+    private int myHeight;
+    private boolean isScrolledLeft;
 
-    public Scrollable(float x, float y, int width, int height, float scrollSpeed) {
+    public Scrollable(final float x, final float y, final int width,
+            final int height, final float scrollSpeed) {
         position = new Vector2(x, y);
         velocity = new Vector2(scrollSpeed, 0);
-        this.width = width;
-        this.height = height;
+        myWidth = width;
+        myHeight = height;
         isScrolledLeft = false;
     }
 
-    public void update(float delta) {
+    public void update(final float delta) {
         position.add(velocity.cpy().scl(delta));
         if (!objectIsVisible()) {
             isScrolledLeft = true;
@@ -25,39 +26,43 @@ public class Scrollable {
     }
 
     private boolean objectIsVisible() {
-        return position.x + width >= 0;
+        return position.x + myWidth >= 0;
     }
 
-    public void reset(float newX) {
+    protected void reset(final float newX) {
         position.x = newX;
         isScrolledLeft = false;
     }
 
-    public void stop() {
+    public final void stop() {
         velocity.x = 0;
     }
 
-    public boolean isScrolledLeft() {
+    public final boolean isScrolledLeft() {
         return isScrolledLeft;
     }
 
-    public float getTailX() {
-        return position.x + width;
+    public final float getTailX() {
+        return position.x + myWidth;
     }
 
-    public float getX() {
+    public final float getX() {
         return position.x;
     }
 
-    public float getY() {
+    public final float getY() {
         return position.y;
     }
 
-    public int getWidth() {
-        return width;
+    public final int getWidth() {
+        return myWidth;
     }
 
-    public int getHeight() {
-        return height;
+    public final int getHeight() {
+        return myHeight;
+    }
+
+    public final void setHeight(final int height) {
+        myHeight = height;
     }
 }
