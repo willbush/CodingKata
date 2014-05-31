@@ -1,5 +1,7 @@
 package com.kilobolt.GameWorld;
 
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.kilobolt.GameObjects.Bird;
 import com.kilobolt.GameObjects.ScrollHandler;
 import com.kilobolt.ZBHelpers.AssetLoader;
@@ -7,29 +9,42 @@ import com.kilobolt.ZBHelpers.AssetLoader;
 public class GameWorld {
     private final Bird bird;
     private final ScrollHandler scroller;
-    private boolean isAlive = true;
+    private Rectangle ground;
 
-    public GameWorld(int midPointY) {
+    public GameWorld(final int midPointY) {
         bird = new Bird(33, midPointY - 5, 17, 12);
         final int distanceBelowMidPoint = 66 + midPointY;
         scroller = new ScrollHandler(distanceBelowMidPoint);
+        ground = new Rectangle(0, midPointY + 66, 136, 11);
     }
 
-    public void update(float delta) {
+    public final void update(final float delta) {
         bird.update(delta);
         scroller.update(delta);
-        if (isAlive && scroller.collides(bird)) {
+        checkObjectCollision();
+        checkGroundCollision();
+    }
+
+    private void checkObjectCollision() {
+        if (scroller.collides(bird)) {
             scroller.stop();
-            AssetLoader.dead.play();
-            isAlive = false;
+            AssetLoader.getDead().play();
         }
     }
 
-    public Bird getBird() {
+    private void checkGroundCollision() {
+        if (Intersector.overlaps(bird.getCollisionCircle(), ground)) {
+            scroller.stop();
+            bird.die();
+            bird.decelerate();
+        }
+    }
+
+    public final Bird getBird() {
         return bird;
     }
 
-    public ScrollHandler getScroller() {
+    public final ScrollHandler getScroller() {
         return scroller;
     }
 }

@@ -19,8 +19,9 @@ public class Scrollable {
 
     public void update(float delta) {
         position.add(velocity.cpy().scl(delta));
-        if (!objectIsVisible())
+        if (!objectIsVisible()) {
             isScrolledLeft = true;
+        }
     }
 
     private boolean objectIsVisible() {

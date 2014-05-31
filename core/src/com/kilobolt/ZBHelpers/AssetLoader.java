@@ -8,15 +8,19 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class AssetLoader {
-    public static Texture texture;
-    public static TextureRegion bg, grass;
-    public static Animation birdAnimation;
-    public static TextureRegion bird, birdDown, birdUp;
-    public static TextureRegion skull, skullDown, skullUp, bar;
-    public static Sound dead, flap, coin;
-    public static BitmapFont font, shadow;
+public final class AssetLoader {
+    private static Texture texture;
+    private static TextureRegion bg, grass;
+    private static Animation birdAnimation;
+    private static TextureRegion bird, birdDown, birdUp;
+    private static TextureRegion skull, skullDown, skullUp, bar;
+    private static Sound dead, flap, coin;
+    private static BitmapFont font, shadow;
     private static final int GAME_WIDTH = 136;
+
+    private AssetLoader() {
+        throw new AssertionError("Instantiating utility class...");
+    }
 
     public static void load() {
         loadTextures();
@@ -93,5 +97,57 @@ public class AssetLoader {
         coin.dispose();
         font.dispose();
         shadow.dispose();
+    }
+
+    public static TextureRegion getBg() {
+        return bg;
+    }
+
+    public static TextureRegion getGrass() {
+        return grass;
+    }
+
+    public static Animation getBirdAnimation() {
+        return birdAnimation;
+    }
+
+    public static TextureRegion getBird() {
+        return bird;
+    }
+
+    public static TextureRegion getBirdDown() {
+        return birdDown;
+    }
+
+    public static TextureRegion getBirdUp() {
+        return birdUp;
+    }
+
+    public static TextureRegion getSkull() {
+        return skull;
+    }
+
+    public static TextureRegion getSkullDown() {
+        return skullDown;
+    }
+
+    public static TextureRegion getSkullUp() {
+        return skullUp;
+    }
+
+    public static TextureRegion getBar() {
+        return bar;
+    }
+
+    public static Sound getDead() {
+        return dead;
+    }
+
+    public static Sound getFlap() {
+        return flap;
+    }
+
+    public static Sound getCoin() {
+        return coin;
     }
 }

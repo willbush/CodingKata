@@ -1,7 +1,5 @@
 package com.kilobolt.GameWorld;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,24 +17,23 @@ public class GameRenderer {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batcher;
     private final GameWorld myWorld;
-    private final int midPointY;
-    private final int gameHeight;
-    // Game Objects
+    private final int myMidPointY;
+    private final int myGameHeight;
     private Bird bird;
     private ScrollHandler scroller;
     private Grass frontGrass, backGrass;
     private Pipe pipe1, pipe2, pipe3;
-    // Game Assets
     private TextureRegion background, grass;
     private Animation birdAnimation;
     private TextureRegion birdMid, birdDown, birdUp;
     private TextureRegion skullUp, skullDown, bar;
     private static final int GAME_WIDTH = 136;
 
-    public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
+    public GameRenderer(final GameWorld world, final int gameHeight,
+            final int midPointY) {
         myWorld = world;
-        this.gameHeight = gameHeight;
-        this.midPointY = midPointY;
+        myGameHeight = gameHeight;
+        myMidPointY = midPointY;
         intializeCam(gameHeight);
         initializeBatcher();
         initializeShapeRenderer();
@@ -44,7 +41,7 @@ public class GameRenderer {
         initializeAssets();
     }
 
-    private void intializeCam(int gameHeight) {
+    private void intializeCam(final int gameHeight) {
         cam = new OrthographicCamera();
         cam.setToOrtho(true, GAME_WIDTH, gameHeight);
     }
@@ -70,25 +67,20 @@ public class GameRenderer {
     }
 
     private void initializeAssets() {
-        background = AssetLoader.bg;
-        grass = AssetLoader.grass;
-        birdAnimation = AssetLoader.birdAnimation;
-        birdMid = AssetLoader.bird;
-        birdDown = AssetLoader.birdDown;
-        birdUp = AssetLoader.birdUp;
-        skullUp = AssetLoader.skullUp;
-        skullDown = AssetLoader.skullDown;
-        bar = AssetLoader.bar;
+        background = AssetLoader.getBg();
+        grass = AssetLoader.getGrass();
+        birdAnimation = AssetLoader.getBirdAnimation();
+        birdMid = AssetLoader.getBird();
+        birdDown = AssetLoader.getBirdDown();
+        birdUp = AssetLoader.getBirdUp();
+        skullUp = AssetLoader.getSkullUp();
+        skullDown = AssetLoader.getSkullDown();
+        bar = AssetLoader.getBar();
     }
 
-    public void render(float runTime) {
+    public final void render(final float runTime) {
         renderShapeObjects();
         renderBatchObjects(runTime);
-    }
-
-    private void preventPotentialScreenFlicker() {
-        Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
-        Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     private void renderShapeObjects() {
@@ -101,20 +93,20 @@ public class GameRenderer {
 
     private void drawBackgroundColor() {
         shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
-        shapeRenderer.rect(0, 0, GAME_WIDTH, midPointY + 66);
+        shapeRenderer.rect(0, 0, GAME_WIDTH, myMidPointY + 66);
     }
 
     private void drawGrassShape() {
         shapeRenderer.setColor(111 / 255.0f, 186 / 255.0f, 45 / 255.0f, 1);
-        shapeRenderer.rect(0, midPointY + 66, 136, 11);
+        shapeRenderer.rect(0, myMidPointY + 66, 136, 11);
     }
 
     private void drawDirtShape() {
         shapeRenderer.setColor(147 / 255.0f, 80 / 255.0f, 27 / 255.0f, 1);
-        shapeRenderer.rect(0, midPointY + 77, 136, 52);
+        shapeRenderer.rect(0, myMidPointY + 77, 136, 52);
     }
 
-    private void renderBatchObjects(float runTime) {
+    private void renderBatchObjects(final float runTime) {
         batcher.begin();
         drawBackground();
         drawGrass();
@@ -126,7 +118,7 @@ public class GameRenderer {
 
     private void drawBackground() {
         batcher.disableBlending();
-        batcher.draw(background, 0, midPointY + 23, GAME_WIDTH, 43);
+        batcher.draw(background, 0, myMidPointY + 23, GAME_WIDTH, 43);
     }
 
     private void drawGrass() {
@@ -142,15 +134,15 @@ public class GameRenderer {
         batcher.draw(bar, pipe1.getX(), pipe1.getY(), pipe1.getWidth(),
                 pipe1.getHeight());
         batcher.draw(bar, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + 45,
-                pipe1.getWidth(), midPointY + 66 - (pipe1.getHeight() + 45));
+                pipe1.getWidth(), myMidPointY + 66 - (pipe1.getHeight() + 45));
         batcher.draw(bar, pipe2.getX(), pipe2.getY(), pipe2.getWidth(),
                 pipe2.getHeight());
         batcher.draw(bar, pipe2.getX(), pipe2.getY() + pipe2.getHeight() + 45,
-                pipe2.getWidth(), midPointY + 66 - (pipe2.getHeight() + 45));
+                pipe2.getWidth(), myMidPointY + 66 - (pipe2.getHeight() + 45));
         batcher.draw(bar, pipe3.getX(), pipe3.getY(), pipe3.getWidth(),
                 pipe3.getHeight());
         batcher.draw(bar, pipe3.getX(), pipe3.getY() + pipe3.getHeight() + 45,
-                pipe3.getWidth(), midPointY + 66 - (pipe3.getHeight() + 45));
+                pipe3.getWidth(), myMidPointY + 66 - (pipe3.getHeight() + 45));
     }
 
     private void drawSkulls() {
@@ -169,16 +161,17 @@ public class GameRenderer {
                 pipe3.getY() + pipe3.getHeight() + 45, 24, 14);
     }
 
-    private void determineBirdStateAndDraw(float runTime) {
+    private void determineBirdStateAndDraw(final float runTime) {
         TextureRegion birdState;
-        if (bird.isFlapping())
+        if (bird.isFlapping()) {
             birdState = birdAnimation.getKeyFrame(runTime);
-        else
+        } else {
             birdState = birdMid;
+        }
         drawBird(birdState);
     }
 
-    private void drawBird(TextureRegion birdState) {
+    private void drawBird(final TextureRegion birdState) {
         batcher.enableBlending();
         batcher.draw(birdState, bird.getX(), bird.getY(),
                 bird.getWidth() / 2.0f, bird.getHeight() / 2.0f,

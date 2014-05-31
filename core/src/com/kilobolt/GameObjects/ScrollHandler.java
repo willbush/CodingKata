@@ -11,7 +11,7 @@ public class ScrollHandler {
     public static final int SCROLL_SPEED = -59;
     public static final int PIPE_GAP = 49;
 
-    public ScrollHandler(float yPos) {
+    public ScrollHandler(final float yPos) {
         frontGrass = new Grass(0, yPos, 143, 11, SCROLL_SPEED);
         backGrass =
                 new Grass(frontGrass.getTailX(), yPos, 143, 11, SCROLL_SPEED);
@@ -24,13 +24,13 @@ public class ScrollHandler {
                         yPos);
     }
 
-    public void update(float delta) {
+    public final void update(final float delta) {
         updateObjects(delta);
         resetPipesIfScrollableLeft();
         resetGrassIfScrollableLeft();
     }
 
-    private void updateObjects(float delta) {
+    private void updateObjects(final float delta) {
         frontGrass.update(delta);
         backGrass.update(delta);
         pipe1.update(delta);
@@ -39,22 +39,24 @@ public class ScrollHandler {
     }
 
     private void resetPipesIfScrollableLeft() {
-        if (pipe1.isScrolledLeft())
+        if (pipe1.isScrolledLeft()) {
             pipe1.reset(pipe3.getTailX() + PIPE_GAP);
-        else if (pipe2.isScrolledLeft())
+        } else if (pipe2.isScrolledLeft()) {
             pipe2.reset(pipe1.getTailX() + PIPE_GAP);
-        else if (pipe3.isScrolledLeft())
+        } else if (pipe3.isScrolledLeft()) {
             pipe3.reset(pipe2.getTailX() + PIPE_GAP);
+        }
     }
 
     private void resetGrassIfScrollableLeft() {
-        if (frontGrass.isScrolledLeft())
+        if (frontGrass.isScrolledLeft()) {
             frontGrass.reset(backGrass.getTailX());
-        else if (backGrass.isScrolledLeft())
+        } else if (backGrass.isScrolledLeft()) {
             backGrass.reset(frontGrass.getTailX());
+        }
     }
 
-    public void stop() {
+    public final void stop() {
         frontGrass.stop();
         backGrass.stop();
         pipe1.stop();
@@ -62,28 +64,28 @@ public class ScrollHandler {
         pipe3.stop();
     }
 
-    public boolean collides(Bird bird) {
+    public final boolean collides(final Bird bird) {
         return (pipe1.collides(bird) || pipe2.collides(bird) || pipe3
                 .collides(bird));
     }
 
-    public Grass getFrontGrass() {
+    public final Grass getFrontGrass() {
         return frontGrass;
     }
 
-    public Grass getBackGrass() {
+    public final Grass getBackGrass() {
         return backGrass;
     }
 
-    public Pipe getPipe1() {
+    public final Pipe getPipe1() {
         return pipe1;
     }
 
-    public Pipe getPipe2() {
+    public final Pipe getPipe2() {
         return pipe2;
     }
 
-    public Pipe getPipe3() {
+    public final Pipe getPipe3() {
         return pipe3;
     }
 }

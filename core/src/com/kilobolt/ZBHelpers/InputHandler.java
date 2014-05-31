@@ -6,54 +6,57 @@ import com.kilobolt.GameObjects.Bird;
 public class InputHandler implements InputProcessor {
     private final Bird myBird;
 
-    public InputHandler(Bird bird) {
+    public InputHandler(final Bird bird) {
         myBird = bird;
     }
 
     @Override
-    public boolean keyDown(int keycode) {
+    public final boolean keyDown(final int keycode) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean keyUp(int keycode) {
+    public final boolean keyUp(final int keycode) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean keyTyped(char character) {
+    public final boolean keyTyped(final char character) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    public final boolean touchDown(final int screenX, final int screenY,
+            final int pointer, final int button) {
         myBird.onClick();
         return true;
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    public final boolean touchUp(final int screenX, final int screenY,
+            final int pointer, final int button) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
+    public final boolean touchDragged(final int screenX, final int screenY,
+            final int pointer) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean mouseMoved(int screenX, int screenY) {
+    public final boolean mouseMoved(final int screenX, final int screenY) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean scrolled(int amount) {
+    public final boolean scrolled(final int amount) {
         // TODO Auto-generated method stub
         return false;
     }
