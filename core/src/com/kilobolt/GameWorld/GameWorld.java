@@ -10,11 +10,12 @@ public class GameWorld {
     private final Bird bird;
     private final ScrollHandler scroller;
     private Rectangle ground;
+    private int score = 0;
 
     public GameWorld(final int midPointY) {
         bird = new Bird(33, midPointY - 5, 17, 12);
         final int distanceBelowMidPoint = 66 + midPointY;
-        scroller = new ScrollHandler(distanceBelowMidPoint);
+        scroller = new ScrollHandler(this, distanceBelowMidPoint);
         ground = new Rectangle(0, midPointY + 66, 136, 11);
     }
 
@@ -26,8 +27,9 @@ public class GameWorld {
     }
 
     private void checkObjectCollision() {
-        if (scroller.collides(bird)) {
+        if (scroller.collides(bird) && bird.isAlive()) {
             scroller.stop();
+            bird.die();
             AssetLoader.getDead().play();
         }
     }
@@ -46,5 +48,13 @@ public class GameWorld {
 
     public final ScrollHandler getScroller() {
         return scroller;
+    }
+
+    public final int getScore() {
+        return score;
+    }
+
+    public final void addScore(final int increment) {
+        score += increment;
     }
 }

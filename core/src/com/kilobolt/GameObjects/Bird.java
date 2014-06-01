@@ -2,6 +2,7 @@ package com.kilobolt.GameObjects;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.kilobolt.ZBHelpers.AssetLoader;
 
 public class Bird {
     private final Vector2 position;
@@ -87,8 +88,11 @@ public class Bird {
     }
 
     private void flapWings() {
-        final int flappingVelocity = -140;
-        velocity.y = flappingVelocity;
+        if (isAlive) {
+            final int flappingVelocity = -140;
+            velocity.y = flappingVelocity;
+            AssetLoader.getFlap().play();
+        }
     }
 
     public final boolean isFalling() {

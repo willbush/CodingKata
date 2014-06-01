@@ -5,23 +5,27 @@
  */
 package com.kilobolt.GameObjects;
 
+import com.kilobolt.GameWorld.GameWorld;
+
 public class ScrollHandler {
+    private final GameWorld myGameWorld;
     private final Grass frontGrass, backGrass;
     private final Pipe pipe1, pipe2, pipe3;
-    public static final int SCROLL_SPEED = -59;
-    public static final int PIPE_GAP = 49;
+    private static final int SCROLL_SPEED = -59;
+    private static final int PIPE_GAP = 49;
+    private static final int PIPE_WIDTH = 22;
+    private static final int PIPE_HEIGHT = 60;
 
-    public ScrollHandler(final float yPos) {
+    public ScrollHandler(final GameWorld gameWorld, final float yPos) {
+        myGameWorld = gameWorld;
         frontGrass = new Grass(0, yPos, 143, 11, SCROLL_SPEED);
-        backGrass =
-                new Grass(frontGrass.getTailX(), yPos, 143, 11, SCROLL_SPEED);
-        pipe1 = new Pipe(210, 0, 22, 60, SCROLL_SPEED, yPos);
-        pipe2 =
-                new Pipe(pipe1.getTailX() + PIPE_GAP, 0, 22, 70, SCROLL_SPEED,
-                        yPos);
-        pipe3 =
-                new Pipe(pipe2.getTailX() + PIPE_GAP, 0, 22, 60, SCROLL_SPEED,
-                        yPos);
+        backGrass = new Grass(frontGrass.getTailX(), yPos, 143, 11,
+                SCROLL_SPEED);
+        pipe1 = new Pipe(210, 0, PIPE_WIDTH, PIPE_HEIGHT, SCROLL_SPEED, yPos);
+        pipe2 = new Pipe(pipe1.getTailX() + PIPE_GAP, 0, PIPE_WIDTH,
+                PIPE_HEIGHT, SCROLL_SPEED, yPos);
+        pipe3 = new Pipe(pipe2.getTailX() + PIPE_GAP, 0, PIPE_WIDTH,
+                PIPE_HEIGHT, SCROLL_SPEED, yPos);
     }
 
     public final void update(final float delta) {
