@@ -7,7 +7,7 @@ public class Scrollable {
     private final Vector2 velocity;
     private final int myWidth;
     private int myHeight;
-    private boolean isScrolledLeft;
+    private boolean objectIsScrollableRight;
 
     public Scrollable(final float x, final float y, final int width,
             final int height, final float scrollSpeed) {
@@ -15,31 +15,31 @@ public class Scrollable {
         velocity = new Vector2(scrollSpeed, 0);
         myWidth = width;
         myHeight = height;
-        isScrolledLeft = false;
+        objectIsScrollableRight = false;
     }
 
     public void update(final float delta) {
         position.add(velocity.cpy().scl(delta));
-        if (!objectIsVisible()) {
-            isScrolledLeft = true;
+        if (objectHasScrolledOffScreen()) {
+            objectIsScrollableRight = true;
         }
     }
 
-    private boolean objectIsVisible() {
-        return position.x + myWidth >= 0;
+    private boolean objectHasScrolledOffScreen() {
+        return position.x + myWidth <= 0;
     }
 
     protected void reset(final float newX) {
         position.x = newX;
-        isScrolledLeft = false;
+        objectIsScrollableRight = false;
     }
 
     public final void stop() {
         velocity.x = 0;
     }
 
-    public final boolean isScrolledLeft() {
-        return isScrolledLeft;
+    public final boolean objectIsScrollableRight() {
+        return objectIsScrollableRight;
     }
 
     public final float getTailX() {

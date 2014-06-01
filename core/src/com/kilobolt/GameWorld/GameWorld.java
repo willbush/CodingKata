@@ -22,12 +22,13 @@ public class GameWorld {
     public final void update(final float delta) {
         bird.update(delta);
         scroller.update(delta);
+        scroller.handleScore(bird);
         checkObjectCollision();
         checkGroundCollision();
     }
 
     private void checkObjectCollision() {
-        if (scroller.collides(bird) && bird.isAlive()) {
+        if (scroller.hasCollided(bird) && bird.isAlive()) {
             scroller.stop();
             bird.die();
             AssetLoader.getDead().play();

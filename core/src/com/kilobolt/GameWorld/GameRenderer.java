@@ -113,7 +113,16 @@ public class GameRenderer {
         drawPipes();
         drawSkulls();
         determineBirdStateAndDraw(runTime);
+        drawTextWithShadow();
         batcher.end();
+    }
+
+    private void drawTextWithShadow() {
+        String score = myWorld.getScore() + "";
+        AssetLoader.getShadow().draw(batcher, "" + myWorld.getScore(),
+                (136 / 2) - (3 * score.length()), 12);
+        AssetLoader.getFont().draw(batcher, "" + myWorld.getScore(),
+                (136 / 2) - (3 * score.length() - 1), 11);
     }
 
     private void drawBackground() {
@@ -122,7 +131,6 @@ public class GameRenderer {
     }
 
     private void drawGrass() {
-        // Draw the grass
         batcher.draw(grass, frontGrass.getX(), frontGrass.getY(),
                 frontGrass.getWidth(), frontGrass.getHeight());
         batcher.draw(grass, backGrass.getX(), backGrass.getY(),
@@ -130,7 +138,6 @@ public class GameRenderer {
     }
 
     private void drawPipes() {
-        // Temporary code! Sorry about the mess :)
         batcher.draw(bar, pipe1.getX(), pipe1.getY(), pipe1.getWidth(),
                 pipe1.getHeight());
         batcher.draw(bar, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + 45,
@@ -146,7 +153,6 @@ public class GameRenderer {
     }
 
     private void drawSkulls() {
-        // Temporary code! Sorry about the mess :)
         batcher.draw(skullUp, pipe1.getX() - 1,
                 pipe1.getY() + pipe1.getHeight() - 14, 24, 14);
         batcher.draw(skullDown, pipe1.getX() - 1,

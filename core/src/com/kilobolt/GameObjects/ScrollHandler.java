@@ -6,11 +6,12 @@
 package com.kilobolt.GameObjects;
 
 import com.kilobolt.GameWorld.GameWorld;
+import com.kilobolt.ZBHelpers.AssetLoader;
 
 public class ScrollHandler {
     private final GameWorld myGameWorld;
     private final Grass frontGrass, backGrass;
-    private final Pipe pipe1, pipe2, pipe3;
+    protected final Pipe pipe1, pipe2, pipe3;
     private static final int SCROLL_SPEED = -59;
     private static final int PIPE_GAP = 49;
     private static final int PIPE_WIDTH = 22;
@@ -30,8 +31,30 @@ public class ScrollHandler {
 
     public final void update(final float delta) {
         updateObjects(delta);
-        resetPipesIfScrollableLeft();
-        resetGrassIfScrollableLeft();
+        resetScrollablePipes();
+        resetScrollableGrass();
+    }
+
+    public final void handleScore(final Bird bird) {
+        if (hasScored(pipe1, bird)) {
+            updateScore(pipe1);
+        } else if (hasScored(pipe2, bird)) {
+            updateScore(pipe2);
+        } else if (hasScored(pipe3, bird)) {
+            updateScore(pipe3);
+        }
+    }
+
+    private boolean hasScored(final Pipe pipe, final Bird bird) {
+        return !pipe.isScored()
+                && pipe.getX() + (pipe.getWidth() / 2) < bird.getX()
+                        + bird.getWidth();
+    }
+
+    private void updateScore(final Pipe pipe) {
+        addScore(1);
+        pipe.setScored(true);
+        AssetLoader.getCoin().play();
     }
 
     private void updateObjects(final float delta) {
@@ -42,20 +65,20 @@ public class ScrollHandler {
         pipe3.update(delta);
     }
 
-    private void resetPipesIfScrollableLeft() {
-        if (pipe1.isScrolledLeft()) {
+    private void resetScrollablePipes() {
+        if (pipe1.objectIsScrollableRight()) {
             pipe1.reset(pipe3.getTailX() + PIPE_GAP);
-        } else if (pipe2.isScrolledLeft()) {
+        } else if (pipe2.objectIsScrollableRight()) {
             pipe2.reset(pipe1.getTailX() + PIPE_GAP);
-        } else if (pipe3.isScrolledLeft()) {
+        } else if (pipe3.objectIsScrollableRight()) {
             pipe3.reset(pipe2.getTailX() + PIPE_GAP);
         }
     }
 
-    private void resetGrassIfScrollableLeft() {
-        if (frontGrass.isScrolledLeft()) {
+    private void resetScrollableGrass() {
+        if (frontGrass.objectIsScrollableRight()) {
             frontGrass.reset(backGrass.getTailX());
-        } else if (backGrass.isScrolledLeft()) {
+        } else if (backGrass.objectIsScrollableRight()) {
             backGrass.reset(frontGrass.getTailX());
         }
     }
@@ -68,9 +91,9 @@ public class ScrollHandler {
         pipe3.stop();
     }
 
-    public final boolean collides(final Bird bird) {
-        return (pipe1.collides(bird) || pipe2.collides(bird) || pipe3
-                .collides(bird));
+    public final boolean hasCollided(final Bird bird) {
+        return (pipe1.hasCollided(bird) || pipe2.hasCollided(bird) || pipe3
+                .hasCollided(bird));
     }
 
     public final Grass getFrontGrass() {
@@ -91,5 +114,9 @@ public class ScrollHandler {
 
     public final Pipe getPipe3() {
         return pipe3;
+    }
+
+    private void addScore(final int increment) {
+        myGameWorld.addScore(increment);
     }
 }

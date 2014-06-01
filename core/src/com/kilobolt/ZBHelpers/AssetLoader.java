@@ -150,4 +150,12 @@ public final class AssetLoader {
     public static Sound getCoin() {
         return coin;
     }
+
+    public static BitmapFont getFont() {
+        return font;
+    }
+
+    public static BitmapFont getShadow() {
+        return shadow;
+    }
 }
