@@ -17,7 +17,7 @@ public class GameScreen implements Screen {
         final int midPointY = calculateMidPointY();
         world = new GameWorld(midPointY);
         renderer = new GameRenderer(world, (int) myGameHeight, midPointY);
-        Gdx.input.setInputProcessor(new InputHandler(world.getBird()));
+        Gdx.input.setInputProcessor(new InputHandler(world));
     }
 
     private int calculateMidPointY() {

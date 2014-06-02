@@ -3,8 +3,8 @@ package com.kilobolt.GameObjects;
 import com.badlogic.gdx.math.Vector2;
 
 public class Scrollable {
-    private final Vector2 position;
-    private final Vector2 velocity;
+    private Vector2 position;
+    private Vector2 velocity;
     private final int myWidth;
     private int myHeight;
     private boolean objectIsScrollableRight;
@@ -60,6 +60,14 @@ public class Scrollable {
 
     public final int getHeight() {
         return myHeight;
+    }
+
+    protected final void setPositionX(final float x) {
+        this.position.x = x;
+    }
+
+    protected final void setVelocityX(final float x) {
+        this.velocity.x = x;
     }
 
     public final void setHeight(final int height) {

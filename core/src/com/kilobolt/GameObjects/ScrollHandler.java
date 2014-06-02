@@ -11,18 +11,20 @@ import com.kilobolt.ZBHelpers.AssetLoader;
 public class ScrollHandler {
     private final GameWorld myGameWorld;
     private final Grass frontGrass, backGrass;
-    protected final Pipe pipe1, pipe2, pipe3;
+    private final Pipe pipe1, pipe2, pipe3;
     private static final int SCROLL_SPEED = -59;
     private static final int PIPE_GAP = 49;
     private static final int PIPE_WIDTH = 22;
     private static final int PIPE_HEIGHT = 60;
+    private static final int PIPE1_STARTING_POS = 210;
 
     public ScrollHandler(final GameWorld gameWorld, final float yPos) {
         myGameWorld = gameWorld;
         frontGrass = new Grass(0, yPos, 143, 11, SCROLL_SPEED);
         backGrass = new Grass(frontGrass.getTailX(), yPos, 143, 11,
                 SCROLL_SPEED);
-        pipe1 = new Pipe(210, 0, PIPE_WIDTH, PIPE_HEIGHT, SCROLL_SPEED, yPos);
+        pipe1 = new Pipe(PIPE1_STARTING_POS, 0, PIPE_WIDTH,
+                PIPE_HEIGHT, SCROLL_SPEED, yPos);
         pipe2 = new Pipe(pipe1.getTailX() + PIPE_GAP, 0, PIPE_WIDTH,
                 PIPE_HEIGHT, SCROLL_SPEED, yPos);
         pipe3 = new Pipe(pipe2.getTailX() + PIPE_GAP, 0, PIPE_WIDTH,
@@ -118,5 +120,13 @@ public class ScrollHandler {
 
     private void addScore(final int increment) {
         myGameWorld.addScore(increment);
+    }
+
+    public final void onRestart() {
+        frontGrass.onRestart(0, SCROLL_SPEED);
+        backGrass.onRestart(frontGrass.getTailX(), SCROLL_SPEED);
+        pipe1.onRestart(PIPE1_STARTING_POS, SCROLL_SPEED);
+        pipe2.onRestart(pipe1.getTailX() + PIPE_GAP, SCROLL_SPEED);
+        pipe3.onRestart(pipe2.getTailX() + PIPE_GAP, SCROLL_SPEED);
     }
 }

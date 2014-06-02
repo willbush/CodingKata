@@ -75,6 +75,11 @@ public class Pipe extends Scrollable {
                 || Intersector.overlaps(c, skullDown));
     }
 
+    public final void onRestart(final float x, final float scrollSpeed) {
+        setVelocityX(scrollSpeed);
+        reset(x);
+    }
+
     public final Rectangle getSkullUp() {
         return skullUp;
     }

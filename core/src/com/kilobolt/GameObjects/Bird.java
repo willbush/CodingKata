@@ -14,6 +14,7 @@ public class Bird {
     private final int myWidth;
     private final Circle collisionCircle;
     private static final int TERMINAL_VELOCITY = 200;
+    private static final int GRAVITY = 450;
 
     public Bird(final float x, final float y, final int width,
             final int height) {
@@ -21,7 +22,7 @@ public class Bird {
         myHeight = height;
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
-        acceleration = new Vector2(0, 240);
+        acceleration = new Vector2(0, GRAVITY);
         collisionCircle = new Circle();
     }
 
@@ -30,6 +31,7 @@ public class Bird {
         updatePosition(delta);
         updateCollisionCircle();
         updateRotation(delta);
+        checkCeilingCollision();
     }
 
     private void updateVelocity(final float delta) {
@@ -72,6 +74,14 @@ public class Bird {
         }
     }
 
+    private void checkCeilingCollision() {
+        final int ceiling = -13;
+        if (position.y < ceiling) {
+            position.y = ceiling;
+            velocity.y = 0;
+        }
+    }
+
     public final void die() {
         isAlive = false;
         velocity.y = 0;
@@ -79,6 +89,16 @@ public class Bird {
 
     public final void decelerate() {
         acceleration.y = 0;
+    }
+
+    public final void onRestart(final int y) {
+        rotation = 0;
+        position.y = y;
+        velocity.x = 0;
+        velocity.y = 0;
+        acceleration.x = 0;
+        acceleration.y = GRAVITY;
+        isAlive = true;
     }
 
     public final void onClick() {
