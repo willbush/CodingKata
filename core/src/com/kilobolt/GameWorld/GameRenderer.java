@@ -113,16 +113,51 @@ public class GameRenderer {
         drawPipes();
         drawSkulls();
         determineBirdStateAndDraw(runTime);
-        drawTextWithShadow();
+        drawText();
         batcher.end();
     }
 
-    private void drawTextWithShadow() {
-        String score = myWorld.getScore() + "";
-        AssetLoader.getShadow().draw(batcher, "" + myWorld.getScore(),
-                (136 / 2) - (3 * score.length()), 12);
-        AssetLoader.getFont().draw(batcher, "" + myWorld.getScore(),
-                (136 / 2) - (3 * score.length() - 1), 11);
+    private void drawText() {
+        // temporary code, will fix later.
+        if (myWorld.isReady()) {
+            AssetLoader.getShadow().draw(batcher, "Touch me", (136 / 2) - (42),
+                    76);
+            AssetLoader.getFont()
+                    .draw(batcher, "Touch me", (136 / 2) - (42 - 1), 75);
+        } else {
+            if (myWorld.isGameOver() || myWorld.isHighScore()) {
+                if (myWorld.isGameOver()) {
+                    AssetLoader.getShadow().draw(batcher, "Game Over", 25, 56);
+                    AssetLoader.getFont().draw(batcher, "Game Over", 24, 55);
+                    AssetLoader.getShadow().draw(batcher, "High Score:", 23,
+                            106);
+                    AssetLoader.getFont().draw(batcher, "High Score:", 22, 105);
+                    String highScore = AssetLoader.getHighScore() + "";
+                    AssetLoader.getShadow().draw(batcher, highScore, (136 / 2)
+                            - (3 * highScore.length()), 128);
+                    AssetLoader.getFont().draw(batcher, highScore, (136 / 2)
+                            - (3 * highScore.length() - 1), 127);
+                } else {
+                    AssetLoader.getShadow()
+                            .draw(batcher, "High Score!", 19, 56);
+                    AssetLoader.getFont().draw(batcher, "High Score!", 18, 55);
+                }
+                AssetLoader.getShadow().draw(batcher, "Try again?", 23, 76);
+                AssetLoader.getFont().draw(batcher, "Try again?", 24, 75);
+                String score = myWorld.getScore() + "";
+                AssetLoader.getShadow().draw(batcher, score,
+                        (136 / 2) - (3 * score.length()), 12);
+                AssetLoader.getFont().draw(batcher, score,
+                        (136 / 2) - (3 * score.length() - 1), 11);
+            }
+            String score = myWorld.getScore() + "";
+            AssetLoader.getShadow().draw(batcher, "" + myWorld.getScore(),
+                    (136 / 2)
+                            - (3 * score.length()), 12);
+            AssetLoader.getFont().draw(batcher, "" + myWorld.getScore(),
+                    (136 / 2)
+                            - (3 * score.length() - 1), 11);
+        }
     }
 
     private void drawBackground() {

@@ -9,14 +9,14 @@ import com.kilobolt.ZBHelpers.AssetLoader;
 public class GameWorld {
     private final Bird bird;
     private final ScrollHandler scroller;
-    private Rectangle ground;
-    private int myMidPointY;
+    private final Rectangle ground;
+    private final int myMidPointY;
     private final int birdStartingY;
     private int score = 0;
     private GameState currentState;
 
     public enum GameState {
-        READY, RUNNING, GAMEOVER
+        READY, RUNNING, GAMEOVER, HIGHSCORE
     }
 
     public GameWorld(final int midPointY) {
@@ -34,10 +34,10 @@ public class GameWorld {
     }
 
     public final void update(final float delta) {
-        if (currentState == GameState.RUNNING) {
-            updateRunning(delta);
-        } else if (currentState == GameState.RUNNING) {
+        if (currentState == GameState.READY) {
             updateReady(delta);
+        } else if (currentState == GameState.RUNNING) {
+            updateRunning(delta);
         }
     }
 
@@ -63,6 +63,14 @@ public class GameWorld {
             bird.die();
             bird.decelerate();
             currentState = GameState.GAMEOVER;
+            checkScore();
+        }
+    }
+
+    private void checkScore() {
+        if (score > AssetLoader.getHighScore()) {
+            AssetLoader.setHighScore(score);
+            currentState = GameState.HIGHSCORE;
         }
     }
 
@@ -86,8 +94,16 @@ public class GameWorld {
         return currentState == GameState.READY;
     }
 
+    public final boolean isRunning() {
+        return currentState == GameState.RUNNING;
+    }
+
     public final boolean isGameOver() {
         return currentState == GameState.GAMEOVER;
+    }
+
+    public final boolean isHighScore() {
+        return currentState == GameState.HIGHSCORE;
     }
 
     public final Bird getBird() {

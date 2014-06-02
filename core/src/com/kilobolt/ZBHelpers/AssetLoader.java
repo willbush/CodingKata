@@ -1,6 +1,7 @@
 package com.kilobolt.ZBHelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -16,6 +17,7 @@ public final class AssetLoader {
     private static TextureRegion skull, skullDown, skullUp, bar;
     private static Sound dead, flap, coin;
     private static BitmapFont font, shadow;
+    private static Preferences prefs;
     private static final int GAME_WIDTH = 136;
 
     private AssetLoader() {
@@ -32,6 +34,16 @@ public final class AssetLoader {
         loadBar();
         loadAudio();
         loadFonts();
+        loadPreferencesFile();
+    }
+
+    private static void loadPreferencesFile() {
+        // Create (or retrieve existing) preferences file
+        prefs = Gdx.app.getPreferences("ZombieBird");
+        // Provide default high score of 0
+        if (!prefs.contains("highScore")) {
+            prefs.putInteger("highScore", 0);
+        }
     }
 
     private static void loadTextures() {
@@ -157,5 +169,14 @@ public final class AssetLoader {
 
     public static BitmapFont getShadow() {
         return shadow;
+    }
+
+    public static int getHighScore() {
+        return prefs.getInteger("highScore");
+    }
+
+    public static void setHighScore(final int val) {
+        prefs.putInteger("highScore", val);
+        prefs.flush();
     }
 }

@@ -6,10 +6,10 @@ import com.kilobolt.GameWorld.GameWorld;
 
 public class InputHandler implements InputProcessor {
     private final Bird myBird;
-    private final GameWorld myGameWorld;
+    private final GameWorld myWorld;
 
     public InputHandler(final GameWorld gameWorld) {
-        myGameWorld = gameWorld;
+        myWorld = gameWorld;
         myBird = gameWorld.getBird();
     }
 
@@ -34,12 +34,12 @@ public class InputHandler implements InputProcessor {
     @Override
     public final boolean touchDown(final int screenX, final int screenY,
             final int pointer, final int button) {
-        if (myGameWorld.isReady()) {
-            myGameWorld.start();
+        if (myWorld.isReady()) {
+            myWorld.start();
         }
         myBird.onClick();
-        if (myGameWorld.isGameOver()) {
-            myGameWorld.restart();
+        if (myWorld.isGameOver() || myWorld.isHighScore()) {
+            myWorld.restart();
         }
         return true;
     }
