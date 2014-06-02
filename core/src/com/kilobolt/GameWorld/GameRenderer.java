@@ -1,5 +1,7 @@
 package com.kilobolt.GameWorld;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -79,8 +81,15 @@ public class GameRenderer {
     }
 
     public final void render(final float runTime) {
+        clearScreenAndBuffer();
         renderShapeObjects();
         renderBatchObjects(runTime);
+    }
+
+    private void clearScreenAndBuffer() {
+        Gdx.graphics.getGL20().glClearColor(1, 1, 1, 1);
+        Gdx.graphics.getGL20().glClear(
+                GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
     }
 
     private void renderShapeObjects() {
