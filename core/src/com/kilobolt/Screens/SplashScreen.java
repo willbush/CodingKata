@@ -19,28 +19,33 @@ public final class SplashScreen implements Screen {
 
     private TweenManager manager;
     private SpriteBatch batcher;
-    private Sprite sprite;
+    private Sprite logoSprite;
     private final ZBGame game;
 
-    public SplashScreen(final ZBGame game) {
+    public SplashScreen(ZBGame game) {
         this.game = game;
     }
 
     @Override
     public void show() {
-        sprite = new Sprite(AssetLoader.getLogo());
-        sprite.setColor(1, 1, 1, 0);
+        batcher = new SpriteBatch();
+        setupLogoSprite();
+        setupTween();
+    }
 
+    private void setupLogoSprite() {
+        logoSprite = new Sprite(AssetLoader.getLogo());
+        logoSprite.setColor(1, 1, 1, 0);
+        
         final float width = Gdx.graphics.getWidth();
         final float height = Gdx.graphics.getHeight();
         final float desiredWidth = width * .7f;
-        final float scale = desiredWidth / sprite.getWidth();
+        final float scale = desiredWidth / logoSprite.getWidth();
 
-        sprite.setSize(sprite.getWidth() * scale, sprite.getHeight() * scale);
-        sprite.setPosition((width / 2) - (sprite.getWidth() / 2), (height / 2)
-                - (sprite.getHeight() / 2));
-        setupTween();
-        batcher = new SpriteBatch();
+        logoSprite.setSize(logoSprite.getWidth() * scale,
+                logoSprite.getHeight() * scale);
+        logoSprite.setPosition((width / 2) - (logoSprite.getWidth() / 2),
+                (height / 2) - (logoSprite.getHeight() / 2));
     }
 
     private void setupTween() {
@@ -49,23 +54,29 @@ public final class SplashScreen implements Screen {
 
         final TweenCallback cb = new TweenCallback() {
             @Override
-            public void onEvent(final int type, final BaseTween<?> source) {
+            public void onEvent(int type, BaseTween<?> source) {
                 game.setScreen(new GameScreen());
             }
         };
+        generateLogoWithAlphaYoyo(cb);
+    }
 
-        Tween.to(sprite, SpriteAccessor.ALPHA, .8f).target(1)
-                .ease(TweenEquations.easeInOutQuad).repeatYoyo(1, .4f)
+    private void generateLogoWithAlphaYoyo(TweenCallback cb) {
+        final float duration = .8f;
+        final float delay = .4f;
+
+        Tween.to(logoSprite, SpriteAccessor.ALPHA, duration).target(1)
+                .ease(TweenEquations.easeInOutQuad).repeatYoyo(1, delay)
                 .setCallback(cb).setCallbackTriggers(TweenCallback.COMPLETE)
                 .start(manager);
     }
 
     @Override
-    public void render(final float delta) {
+    public void render(float delta) {
         manager.update(delta);
         clearScreenAndBuffer();
         batcher.begin();
-        sprite.draw(batcher);
+        logoSprite.draw(batcher);
         batcher.end();
     }
 
@@ -76,7 +87,7 @@ public final class SplashScreen implements Screen {
     }
 
     @Override
-    public void resize(final int width, final int height) {
+    public void resize(int width, int height) {
 
     }
 

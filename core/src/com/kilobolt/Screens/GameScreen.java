@@ -6,65 +6,56 @@ import com.kilobolt.GameWorld.GameRenderer;
 import com.kilobolt.GameWorld.GameWorld;
 import com.kilobolt.ZBHelpers.InputHandler;
 
-public class GameScreen implements Screen {
+public final class GameScreen implements Screen {
+
     private final GameWorld world;
     private final GameRenderer renderer;
     private float runTime;
-    private final float myGameHeight = calculateGameHeight();
-    private static final float GAME_WIDTH = 136;
 
     public GameScreen() {
-        final int midPointY = calculateMidPointY();
-        world = new GameWorld(midPointY);
-        renderer = new GameRenderer(world, (int) myGameHeight, midPointY);
-        Gdx.input.setInputProcessor(new InputHandler(world));
-    }
-
-    private int calculateMidPointY() {
-        final int midPointY = (int) (myGameHeight / 2);
-        return midPointY;
-    }
-
-    private float calculateGameHeight() {
         final float screenWidth = Gdx.graphics.getWidth();
         final float screenHeight = Gdx.graphics.getHeight();
-        final float gameHeight = screenHeight / (screenWidth / GAME_WIDTH);
-        return gameHeight;
+        final float gameWidth = GameRenderer.GAME_WIDTH;
+        final float gameHeight = screenHeight / (screenWidth / gameWidth);
+        final int midPointY = (int) (gameHeight / 2);
+
+        world = new GameWorld(midPointY);
+        final float scaleFactorX = screenWidth / gameWidth;
+        final float scaleFactorY = screenHeight / gameHeight;
+        Gdx.input.setInputProcessor(new InputHandler(world, scaleFactorX,
+                scaleFactorY));
+        renderer = new GameRenderer(world, (int) gameHeight, midPointY);
     }
 
     @Override
-    public final void render(final float delta) {
+    public void render(final float delta) {
         runTime += delta;
         world.update(delta);
-        renderer.render(runTime);
+        renderer.render(delta, runTime);
     }
 
     @Override
-    public final void resize(final int width, final int height) {
-        System.out.println("GameScreen - resize called");
+    public void resize(final int width, final int height) {
     }
 
     @Override
-    public final void show() {
-        System.out.println("GameScreen - show called");
+    public void show() {
     }
 
     @Override
-    public final void hide() {
-        System.out.println("GameScreen - hide called");
+    public void hide() {
     }
 
     @Override
-    public final void pause() {
-        System.out.println("GameScreen - pause called");
+    public void pause() {
     }
 
     @Override
-    public final void resume() {
-        System.out.println("GameScreen - resume called");
+    public void resume() {
     }
 
     @Override
     public void dispose() {
     }
+
 }

@@ -4,29 +4,35 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.kilobolt.ZBHelpers.AssetLoader;
 
-public class Bird {
+public final class Bird {
+    private static final int TERMINAL_VELOCITY = 200;
+    private static final int GRAVITY = 450;
     private final Vector2 position;
     private final Vector2 velocity;
     private final Vector2 acceleration;
     private float rotation;
-    private boolean isAlive = true;
-    private final int myHeight;
-    private final int myWidth;
+    private final int height;
+    private final int width;
+    private final float startingY;
+    private boolean isAlive;
     private final Circle collisionCircle;
-    private static final int TERMINAL_VELOCITY = 200;
-    private static final int GRAVITY = 450;
 
-    public Bird(final float x, final float y, final int width,
-            final int height) {
-        myWidth = width;
-        myHeight = height;
+    public Bird(float x, float y, int width, int height) {
+        this.width = width;
+        this.height = height;
+        startingY = y;
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, GRAVITY);
         collisionCircle = new Circle();
+        isAlive = true;
     }
 
-    public final void update(final float delta) {
+    public void updateReady(float runTime) {
+        position.y = 2 * (float) Math.sin(7 * runTime) + startingY;
+    }
+
+    public void update(float delta) {
         updateVelocity(delta);
         updatePosition(delta);
         updateCollisionCircle();
@@ -34,22 +40,25 @@ public class Bird {
         checkCeilingCollision();
     }
 
-    private void updateVelocity(final float delta) {
+    private void updateVelocity(float delta) {
         velocity.add(acceleration.cpy().scl(delta));
         if (velocity.y > TERMINAL_VELOCITY) {
             velocity.y = TERMINAL_VELOCITY;
         }
     }
 
-    private void updatePosition(final float delta) {
+    private void updatePosition(float delta) {
         position.add(velocity.cpy().scl(delta));
     }
 
     private void updateCollisionCircle() {
-        collisionCircle.set(position.x + 9, position.y + 6, 6.5f);
+        final int shiftX = 9;
+        final int shiftY = 6;
+        final float radius = 6.5f;
+        collisionCircle.set(position.x + shiftX, position.y + shiftY, radius);
     }
 
-    private void updateRotation(final float delta) {
+    private void updateRotation(float delta) {
         if (isRising()) {
             rotateCounterclockwise(delta);
         }
@@ -58,7 +67,7 @@ public class Bird {
         }
     }
 
-    private void rotateClockwise(final float delta) {
+    private void rotateClockwise(float delta) {
         rotation += 480 * delta;
         final int maxClockwiseRotation = 90;
         if (rotation > maxClockwiseRotation) {
@@ -66,7 +75,7 @@ public class Bird {
         }
     }
 
-    private void rotateCounterclockwise(final float delta) {
+    private void rotateCounterclockwise(float delta) {
         rotation -= 600 * delta;
         final int maxCounterRotation = -20;
         if (rotation < maxCounterRotation) {
@@ -82,16 +91,16 @@ public class Bird {
         }
     }
 
-    public final void die() {
+    public void die() {
         isAlive = false;
         velocity.y = 0;
     }
 
-    public final void decelerate() {
+    public void decelerate() {
         acceleration.y = 0;
     }
 
-    public final void onRestart(final int y) {
+    public void onRestart(int y) {
         rotation = 0;
         position.y = y;
         velocity.x = 0;
@@ -101,7 +110,7 @@ public class Bird {
         isAlive = true;
     }
 
-    public final void onClick() {
+    public void onClick() {
         if (isAlive) {
             flapWings();
         }
@@ -115,46 +124,46 @@ public class Bird {
         }
     }
 
-    public final boolean isFalling() {
+    public boolean isFalling() {
         final int fallingThreshold = 110;
         return velocity.y > fallingThreshold;
     }
 
-    public final boolean isRising() {
+    public boolean isRising() {
         final int risingThreshold = 0;
         return velocity.y < risingThreshold;
     }
 
-    public final boolean isFlapping() {
+    public boolean isFlapping() {
         final int flappingThreshold = 70;
         return (velocity.y <= flappingThreshold) && isAlive;
     }
 
-    public final boolean isAlive() {
+    public boolean isAlive() {
         return isAlive;
     }
 
-    public final float getX() {
+    public float getX() {
         return position.x;
     }
 
-    public final float getY() {
+    public float getY() {
         return position.y;
     }
 
-    public final float getRotation() {
+    public float getRotation() {
         return rotation;
     }
 
-    public final int getHeight() {
-        return myHeight;
+    public int getHeight() {
+        return height;
     }
 
-    public final int getWidth() {
-        return myWidth;
+    public int getWidth() {
+        return width;
     }
 
-    public final Circle getCollisionCircle() {
+    public Circle getCollisionCircle() {
         return collisionCircle;
     }
 }

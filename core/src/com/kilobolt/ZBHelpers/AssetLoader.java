@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.kilobolt.GameWorld.GameRenderer;
 
 public final class AssetLoader {
     private static Texture gameTextures, logoTexture;
@@ -18,7 +19,6 @@ public final class AssetLoader {
     private static Sound dead, flap, coin;
     private static BitmapFont font, shadow;
     private static Preferences prefs;
-    private static final int GAME_WIDTH = 136;
 
     private AssetLoader() {
         throw new AssertionError("Instantiating utility class...");
@@ -45,19 +45,21 @@ public final class AssetLoader {
 
         logoTexture = new Texture(Gdx.files.internal("data/logo.png"));
         logoTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
         logo = new TextureRegion(logoTexture, 0, 0, width, height);
+
         gameTextures = new Texture(Gdx.files.internal("data/texture.png"));
         gameTextures.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     }
 
     private static void loadPlayButtons() {
-        final int upY = 83;
-        final int downY = 16;
+        final int y = 83;
+        final int downX = 29;
         final int width = 29;
         final int height = 16;
 
-        playButtonUp = new TextureRegion(gameTextures, 0, upY, width, height);
-        playButtonDown = new TextureRegion(gameTextures, downY, upY,
+        playButtonUp = new TextureRegion(gameTextures, 0, y, width, height);
+        playButtonDown = new TextureRegion(gameTextures, downX, y,
                 width, height);
         playButtonUp.flip(false, true);
         playButtonDown.flip(false, true);
@@ -74,7 +76,8 @@ public final class AssetLoader {
     private static void loadBackground() {
         final int height = 43;
 
-        bg = new TextureRegion(gameTextures, 0, 0, GAME_WIDTH, height);
+        bg = new TextureRegion(gameTextures, 0, 0, GameRenderer.GAME_WIDTH,
+                height);
         // Flip because we are using "Y down" coordinate system.
         bg.flip(false, true);
     }
@@ -95,8 +98,8 @@ public final class AssetLoader {
         final int birdX = 153;
         final int birdUpX = 170;
 
-        birdDown = new TextureRegion(gameTextures, GAME_WIDTH, 0, width,
-                height);
+        birdDown = new TextureRegion(gameTextures, GameRenderer.GAME_WIDTH,
+                0, width, height);
         bird = new TextureRegion(gameTextures, birdX, 0, width, height);
         birdUp = new TextureRegion(gameTextures, birdUpX, 0, width, height);
         birdDown.flip(false, true);
@@ -129,8 +132,8 @@ public final class AssetLoader {
         final int width = 22;
         final int height = 3;
 
-        bar = new TextureRegion(gameTextures, GAME_WIDTH, barY, width,
-                height);
+        bar = new TextureRegion(gameTextures, GameRenderer.GAME_WIDTH,
+                barY, width, height);
         bar.flip(false, true);
     }
 
@@ -236,8 +239,20 @@ public final class AssetLoader {
         prefs.flush();
     }
 
+    public static TextureRegion getPlayButtonUp() {
+        return playButtonUp;
+    }
+
+    public static TextureRegion getPlayButtonDown() {
+        return playButtonDown;
+    }
+
     public static TextureRegion getLogo() {
         return logo;
+    }
+
+    public static TextureRegion getZbLogo() {
+        return zbLogo;
     }
 
 }

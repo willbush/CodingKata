@@ -9,8 +9,8 @@ public class Scrollable {
     private int myHeight;
     private boolean objectIsScrollableRight;
 
-    public Scrollable(final float x, final float y, final int width,
-            final int height, final float scrollSpeed) {
+    public Scrollable(float x, float y, int width,
+            int height, float scrollSpeed) {
         position = new Vector2(x, y);
         velocity = new Vector2(scrollSpeed, 0);
         myWidth = width;
@@ -18,7 +18,7 @@ public class Scrollable {
         objectIsScrollableRight = false;
     }
 
-    public void update(final float delta) {
+    public void update(float delta) {
         position.add(velocity.cpy().scl(delta));
         if (objectHasScrolledOffScreen()) {
             objectIsScrollableRight = true;
@@ -29,7 +29,7 @@ public class Scrollable {
         return position.x + myWidth <= 0;
     }
 
-    protected void reset(final float newX) {
+    protected void reset(float newX) {
         position.x = newX;
         objectIsScrollableRight = false;
     }
@@ -62,15 +62,15 @@ public class Scrollable {
         return myHeight;
     }
 
-    protected final void setPositionX(final float x) {
+    protected final void setPositionX(float x) {
         this.position.x = x;
     }
 
-    protected final void setVelocityX(final float x) {
+    protected final void setVelocityX(float x) {
         this.velocity.x = x;
     }
 
-    public final void setHeight(final int height) {
+    public final void setHeight(int height) {
         myHeight = height;
     }
 }

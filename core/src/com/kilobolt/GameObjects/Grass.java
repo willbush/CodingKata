@@ -1,12 +1,11 @@
 package com.kilobolt.GameObjects;
 
-public class Grass extends Scrollable {
-    public Grass(final float x, final float y, final int width,
-            final int height, final float scrollSpeed) {
+public final class Grass extends Scrollable {
+    public Grass(float x, float y, int width, int height, float scrollSpeed) {
         super(x, y, width, height, scrollSpeed);
     }
 
-    public final void onRestart(final float x, final float scrollSpeed) {
+    public void onRestart(float x, float scrollSpeed) {
         setPositionX(x);
         setVelocityX(scrollSpeed);
     }

@@ -1,72 +1,135 @@
 package com.kilobolt.ZBHelpers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.kilobolt.GameObjects.Bird;
+import com.kilobolt.GameWorld.GameRenderer;
 import com.kilobolt.GameWorld.GameWorld;
+import com.kilobolt.UI.SimpleButton;
 
-public class InputHandler implements InputProcessor {
-    private final Bird myBird;
-    private final GameWorld myWorld;
+public final class InputHandler implements InputProcessor {
+    private Bird myBird;
+    private GameWorld world;
 
-    public InputHandler(final GameWorld gameWorld) {
-        myWorld = gameWorld;
-        myBird = gameWorld.getBird();
+    private List<SimpleButton> menuButtons;
+
+    private SimpleButton playButton;
+
+    private float scaleFactorX;
+    private float scaleFactorY;
+
+    public InputHandler(GameWorld gw, float scaleFactorX,
+            float scaleFactorY) {
+        world = gw;
+        myBird = gw.getBird();
+
+        int midPointY = gw.getMidPointY();
+
+        this.scaleFactorX = scaleFactorX;
+        this.scaleFactorY = scaleFactorY;
+
+        menuButtons = new ArrayList<SimpleButton>();
+        playButton = new SimpleButton(GameRenderer.GAME_WIDTH / 2
+                - (AssetLoader.getPlayButtonUp().getRegionWidth() / 2),
+                midPointY + 50, 29, 16, AssetLoader.getPlayButtonUp(),
+                AssetLoader.getPlayButtonDown());
+        menuButtons.add(playButton);
     }
 
     @Override
-    public final boolean keyDown(final int keycode) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public final boolean keyUp(final int keycode) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public final boolean keyTyped(final char character) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public final boolean touchDown(final int screenX, final int screenY,
-            final int pointer, final int button) {
-        if (myWorld.isReady()) {
-            myWorld.start();
+    public boolean touchDown(int screenX, int screenY, int pointer,
+            int button) {
+        screenX = scaleX(screenX);
+        screenY = scaleY(screenY);
+        System.out.println(screenX + " " + screenY);
+        if (world.isMenu()) {
+            playButton.isTouchDown(screenX, screenY);
+        } else if (world.isReady()) {
+            world.start();
         }
+
         myBird.onClick();
-        if (myWorld.isGameOver() || myWorld.isHighScore()) {
-            myWorld.restart();
+
+        if (world.isGameOver() || world.isHighScore()) {
+            world.restart();
         }
+
         return true;
     }
 
     @Override
-    public final boolean touchUp(final int screenX, final int screenY,
-            final int pointer, final int button) {
-        // TODO Auto-generated method stub
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        screenX = scaleX(screenX);
+        screenY = scaleY(screenY);
+
+        if (world.isMenu()) {
+            if (playButton.isTouchUp(screenX, screenY)) {
+                world.ready();
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
-    public final boolean touchDragged(final int screenX, final int screenY,
-            final int pointer) {
-        // TODO Auto-generated method stub
+    public boolean keyDown(int keycode) {
+
+        // Can now use Space Bar to play the game
+        if (keycode == Keys.SPACE) {
+
+            if (world.isMenu()) {
+                world.ready();
+            } else if (world.isReady()) {
+                world.start();
+            }
+
+            myBird.onClick();
+
+            if (world.isGameOver() || world.isHighScore()) {
+                world.restart();
+            }
+
+        }
         return false;
     }
 
     @Override
-    public final boolean mouseMoved(final int screenX, final int screenY) {
-        // TODO Auto-generated method stub
+    public boolean keyUp(int keycode) {
         return false;
     }
 
     @Override
-    public final boolean scrolled(final int amount) {
-        // TODO Auto-generated method stub
+    public boolean keyTyped(char character) {
         return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    private int scaleX(int screenX) {
+        return (int) (screenX / scaleFactorX);
+    }
+
+    private int scaleY(int screenY) {
+        return (int) (screenY / scaleFactorY);
+    }
+
+    public List<SimpleButton> getMenuButtons() {
+        return menuButtons;
     }
 }

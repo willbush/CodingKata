@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Pipe extends Scrollable {
+public final class Pipe extends Scrollable {
     private static final int VERTICAL_PIPE_GAP = 45;
     private static final int SKULL_WIDTH = 24;
     private static final int SKULL_HEIGHT = 11;
@@ -15,9 +15,8 @@ public class Pipe extends Scrollable {
     private final Random random;
     private final Rectangle skullUp, skullDown, barUp, barDown;
 
-    public Pipe(final float x, final float y, final int width,
-            final int height, final float scrollSpeed,
-            final float groundY) {
+    public Pipe(float x, float y, int width, int height, float scrollSpeed,
+            float groundY) {
         super(x, y, width, height, scrollSpeed);
         random = new Random();
         skullUp = new Rectangle();
@@ -28,7 +27,7 @@ public class Pipe extends Scrollable {
     }
 
     @Override
-    public final void update(final float delta) {
+    public void update(float delta) {
         super.update(delta);
         updateBarCollisionBox();
         updateSkullCollisionBox();
@@ -50,24 +49,24 @@ public class Pipe extends Scrollable {
     }
 
     @Override
-    public final void reset(final float newX) {
+    public void reset(float newX) {
         super.reset(newX);
         setHeight(random.nextInt(90) + 15);
         isScored = false;
     }
 
-    public final boolean hasCollided(final Bird bird) {
+    public boolean hasCollided(Bird bird) {
         if (birdHasCrossedAPipe(bird)) {
             return hasBirdCollidedWithPipe(bird);
         }
         return false;
     }
 
-    private boolean birdHasCrossedAPipe(final Bird bird) {
+    private boolean birdHasCrossedAPipe(Bird bird) {
         return getX() < bird.getX() + bird.getWidth();
     }
 
-    private boolean hasBirdCollidedWithPipe(final Bird bird) {
+    private boolean hasBirdCollidedWithPipe(Bird bird) {
         final Circle c = bird.getCollisionCircle();
         return (Intersector.overlaps(c, barUp)
                 || Intersector.overlaps(c, barDown)
@@ -75,32 +74,32 @@ public class Pipe extends Scrollable {
                 || Intersector.overlaps(c, skullDown));
     }
 
-    public final void onRestart(final float x, final float scrollSpeed) {
+    public void onRestart(float x, float scrollSpeed) {
         setVelocityX(scrollSpeed);
         reset(x);
     }
 
-    public final Rectangle getSkullUp() {
+    public Rectangle getSkullUp() {
         return skullUp;
     }
 
-    public final Rectangle getSkullDown() {
+    public Rectangle getSkullDown() {
         return skullDown;
     }
 
-    public final Rectangle getBarUp() {
+    public Rectangle getBarUp() {
         return barUp;
     }
 
-    public final Rectangle getBarDown() {
+    public Rectangle getBarDown() {
         return barDown;
     }
 
-    public final boolean isScored() {
+    public boolean isScored() {
         return isScored;
     }
 
-    public final void setScored(final boolean b) {
+    public void setScored(boolean b) {
         isScored = b;
     }
 }
