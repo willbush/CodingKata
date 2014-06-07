@@ -29,7 +29,8 @@ public final class Bird {
     }
 
     public void updateReady(float runTime) {
-        position.y = 2 * (float) Math.sin(7 * runTime) + startingY;
+        final int multiplier = 7;
+        position.y = 2 * (float) Math.sin(multiplier * runTime) + startingY;
     }
 
     public void update(float delta) {

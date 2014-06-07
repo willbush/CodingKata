@@ -47,28 +47,6 @@ public final class ScrollHandler {
         resetScrollableGrass();
     }
 
-    public void handleScore(Bird bird) {
-        if (hasScored(pipe1, bird)) {
-            updateScore(pipe1);
-        } else if (hasScored(pipe2, bird)) {
-            updateScore(pipe2);
-        } else if (hasScored(pipe3, bird)) {
-            updateScore(pipe3);
-        }
-    }
-
-    private boolean hasScored(Pipe pipe, Bird bird) {
-        return !pipe.isScored()
-                && pipe.getX() + (pipe.getWidth() / 2) < bird.getX()
-                        + bird.getWidth();
-    }
-
-    private void updateScore(Pipe pipe) {
-        addScore(1);
-        pipe.setScored(true);
-        AssetLoader.getCoin().play();
-    }
-
     private void updateObjects(float delta) {
         frontGrass.update(delta);
         backGrass.update(delta);
@@ -93,6 +71,28 @@ public final class ScrollHandler {
         } else if (backGrass.objectIsScrollableRight()) {
             backGrass.reset(frontGrass.getTailX());
         }
+    }
+
+    public void handleScore(Bird bird) {
+        if (hasScored(pipe1, bird)) {
+            updateScore(pipe1);
+        } else if (hasScored(pipe2, bird)) {
+            updateScore(pipe2);
+        } else if (hasScored(pipe3, bird)) {
+            updateScore(pipe3);
+        }
+    }
+
+    private boolean hasScored(Pipe pipe, Bird bird) {
+        return !pipe.isScored()
+                && pipe.getX() + (pipe.getWidth() / 2) < bird.getX()
+                        + bird.getWidth();
+    }
+
+    private void updateScore(Pipe pipe) {
+        addScore(1);
+        pipe.setScored(true);
+        AssetLoader.getCoin().play();
     }
 
     public void stop() {

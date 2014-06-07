@@ -9,8 +9,8 @@ public class Scrollable {
     private int myHeight;
     private boolean objectIsScrollableRight;
 
-    public Scrollable(float x, float y, int width,
-            int height, float scrollSpeed) {
+    public Scrollable(float x, float y, int width, int height,
+            float scrollSpeed) {
         position = new Vector2(x, y);
         velocity = new Vector2(scrollSpeed, 0);
         myWidth = width;

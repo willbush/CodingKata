@@ -13,11 +13,12 @@ import com.kilobolt.GameWorld.GameRenderer;
 public final class AssetLoader {
     private static Texture gameTextures, logoTexture;
     private static Animation birdAnimation;
-    private static TextureRegion logo, zbLogo, bg, grass, bird, birdDown,
-            birdUp, skull, skullDown,
-            skullUp, bar, playButtonUp, playButtonDown;
-    private static Sound dead, flap, coin;
-    private static BitmapFont font, shadow;
+    private static TextureRegion ready, retry, gameOver, scoreboard, star,
+            highScoreLogo, logo, zbLogo, bg, grass, bird, birdDown, birdUp,
+            skull,
+            skullDown, skullUp, bar, playButtonUp, playButtonDown, noStar;
+    private static Sound dead, flap, coin, fall;
+    private static BitmapFont font, whiteFont, shadow;
     private static Preferences prefs;
 
     private AssetLoader() {
@@ -25,8 +26,11 @@ public final class AssetLoader {
     }
 
     public static void load() {
-        loadTextures();
+        loadKiloBoltLogo();
+        loadGameTexture();
         loadPlayButtons();
+        loadInGameSigns();
+        loadScoreboard();
         loadZbLogo();
         loadBackground();
         loadGrass();
@@ -39,7 +43,7 @@ public final class AssetLoader {
         loadPreferencesFile();
     }
 
-    private static void loadTextures() {
+    private static void loadKiloBoltLogo() {
         final int width = 512;
         final int height = 114;
 
@@ -47,7 +51,9 @@ public final class AssetLoader {
         logoTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
         logo = new TextureRegion(logoTexture, 0, 0, width, height);
+    }
 
+    private static void loadGameTexture() {
         gameTextures = new Texture(Gdx.files.internal("data/texture.png"));
         gameTextures.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     }
@@ -63,6 +69,55 @@ public final class AssetLoader {
                 width, height);
         playButtonUp.flip(false, true);
         playButtonDown.flip(false, true);
+    }
+
+    private static void loadInGameSigns() {
+        final int x = 59;
+        final int height = 7;
+        final int readyY = 83;
+        final int readyWidth = 34;
+        ready = new TextureRegion(gameTextures, x, readyY, readyWidth, height);
+        ready.flip(false, true);
+
+        final int retryY = 110;
+        final int retryWidth = 33;
+        retry = new TextureRegion(gameTextures, x, retryY, retryWidth, height);
+        retry.flip(false, true);
+
+        final int overY = 92;
+        final int overWidth = 46;
+        gameOver = new TextureRegion(gameTextures, x, overY, overWidth, height);
+        gameOver.flip(false, true);
+    }
+
+    private static void loadScoreboard() {
+        final int sbX = 111;
+        final int sbY = 83;
+        final int sbWidth = 97;
+        final int sbHeight = 37;
+        scoreboard = new TextureRegion(gameTextures, sbX, sbY, sbWidth,
+                sbHeight);
+        scoreboard.flip(false, true);
+
+        final int starSideSize = 10;
+        final int starY = 70;
+        final int starX = 152;
+        final int noStarX = 165;
+        star = new TextureRegion(gameTextures, starX, starY, starSideSize,
+                starSideSize);
+        noStar = new TextureRegion(gameTextures, noStarX, starY, starSideSize,
+                starSideSize);
+
+        star.flip(false, true);
+        noStar.flip(false, true);
+
+        final int hsX = 59;
+        final int hsY = 101;
+        final int hsWidth = 48;
+        final int hsHeight = 7;
+        highScoreLogo = new TextureRegion(gameTextures, hsX, hsY, hsWidth,
+                hsHeight);
+        highScoreLogo.flip(false, true);
     }
 
     private static void loadZbLogo() {
@@ -141,13 +196,17 @@ public final class AssetLoader {
         dead = Gdx.audio.newSound(Gdx.files.internal("data/dead.wav"));
         flap = Gdx.audio.newSound(Gdx.files.internal("data/flap.wav"));
         coin = Gdx.audio.newSound(Gdx.files.internal("data/coin.wav"));
+        fall = Gdx.audio.newSound(Gdx.files.internal("data/fall.wav"));
     }
 
     private static void loadFonts() {
         final float scaleFactor = .25f;
+        final float scaleFactor2 = 0.1f;
 
         font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
         font.setScale(scaleFactor, -scaleFactor);
+        whiteFont = new BitmapFont(Gdx.files.internal("data/whitetext.fnt"));
+        whiteFont.setScale(scaleFactor2, -scaleFactor2);
         shadow = new BitmapFont(Gdx.files.internal("data/shadow.fnt"));
         shadow.setScale(scaleFactor, -scaleFactor);
     }
@@ -166,7 +225,9 @@ public final class AssetLoader {
         dead.dispose();
         flap.dispose();
         coin.dispose();
+        fall.dispose();
         font.dispose();
+        whiteFont.dispose();
         shadow.dispose();
     }
 
@@ -253,6 +314,38 @@ public final class AssetLoader {
 
     public static TextureRegion getZbLogo() {
         return zbLogo;
+    }
+
+    public static TextureRegion getReady() {
+        return ready;
+    }
+
+    public static TextureRegion getRetry() {
+        return retry;
+    }
+
+    public static TextureRegion getGameOver() {
+        return gameOver;
+    }
+
+    public static TextureRegion getScoreboard() {
+        return scoreboard;
+    }
+
+    public static TextureRegion getHighScoreLogo() {
+        return highScoreLogo;
+    }
+
+    public static TextureRegion getStar() {
+        return star;
+    }
+
+    public static TextureRegion getNoStar() {
+        return noStar;
+    }
+
+    public static BitmapFont getWhiteFont() {
+        return whiteFont;
     }
 
 }
