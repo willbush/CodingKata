@@ -1,5 +1,5 @@
-KiloBoltsTutorials
+KiloBolt's Robot Game Tutorial
 ==================
 
-Following kilobolt.com tutorials
+I finished kilobolt.com robot game tutorial a while back.
 http://www.kilobolt.com/game-development-tutorial.html
