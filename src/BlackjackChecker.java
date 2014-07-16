@@ -204,17 +204,23 @@ public final class BlackjackChecker {
     public void printResults() {
         System.out.println("\nResults array: " +
                 Arrays.toString(playerScores));
+
+        String results;
         if (tiedGame && winByFiveCardTrick) {
-            System.out.println("Game Tied with two 5-card tricks");
+            results = "Game Tied with two 5-card tricks";
         } else if (tiedGame) {
-            System.out.println("Game Tided with two high scores");
+            results = "Game Tied with more than one high score";
         } else if (winByFiveCardTrick) {
-            System.out.println(nameOfWinner + " won by 5-card trick " +
-                    "with a score of " + highScore);
+            results = nameOfWinner + " won by 5-card trick" +
+                    "with a score of " + highScore;
         } else if (highScore == blackJack) {
-            System.out.println(nameOfWinner + " won by BlackJack." +
-                    " Score: " + highScore);
+            results = nameOfWinner + " won with a BlackJack." +
+                    "Score: " + highScore;
+        } else {
+            results = nameOfWinner + " won with a high score of " +
+                    highScore + "\n";
         }
+        System.out.print(results);
     }
 
     public int[] getPlayerScores() {

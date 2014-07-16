@@ -3,7 +3,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 
 public class myTest {
-    String blackJack, fiveCardTrick, input3, highscoreTie, fiveCardTrickTie;
+    String blackJack, fiveCardTrick, input3, highScoreTie, fiveCardTrickTie;
 
     public myTest() {
         blackJack = "3\n" +
@@ -41,7 +41,7 @@ public class myTest {
                 " Five of Hearts, Six of Hearts\n" +
                 "y\n";
 
-        highscoreTie = "5\n" +
+        highScoreTie = "5\n" +
                 "Alice: Ace of Diamonds, Nine of Clubs\n" +
                 "Joe: Ace of Diamonds, Nine of Spades\n" +
                 "Bob: Three of Hearts, Six of Spades, Seven of Spades\n" +
@@ -93,39 +93,42 @@ public class myTest {
 
     @Test
     public void canBlackJack() {
-        ByteArrayInputStream in = new ByteArrayInputStream(blackJack.getBytes());
+        final byte[] bytes = blackJack.getBytes();
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
         ProcessUserInput input = new ProcessUserInput(in, System.out);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
         bc.printResults();
-        int[] input1Results = {21, 16, 23};
-        org.junit.Assert.assertArrayEquals(input1Results, bc.getPlayerScores());
+        final int[] expected = {21, 16, 23};
+        org.junit.Assert.assertArrayEquals(expected, bc.getPlayerScores());
     }
 
     @Test
     public void canFiveCardTrick() {
-        ByteArrayInputStream in = new ByteArrayInputStream(fiveCardTrick.getBytes());
+        final byte[] bytes = fiveCardTrick.getBytes();
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
         ProcessUserInput input = new ProcessUserInput(in, System.out);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
         bc.printResults();
-        int[] input2Results = {11, 16, 23, 19};
-        org.junit.Assert.assertArrayEquals(input2Results, bc.getPlayerScores());
+        final int[] expected = {11, 16, 23, 19};
+        org.junit.Assert.assertArrayEquals(expected, bc.getPlayerScores());
         org.junit.Assert.assertEquals(true, bc.getWinByFiveCardTrick());
     }
 
     @Test
     public void canFiveCardTrickTie() {
-        ByteArrayInputStream in = new ByteArrayInputStream(fiveCardTrickTie.getBytes());
+        final byte[] bytes = fiveCardTrickTie.getBytes();
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
         ProcessUserInput input = new ProcessUserInput(in, System.out);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
         bc.printResults();
-        int[] trickTie = {11, 16, 23, 19, 19};
-        org.junit.Assert.assertArrayEquals(trickTie, bc.getPlayerScores());
+        final int[] expected = {11, 16, 23, 19, 19};
+        org.junit.Assert.assertArrayEquals(expected, bc.getPlayerScores());
         org.junit.Assert.assertEquals(true, bc.getWinByFiveCardTrick());
         org.junit.Assert.assertEquals(true, bc.getTiedGame());
     }
@@ -138,20 +141,21 @@ public class myTest {
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
         bc.printResults();
-        int[] input3Results = {18, 20, 21, 16, 23, 26};
-        org.junit.Assert.assertArrayEquals(input3Results, bc.getPlayerScores());
+        final int[] expected = {18, 20, 21, 16, 23, 26};
+        org.junit.Assert.assertArrayEquals(expected, bc.getPlayerScores());
     }
 
     @Test
     public void canHighScoreTie() {
-        ByteArrayInputStream in = new ByteArrayInputStream(highscoreTie.getBytes());
+        final byte[] bytes = highScoreTie.getBytes();
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
         ProcessUserInput input = new ProcessUserInput(in, System.out);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
         bc.printResults();
-        int[] highScoreTieResults = {20, 20, 16, 23, 30};
-        org.junit.Assert.assertArrayEquals(highScoreTieResults, bc.getPlayerScores());
+        final int[] expected = {20, 20, 16, 23, 30};
+        org.junit.Assert.assertArrayEquals(expected, bc.getPlayerScores());
         org.junit.Assert.assertEquals(true, bc.getTiedGame());
     }
 }

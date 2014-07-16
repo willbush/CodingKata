@@ -12,28 +12,32 @@ public final class ProcessUserInput {
     ProcessUserInput(InputStream in, PrintStream out) {
         input = new Scanner(in);
         findNumberOfPlayers(out);
+        playersInfo = new String[numberOfPlayers][MAX_POSSIBLE_CARDS];
+        printInstructions(out);
         createMatrixFromInput(out);
         letUserVerifyData(out);
     }
 
     private void findNumberOfPlayers(PrintStream out) {
-        out.print("Enter number of players: ");
+        out.println("Enter number of players: ");
         numberOfPlayers = Integer.parseInt(input.nextLine());
 
-        while (numberOfPlayers < 1) {
-            out.print("not enough players, try again: ");
+        while (numberOfPlayers < 2) {
+            out.println("need at least 2 players, try again: ");
             numberOfPlayers = Integer.parseInt(input.nextLine());
         }
     }
 
+    private void printInstructions(PrintStream out) {
+        final String instructions = "Enter player name " +
+                "and the cards they have.\n" +
+                "use the following syntax:\n\n" +
+                "Bob: Three of Hearts, Six of Spades, Seven of Clubs\n\n" +
+                "Be sure to use delimiters ':' and ','\n\n";
+        out.print(instructions);
+    }
+
     private void createMatrixFromInput(PrintStream out) {
-        out.println("Enter player name and card their holding.");
-        out.println("E.g. (Bob: Three of Hearts, Six of Spades," +
-                " Seven of Spades)");
-        out.println("Be sure to use delimiters ':' and ','\n");
-
-        playersInfo = new String[numberOfPlayers][MAX_POSSIBLE_CARDS];
-
         for (int i = 0; i < numberOfPlayers; i++) {
             out.print("Enter player name and their cards: ");
             String userInput = input.nextLine();
@@ -56,9 +60,10 @@ public final class ProcessUserInput {
 
         out.print("\n" + "Is the above data correct? y/n : ");
         String userInput = input.nextLine();
-        while (userInput.contains("y") == false) {
+        while (!userInput.contains("y")) {
             if (userInput.contains("n")) {
                 findNumberOfPlayers(out);
+                printInstructions(out);
                 createMatrixFromInput(out);
                 letUserVerifyData(out);
                 break;
