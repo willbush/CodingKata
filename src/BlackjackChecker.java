@@ -1,40 +1,33 @@
 import java.util.Arrays;
 
 public final class BlackjackChecker {
-    private final int blackJack = 21;
-    private final int numberOfPlayers;
+    private static final int BLACKJACK = 21;
+    private static final int ACE_UPPER = 11;
+    private static final int ACE_LOWER = 1;
+    private final int players;
     private final String[][] playersInfo;
-    private int[] playerScores;
-    private int[] playerCardQuantity;
-    private boolean[] fiveCardTricks;
+    private final int[] playerScores;
+    private final int[] playerCardQuantity;
+    private final boolean[] fiveCardTricks;
     private boolean winByFiveCardTrick = false;
     private boolean tiedGame = false;
     private String nameOfWinner;
     private int highScore;
 
-    BlackjackChecker(int numberOfPlayers, String[][] playersInfo) {
-        this.numberOfPlayers = numberOfPlayers;
+    BlackjackChecker(int players, String[][] playersInfo) {
+        this.players = players;
         this.playersInfo = playersInfo;
-        fiveCardTricks = new boolean[numberOfPlayers];
-        playerScores = new int[numberOfPlayers];
-        playerCardQuantity = new int[numberOfPlayers];
+        fiveCardTricks = new boolean[players];
+        playerScores = new int[players];
+        playerCardQuantity = new int[players];
         findPlayerTotals();
         findWinner();
     }
 
     public enum Cards {
-        KING(10, "King"),
-        QUEEN(10, "Queen"),
-        JACK(10, "Jack"),
-        TEN(10, "Ten"),
-        NINE(9, "Nine"),
-        EIGHT(8, "Eight"),
-        SEVEN(7, "Seven"),
-        SIX(6, "Six"),
-        FIVE(5, "Five"),
-        FOUR(4, "Four"),
-        THREE(3, "Three"),
-        TWO(2, "Two");
+        KING(10, "King"), QUEEN(10, "Queen"), JACK(10, "Jack"), TEN(10, "Ten"),
+        NINE(9, "Nine"), EIGHT(8, "Eight"), SEVEN(7, "Seven"), SIX(6, "Six"),
+        FIVE(5, "Five"), FOUR(4, "Four"), THREE(3, "Three"), TWO(2, "Two");
 
         private int value;
         private String name;
@@ -55,63 +48,28 @@ public final class BlackjackChecker {
 
     private void findPlayerTotals() {
         String element;
-        int sum;
-        int numberOfAceCards;
-        int totalNumberOfCards;
+        int sum, aceCards, totalCards;
 
-        for (int row = 0; row < numberOfPlayers; row++) {
+        for (int row = 0; row < players; row++) {
             // reset
-            sum = 0;
-            numberOfAceCards = 0;
-            totalNumberOfCards = 0;
+            sum = aceCards = totalCards = 0;
 
             // Skipping first column, which contains player names.
             for (int col = 1; col < playersInfo[1].length; col++) {
                 if (playersInfo[row][col] == null) break;
 
-                totalNumberOfCards++;
+                totalCards++;
 
                 element = playersInfo[row][col];
                 if (element.contains("Ace")) {
-                    numberOfAceCards++;
+                    aceCards++;
                 } else {
                     sum += findNonAceCardValue(element);
                 }
             }
-            playerScores[row] = calculateScore(sum, numberOfAceCards);
-            playerCardQuantity[row] = totalNumberOfCards;
+            playerScores[row] = calculateScore(sum, aceCards);
+            playerCardQuantity[row] = totalCards;
         }
-    }
-
-    private int calculateScore(int sum, int numberOfAceCards) {
-        final int aceUpperValue = 11;
-        final int aceLowerValue = 1;
-        int score = sum;
-
-        if (sum >= blackJack && numberOfAceCards > 0) {
-            score += numberOfAceCards * aceLowerValue;
-        } else {
-            int difference = blackJack - sum;
-            while (numberOfAceCards > 0) {
-                if (sum == 0) {
-                    score += aceUpperValue;
-                    difference = score - blackJack;
-                    numberOfAceCards--;
-                } else if (difference < aceUpperValue) {
-                    score += numberOfAceCards * aceLowerValue;
-                    difference = score - blackJack;
-                    numberOfAceCards = 0;
-                } else if (aceUpperValue + (numberOfAceCards - 1) > blackJack) {
-                    score += numberOfAceCards * aceLowerValue;
-                    numberOfAceCards = 0;
-                } else {
-                    score += aceUpperValue;
-                    difference -= aceUpperValue;
-                    numberOfAceCards--;
-                }
-            }
-        }
-        return score;
     }
 
     private int findNonAceCardValue(String element) {
@@ -122,6 +80,41 @@ public final class BlackjackChecker {
             }
         }
         return cardValue;
+    }
+
+    private int calculateScore(int sum, int aceCards) {
+        int score = sum;
+
+        if (sum >= BLACKJACK && aceCards > 0) {
+            score += aceCards * ACE_LOWER;
+        } else {
+            score = tryToAddAceCardsWithoutBusting(aceCards, sum);
+        }
+        return score;
+    }
+
+    private int tryToAddAceCardsWithoutBusting(final int aceCards, int sum) {
+        int score = sum;
+        int myAceCards = aceCards;
+        int delta;
+        while (myAceCards > 0) {
+            delta = BLACKJACK - score;
+            if (score == 0) {
+                score += ACE_UPPER;
+                myAceCards--;
+            } else if (anUpperValueAceWillBust(delta, myAceCards)) {
+                score += myAceCards * ACE_LOWER;
+                myAceCards = 0;
+            } else {
+                score += ACE_UPPER;
+                myAceCards--;
+            }
+        }
+        return score;
+    }
+
+    private boolean anUpperValueAceWillBust(int delta, int aceCards) {
+        return delta < ACE_UPPER + (aceCards - 1);
     }
 
     private void findWinner() {
@@ -149,7 +142,7 @@ public final class BlackjackChecker {
     private int checkFiveCardTricks() {
         int playersWith5cardTrick = 0;
 
-        for (int i = 0; i < numberOfPlayers; i++) {
+        for (int i = 0; i < players; i++) {
             if (playerHasFiveCardTrick(i)) {
                 fiveCardTricks[i] = true;
                 playersWith5cardTrick++;
@@ -169,8 +162,8 @@ public final class BlackjackChecker {
     }
 
     private int getHighScoreWinnerIndex(int indexOfWinner) {
-        for (int i = 0; i < numberOfPlayers; i++) {
-            if (playerScores[i] > highScore && playerScores[i] <= blackJack) {
+        for (int i = 0; i < players; i++) {
+            if (playerScores[i] > highScore && playerScores[i] <= BLACKJACK) {
                 highScore = playerScores[i];
                 indexOfWinner = i;
             }
@@ -179,20 +172,21 @@ public final class BlackjackChecker {
     }
 
     private boolean playerHasFiveCardTrick(int i) {
-        return playerCardQuantity[i] == 5 && playerScores[i] <= blackJack;
+        return playerCardQuantity[i] == 5 && playerScores[i] <= BLACKJACK;
     }
 
+    /*
+    This method sorts a copy of playerScores to help find tied games.
+    Since high score entries might be a bust (higher than 21),
+    the method reverse searches for entries not higher than 21 (Blackjack)
+    before checking for a tie.
+     */
     private boolean highScoresAreTied() {
         boolean highScoresAreTied = false;
         int[] testArray = Arrays.copyOf(playerScores, playerScores.length);
-        // Sort to help find tied scores
-        // sorted from least to greatest
         Arrays.sort(testArray);
         int index = testArray.length - 1;
-        // greatest entry might be bust so reverse search
-        // for entries not higher than blackJack before
-        // checking for tied scores.
-        while (testArray[index] > blackJack && index > 0) {
+        while (testArray[index] > BLACKJACK && index > 0) {
             index--;
         }
         if (testArray[index] == testArray[index - 1]) {
@@ -207,15 +201,15 @@ public final class BlackjackChecker {
 
         String results;
         if (tiedGame && winByFiveCardTrick) {
-            results = "Game Tied with two 5-card tricks";
+            results = "Game Tied with two 5-card tricks\n";
         } else if (tiedGame) {
-            results = "Game Tied with more than one high score";
+            results = "Game Tied with more than one high score\n";
         } else if (winByFiveCardTrick) {
             results = nameOfWinner + " won by 5-card trick" +
-                    "with a score of " + highScore;
-        } else if (highScore == blackJack) {
+                    "with a score of " + highScore + "\n";
+        } else if (highScore == BLACKJACK) {
             results = nameOfWinner + " won with a BlackJack." +
-                    "Score: " + highScore;
+                    "Score: " + highScore + "\n";
         } else {
             results = nameOfWinner + " won with a high score of " +
                     highScore + "\n";
@@ -225,6 +219,14 @@ public final class BlackjackChecker {
 
     public int[] getPlayerScores() {
         return playerScores;
+    }
+
+    public String getNameOfWinner() {
+        return nameOfWinner;
+    }
+
+    public int getHighScore() {
+        return highScore;
     }
 
     public boolean getWinByFiveCardTrick() {
@@ -237,9 +239,9 @@ public final class BlackjackChecker {
 
     public static void main(String[] args) {
         ProcessUserInput input = new ProcessUserInput(System.in, System.out);
-        final int numOfPlayers = input.getNumberOfPlayers();
+        final int players = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
-        BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
+        BlackjackChecker bc = new BlackjackChecker(players, info);
         bc.printResults();
     }
 

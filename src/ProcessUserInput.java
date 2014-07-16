@@ -3,16 +3,16 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public final class ProcessUserInput {
-    private final int MAX_POSSIBLE_CARDS = 21;
-    private int numberOfPlayers;
-    private String[][] playersInfo;
+    private static final int MAX_POSSIBLE_CARDS = 21;
+    private final String[][] playersInfo;
+    private final Scanner input;
     private String[] inputTokens;
-    private Scanner input;
+    private int players;
 
     ProcessUserInput(InputStream in, PrintStream out) {
         input = new Scanner(in);
         findNumberOfPlayers(out);
-        playersInfo = new String[numberOfPlayers][MAX_POSSIBLE_CARDS];
+        playersInfo = new String[players][MAX_POSSIBLE_CARDS];
         printInstructions(out);
         createMatrixFromInput(out);
         letUserVerifyData(out);
@@ -20,11 +20,11 @@ public final class ProcessUserInput {
 
     private void findNumberOfPlayers(PrintStream out) {
         out.println("Enter number of players: ");
-        numberOfPlayers = Integer.parseInt(input.nextLine());
+        players = Integer.parseInt(input.nextLine());
 
-        while (numberOfPlayers < 2) {
+        while (players < 2) {
             out.println("need at least 2 players, try again: ");
-            numberOfPlayers = Integer.parseInt(input.nextLine());
+            players = Integer.parseInt(input.nextLine());
         }
     }
 
@@ -38,11 +38,11 @@ public final class ProcessUserInput {
     }
 
     private void createMatrixFromInput(PrintStream out) {
-        for (int i = 0; i < numberOfPlayers; i++) {
+        for (int i = 0; i < players; i++) {
             out.print("Enter player name and their cards: ");
             String userInput = input.nextLine();
 
-            // Split at newline char, ":", and ",".
+            // Split at newline char "\n", ":", and ",".
             inputTokens = userInput.split("[\n:,]");
 
             copyTokensInto2dArray(i);
@@ -76,7 +76,7 @@ public final class ProcessUserInput {
 
     private void printUserData(PrintStream out) {
         String userData = "";
-        for (int row = 0; row < numberOfPlayers; row++) {
+        for (int row = 0; row < players; row++) {
             for (int col = 0; col < MAX_POSSIBLE_CARDS; col++) {
                 String element = playersInfo[row][col];
                 if (element != null) {
@@ -90,7 +90,7 @@ public final class ProcessUserInput {
     }
 
     public int getNumberOfPlayers() {
-        return numberOfPlayers;
+        return players;
     }
 
     public String[][] getPlayersInfo() {
