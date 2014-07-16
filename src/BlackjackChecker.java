@@ -118,7 +118,6 @@ public final class BlackjackChecker {
     }
 
     private void findWinner() {
-        highScore = 0;
         int indexOfWinner = -1;
         int playersWith5cardTrick = checkFiveCardTricks();
 
