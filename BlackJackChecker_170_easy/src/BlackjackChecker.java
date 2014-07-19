@@ -47,12 +47,9 @@ public final class BlackjackChecker {
     }
 
     private void findPlayerTotals() {
-        String element;
-        int sum, aceCards, totalCards;
-
         for (int row = 0; row < players; row++) {
             // reset
-            sum = aceCards = totalCards = 0;
+            int sum = 0, aceCards = 0, totalCards = 0;
 
             // Skipping first column, which contains player names.
             for (int col = 1; col < playersInfo[1].length; col++) {
@@ -60,7 +57,7 @@ public final class BlackjackChecker {
 
                 totalCards++;
 
-                element = playersInfo[row][col];
+                String element = playersInfo[row][col];
                 if (element.contains("Ace")) {
                     aceCards++;
                 } else {
