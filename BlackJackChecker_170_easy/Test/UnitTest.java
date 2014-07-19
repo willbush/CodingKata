@@ -2,11 +2,11 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 
-public class myTest {
+public class UnitTest {
     String lowScoreWinner, blackJack, fiveCardTrick, fiveCardTrick2,
             highScoreTie, fiveCardTrickTie;
 
-    public myTest() {
+    public UnitTest() {
         lowScoreWinner = "3\n" +
                 "Juno: Two of Hearts, Three of Spades, Four of Diamonds\n" +
                 "Bob: Two of Hearts, Three of Spades\n" +
