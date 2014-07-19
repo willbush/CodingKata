@@ -7,6 +7,7 @@ I decided not to limit the rows to 8 hence (Nx8), but the columns are limited to
 
 ###Input/Output example
 
+```
 Enter hex codes delineated with spaces:
 Enter empty line to quit the program.
 FF 81 BD A5 A5 BD 81 FF
@@ -45,3 +46,4 @@ xx  xxxx
 xx  x  x
 xx  x  x
 xx  x  x
+```
