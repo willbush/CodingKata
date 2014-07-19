@@ -10,11 +10,11 @@ public class HexToNx8Bitmap {
         System.out.println("Enter an empty line to quit the program.");
         String line;
         while ((line = input.readLine()) != null && line.length() > 0) {
-            printAsciiArt(line);
+            printBitMap(line);
         }
     }
 
-    private static void printAsciiArt(String line) {
+    private static void printBitMap(String line) {
         final String anyWhitespace = "\\s+";
         String[] inputTokens = line.trim().split(anyWhitespace);
 
@@ -23,7 +23,7 @@ public class HexToNx8Bitmap {
             String hexEntry = inputTokens[i];
             int entryValue = Integer.parseInt(hexEntry, hexRadix);
 
-            for (int bitIndex = 0; bitIndex < bits; bitIndex++) {
+            for (int bitIndex = bits; bitIndex >= 0; bitIndex--) {
                 if (thisBitIsNotZero(entryValue, bitIndex)) {
                     System.out.print("x");
                 } else {
