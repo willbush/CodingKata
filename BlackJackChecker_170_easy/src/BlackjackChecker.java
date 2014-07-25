@@ -234,7 +234,7 @@ public final class BlackjackChecker {
     }
 
     public static void main(String[] args) {
-        ProcessUserInput input = new ProcessUserInput(System.in, System.out);
+        ProcessUserInput input = new ProcessUserInput(System.in);
         final int players = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(players, info);

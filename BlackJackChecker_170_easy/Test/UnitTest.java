@@ -61,7 +61,7 @@ public class UnitTest {
     public void canGetLowScoreWinner() {
         final byte[] bytes = lowScoreWinner.getBytes();
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        ProcessUserInput input = new ProcessUserInput(in, System.out);
+        ProcessUserInput input = new ProcessUserInput(in);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
@@ -77,7 +77,7 @@ public class UnitTest {
     public void canBlackJack() {
         final byte[] bytes = blackJack.getBytes();
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        ProcessUserInput input = new ProcessUserInput(in, System.out);
+        ProcessUserInput input = new ProcessUserInput(in);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
@@ -92,7 +92,7 @@ public class UnitTest {
     public void canFiveCardTrick() {
         final byte[] bytes = fiveCardTrick.getBytes();
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        ProcessUserInput input = new ProcessUserInput(in, System.out);
+        ProcessUserInput input = new ProcessUserInput(in);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
@@ -108,7 +108,7 @@ public class UnitTest {
     public void canFiveCardTrickTie() {
         final byte[] bytes = fiveCardTrickTie.getBytes();
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        ProcessUserInput input = new ProcessUserInput(in, System.out);
+        ProcessUserInput input = new ProcessUserInput(in);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
@@ -124,7 +124,7 @@ public class UnitTest {
     public void canFiveCardTrick2() {
         final byte[] bytes = fiveCardTrick2.getBytes();
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        ProcessUserInput input = new ProcessUserInput(in, System.out);
+        ProcessUserInput input = new ProcessUserInput(in);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
@@ -138,7 +138,7 @@ public class UnitTest {
     public void canHighScoreTie() {
         final byte[] bytes = highScoreTie.getBytes();
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        ProcessUserInput input = new ProcessUserInput(in, System.out);
+        ProcessUserInput input = new ProcessUserInput(in);
         final int numOfPlayers = input.getNumberOfPlayers();
         final String[][] info = input.getPlayersInfo();
         BlackjackChecker bc = new BlackjackChecker(numOfPlayers, info);
