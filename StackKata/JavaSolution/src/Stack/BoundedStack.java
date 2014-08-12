@@ -25,7 +25,7 @@ public class BoundedStack implements Stack {
 		if (size == capacity) {
 			throw new Overflow();
 		}
-		this.elements[size++] = element;
+		elements[size++] = element;
 	}
 
 	@Override

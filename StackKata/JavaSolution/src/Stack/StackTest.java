@@ -72,6 +72,19 @@ public class StackTest {
 	}
 
 	@Test
+	public void checkZeroCapacitySize() {
+		stack = BoundedStack.Make(0);
+		assertTrue(stack.isEmpty());
+		assertEquals(0, stack.getSize());
+	}
+
+	@Test(expected = BoundedStack.Underflow.class)
+	public void popZeroCapacityStack() throws Exception {
+		stack = BoundedStack.Make(0);
+		stack.pop();
+	}
+
+	@Test
 	public void pushOneAndCheckTop() throws Exception {
 		stack.push(1);
 		assertEquals(1, stack.top());
