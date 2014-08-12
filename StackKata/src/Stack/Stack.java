@@ -2,28 +2,28 @@ package Stack;
 
 public interface Stack {
 
-    boolean isEmpty();
+	boolean isEmpty();
 
-    int getSize();
+	int getSize();
 
-    void push(int element);
+	void push(int element);
 
-    int pop();
+	int pop();
 
-    int top();
+	int top();
 
-    Integer find(int element);
+	Integer find(int element);
 
-    public static class IllegalCapacity extends RuntimeException {
-    }
+	public static class IllegalCapacity extends RuntimeException {
+	}
 
-    public static class Empty extends RuntimeException {
-    }
+	public static class Empty extends RuntimeException {
+	}
 
-    public static class Overflow extends RuntimeException {
-    }
+	public static class Overflow extends RuntimeException {
+	}
 
-    public static class Underflow extends RuntimeException {
-    }
+	public static class Underflow extends RuntimeException {
+	}
 }
 

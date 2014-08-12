@@ -1,99 +1,99 @@
 package Stack;
 
 public class BoundedStack implements Stack {
-    private int size;
-    private int capacity;
-    private int elements[];
+	private int size;
+	private int capacity;
+	private int elements[];
 
-    public static Stack Make(int capacity) {
-        if (capacity < 0) {
-            throw new IllegalCapacity();
-        }
-        if (capacity == 0) {
-            return new ZeroCapacityStack();
-        }
-        return new BoundedStack(capacity);
-    }
+	public static Stack Make(int capacity) {
+		if (capacity < 0) {
+			throw new IllegalCapacity();
+		}
+		if (capacity == 0) {
+			return new ZeroCapacityStack();
+		}
+		return new BoundedStack(capacity);
+	}
 
-    private BoundedStack(int capacity) {
-        this.capacity = capacity;
-        elements = new int[capacity];
-    }
+	private BoundedStack(int capacity) {
+		this.capacity = capacity;
+		elements = new int[capacity];
+	}
 
-    @Override
-    public void push(int element) {
-        if (size == capacity) {
-            throw new Overflow();
-        }
-        this.elements[size++] = element;
-    }
+	@Override
+	public void push(int element) {
+		if (size == capacity) {
+			throw new Overflow();
+		}
+		this.elements[size++] = element;
+	}
 
-    @Override
-    public int pop() {
-        if (isEmpty()) {
-            throw new Underflow();
-        }
-        return elements[--size];
-    }
+	@Override
+	public int pop() {
+		if (isEmpty()) {
+			throw new Underflow();
+		}
+		return elements[--size];
+	}
 
-    @Override
-    public int top() {
-        if (isEmpty()) {
-            throw new Empty();
-        }
-        return elements[size - 1];
-    }
+	@Override
+	public int top() {
+		if (isEmpty()) {
+			throw new Empty();
+		}
+		return elements[size - 1];
+	}
 
-    @Override
-    public Integer find(int element) {
-        for (int i = size - 1; i >= 0; i--) {
-            if (elements[i] == element) {
-                return (size - 1) - i;
-            }
-        }
-        return null;
-    }
+	@Override
+	public Integer find(int element) {
+		for (int i = size - 1; i >= 0; i--) {
+			if (elements[i] == element) {
+				return (size - 1) - i;
+			}
+		}
+		return null;
+	}
 
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
+	@Override
+	public boolean isEmpty() {
+		return size == 0;
+	}
 
-    @Override
-    public int getSize() {
-        return size;
-    }
+	@Override
+	public int getSize() {
+		return size;
+	}
 
-    private static class ZeroCapacityStack implements Stack {
+	private static class ZeroCapacityStack implements Stack {
 
-        @Override
-        public boolean isEmpty() {
-            return true;
-        }
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
 
-        @Override
-        public int getSize() {
-            return 0;
-        }
+		@Override
+		public int getSize() {
+			return 0;
+		}
 
-        @Override
-        public void push(int element) {
-            throw new BoundedStack.Overflow();
-        }
+		@Override
+		public void push(int element) {
+			throw new BoundedStack.Overflow();
+		}
 
-        @Override
-        public int pop() {
-            throw new BoundedStack.Underflow();
-        }
+		@Override
+		public int pop() {
+			throw new BoundedStack.Underflow();
+		}
 
-        @Override
-        public int top() {
-            throw new Empty();
-        }
+		@Override
+		public int top() {
+			throw new Empty();
+		}
 
-        @Override
-        public Integer find(int element) {
-            return null;
-        }
-    }
+		@Override
+		public Integer find(int element) {
+			return null;
+		}
+	}
 }
