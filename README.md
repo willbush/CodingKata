@@ -1,5 +1,6 @@
-DailyProgrammer
+CodingKata
 ===============
 
-my solutions /r/dailyprogrammer exercises
+This repo contains some of my coding katas. In addition, this repo also 
+containes some solutions to /r/dailyprogrammer exercises
 using throw away reddit user name Torfy (http://www.reddit.com/user/torfy).
