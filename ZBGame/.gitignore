@@ -1,0 +1,19 @@
+*.class
+*.swp
+*.apk
+
+*/tmp/**
+*.tmp/**
+*/bin/**
+*/.settings/**
+.gradle/**
+.settings/**
+*/war/**
+*/gen/**
+
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
