@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FizzBuzzKata;
 
 namespace FizzBuzzTest {
@@ -9,43 +8,28 @@ namespace FizzBuzzTest {
 		FizzBuzz fb = new FizzBuzz();
 
 		[TestMethod]
-		public void zeroReturnsFizzBuzz() {
-			Assert.AreEqual("FizzBuzz", fb.evaluate(0));
+		public void eval_zero_returnsFizzBuzz() {
+			Assert.AreEqual("FizzBuzz", fb.eval(0));
 		}
 
 		[TestMethod]
-		public void oneReturnsOne() {
-			Assert.AreEqual("1", fb.evaluate(1));
+		public void eval_one_returnsOne() {
+			Assert.AreEqual("1", fb.eval(1));
 		}
 
 		[TestMethod]
-		public void threeReturnsFizz() {
-			Assert.AreEqual("Fizz", fb.evaluate(3));
+		public void eval_three_returnsFizz() {
+			Assert.AreEqual("Fizz", fb.eval(3));
 		}
 
 		[TestMethod]
-		public void fiveReturnsBuzz() {
-			Assert.AreEqual("Buzz", fb.evaluate(5));
+		public void eval_five_returnsBuzz() {
+			Assert.AreEqual("Buzz", fb.eval(5));
 		}
 
 		[TestMethod]
-		public void sevenReturns7() {
-			Assert.AreEqual("7", fb.evaluate(7));
-		}
-
-		[TestMethod]
-		public void tenReturnsBuzz() {
-			Assert.AreEqual("Buzz", fb.evaluate(10));
-		}
-
-		[TestMethod]
-		public void fifteenReturnsFizzBuzz() {
-			Assert.AreEqual("FizzBuzz", fb.evaluate(15));
-		}
-
-		[TestMethod]
-		public void fourtyFiveReturnsFizzBuzz() {
-			Assert.AreEqual("FizzBuzz", fb.evaluate(45));
+		public void eval_fifteen_returnsFizzBuzz() {
+			Assert.AreEqual("FizzBuzz", fb.eval(15));
 		}
 	}
 }

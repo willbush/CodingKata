@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FizzBuzzKata {
 	public class FizzBuzz {
@@ -25,25 +21,28 @@ namespace FizzBuzzKata {
 		public void printResults() {
 			if (boundingValue > 0) {
 				for (int i = 1; i <= boundingValue; i++) {
-					Console.WriteLine(evaluate(i));
+					Console.WriteLine(eval(i));
 				}
 			} else {
 				for (int i = -1; i >= boundingValue; i--) {
-					Console.WriteLine(evaluate(i));
+					Console.WriteLine(eval(i));
 				}
 			}
 		}
 
-		public string evaluate(int n) {
-			if (isMultipleOf3(n) && isMultipleOf5(n)) {
-				return "FizzBuzz";
-			} else if (isMultipleOf3(n)) {
-				return "Fizz";
-			} else if (isMultipleOf5(n)) {
-				return "Buzz";
-			} else {
-				return n.ToString();
+		public string eval(int n) {
+			string result = "";
+
+			if (isMultipleOf3(n)) {
+				result += "Fizz";
 			}
+			if (isMultipleOf5(n)) {
+				result += "Buzz";
+			}
+			if (result == "") {
+				result += n;
+			}
+			return result;
 		}
 
 		private static bool isMultipleOf3(int n) {
