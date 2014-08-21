@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Ninject;
-using Moq;
+﻿using Ninject;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Concrete;
-using SportsStore.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace SportsStore.WebUI.Infrastructure {
+
 	public class NinjectDependencyResolver : IDependencyResolver {
 		private IKernel kernel;
 

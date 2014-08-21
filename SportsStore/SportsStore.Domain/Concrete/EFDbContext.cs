@@ -2,7 +2,9 @@
 using System.Data.Entity;
 
 namespace SportsStore.Domain.Concrete {
-	class EFDbContext : DbContext {
+
+	internal class EFDbContext : DbContext {
+
 		public DbSet<Product> Products { get; set; }
 	}
 }

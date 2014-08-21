@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-using SportsStore.Domain.Entities;
+﻿using SportsStore.Domain.Entities;
+using System.Collections.Generic;
 
 namespace SportsStore.Domain.Abstract {
+
 	public interface IProductsRepository {
+
 		IEnumerable<Product> Products { get; }
 	}
 }

@@ -3,14 +3,14 @@ using Moq;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Entities;
 using SportsStore.WebUI.Controllers;
-using SportsStore.WebUI.Models;
 using SportsStore.WebUI.HtmlHelpers;
+using SportsStore.WebUI.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace SportsStore.Tests {
+
 	[TestClass]
 	public class UnitTest1 {
 
