@@ -17,7 +17,7 @@ namespace SportsStore.Tests {
 
 		[TestMethod]
 		public void Can_Paginate() {
-			ProductsListViewModel model = getListViewModel();
+			ProductsListViewModel model = getListViewModel(page: 2);
 			Product[] prodArray = model.Products.ToArray();
 
 			Assert.IsTrue(prodArray.Length == 2);
@@ -27,7 +27,7 @@ namespace SportsStore.Tests {
 
 		[TestMethod]
 		public void Can_Send_Pagination_View_Model() {
-			ProductsListViewModel model = getListViewModel();
+			ProductsListViewModel model = getListViewModel(page: 2);
 			PagingInfo pageInfo = model.PagingInfo;
 
 			Assert.AreEqual(pageInfo.CurrentPage, 2);
@@ -59,12 +59,40 @@ namespace SportsStore.Tests {
 			string[] results = ((IEnumerable<string>)target.Menu().Model).ToArray();
 
 			Assert.AreEqual(results.Length, 3);
-			Assert.AreEqual(results[0], "Apples");
-			Assert.AreEqual(results[1], "Oranges");
-			Assert.AreEqual(results[2], "Plums");
+			Assert.AreEqual("Apples", results[0]);
+			Assert.AreEqual("Oranges", results[1]);
+			Assert.AreEqual("Plums", results[2]);
 		}
 
-		private static ProductsListViewModel getListViewModel(string category = null, int page = 2) {
+		[TestMethod]
+		public void Can_Highlight_Selected_Category() {
+			Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
+			mock.Setup(m => m.Products).Returns(new Product[] {
+				new Product {ProductID = 1, Name = "P1", Category = "Apples"},
+				new Product {ProductID = 2, Name = "P2", Category = "Oranges"},
+			});
+
+			NavController controller = new NavController(mock.Object);
+			string categoryToSelect = "Apples";
+			string result = controller.Menu(categoryToSelect).ViewBag.SelectedCategory;
+
+			Assert.AreEqual(categoryToSelect, result);
+		}
+
+		[TestMethod]
+		public void Can_Create_Category_Specific_Product_Count() {
+			int category1 = getListViewModel("Cat1").PagingInfo.TotalItems;
+			int category2 = getListViewModel("Cat2").PagingInfo.TotalItems;
+			int category3 = getListViewModel("Cat3").PagingInfo.TotalItems;
+			int allCategories = getListViewModel().PagingInfo.TotalItems;
+
+			Assert.AreEqual(2, category1);
+			Assert.AreEqual(2, category2);
+			Assert.AreEqual(1, category3);
+			Assert.AreEqual(5, allCategories);
+		}
+
+		private static ProductsListViewModel getListViewModel(string category = null, int page = 1) {
 			Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
 			mock.Setup(m => m.Products).Returns(new Product[] {
 				new Product { ProductID = 1, Name = "P1", Category = "Cat1"},
