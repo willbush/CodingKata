@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ServiceModel;
 
 namespace ChattingInterfaces {
 
@@ -11,5 +6,8 @@ namespace ChattingInterfaces {
 
 		[OperationContract]
 		void GetMessage(string message, string senderUserName);
+
+		[OperationContract]
+		void GetUpdate(int value, string userName);
 	}
 }
