@@ -10,6 +10,6 @@ namespace ChattingInterfaces {
 	public interface IClient {
 
 		[OperationContract]
-		void Placeholder();
+		void GetMessage(string message, string senderUserName);
 	}
 }
