@@ -8,10 +8,10 @@ namespace ChattingServer {
 
 	[ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
 	public class ChattingService : IChattingService {
-		public ConcurrentDictionary<string, ConnectedClient> _connectedClients = new ConcurrentDictionary<string, ConnectedClient>();
+		public ConcurrentDictionary<string, ConnectedClient> connectedClients = new ConcurrentDictionary<string, ConnectedClient>();
 
 		public int Login(string userName) {
-			int status = getDuplicateUserNameStatus(userName);
+			int status = GetDuplicateUserNameStatus(userName);
 			if (status == 0) AddClient(userName);
 			return status;
 		}
@@ -22,7 +22,7 @@ namespace ChattingServer {
 			ConnectedClient newClient = new ConnectedClient();
 			newClient.connection = establishedUserConnection;
 			newClient.UserName = userName;
-			_connectedClients.TryAdd(userName, newClient);
+			connectedClients.TryAdd(userName, newClient);
 			UpdateHelper(0, newClient.UserName);
 
 			Console.ForegroundColor = ConsoleColor.Green;
@@ -30,8 +30,8 @@ namespace ChattingServer {
 			Console.ResetColor();
 		}
 
-		private int getDuplicateUserNameStatus(string userName) {
-			foreach (var client in _connectedClients) {
+		private int GetDuplicateUserNameStatus(string userName) {
+			foreach (var client in connectedClients) {
 				if (client.Key.ToLower() == userName.ToLower()) {
 					return 1;
 				}
@@ -40,7 +40,7 @@ namespace ChattingServer {
 		}
 
 		public void SendMessageToAll(string message, string userName) {
-			foreach (var client in _connectedClients) {
+			foreach (var client in connectedClients) {
 				if (client.Key.ToLower() != userName.ToLower()) {
 					client.Value.connection.GetMessage(message, userName);
 				}
@@ -51,7 +51,7 @@ namespace ChattingServer {
 			ConnectedClient client = GetMyClient();
 			if (client != null) {
 				ConnectedClient removedClient;
-				_connectedClients.TryRemove(client.UserName, out removedClient);
+				connectedClients.TryRemove(client.UserName, out removedClient);
 				UpdateHelper(1, removedClient.UserName);
 
 				Console.ForegroundColor = ConsoleColor.Cyan;
@@ -62,7 +62,7 @@ namespace ChattingServer {
 
 		public ConnectedClient GetMyClient() {
 			var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClient>();
-			foreach (var client in _connectedClients) {
+			foreach (var client in connectedClients) {
 				if (client.Value.connection == establishedUserConnection) {
 					return client.Value;
 				}
@@ -71,7 +71,7 @@ namespace ChattingServer {
 		}
 
 		private void UpdateHelper(int value, string userName) {
-			foreach (var client in _connectedClients) {
+			foreach (var client in connectedClients) {
 				if (client.Value.UserName.ToLower() != userName.ToLower()) {
 					client.Value.connection.GetUpdate(value, userName);
 				}
@@ -80,7 +80,7 @@ namespace ChattingServer {
 
 		public List<string> GetCurrentUsers() {
 			List<string> listOfUsers = new List<string>();
-			foreach (var client in _connectedClients) {
+			foreach (var client in connectedClients) {
 				listOfUsers.Add(client.Value.UserName);
 			}
 			return listOfUsers;
