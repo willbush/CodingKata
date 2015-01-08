@@ -11,19 +11,19 @@ namespace ChattingClient {
 	/// </summary>
 	public partial class MainWindow : Window {
 		public static IChattingService Server;
-		private static DuplexChannelFactory<IChattingService> _channelFactory;
+		private static DuplexChannelFactory<IChattingService> channelFactory;
 
 		public MainWindow() {
 			InitializeComponent();
-			_channelFactory = new DuplexChannelFactory<IChattingService>(new ClientCallback(), "ChattingServiceEndPoint");
-			Server = _channelFactory.CreateChannel();
+			channelFactory = new DuplexChannelFactory<IChattingService>(new ClientCallback(), "ChattingServiceEndPoint");
+			Server = channelFactory.CreateChannel();
 		}
 
-		private void LoginButton_Click(object sender, RoutedEventArgs e) {
+		private void LoginButtonClick(object sender, RoutedEventArgs e) {
 			LoginSubmit();
 		}
 
-		private void Login_KeyUp(object sender, KeyEventArgs e) {
+		private void LoginKeyUp(object sender, KeyEventArgs e) {
 			if (e.Key == Key.Enter) LoginSubmit();
 		}
 
@@ -41,11 +41,11 @@ namespace ChattingClient {
 			}
 		}
 
-		private void SendButton_Click(object sender, RoutedEventArgs e) {
+		private void SendButtonClick(object sender, RoutedEventArgs e) {
 			InputSend();
 		}
 
-		private void Input_KeyUp(object sender, KeyEventArgs e) {
+		private void InputKeyUp(object sender, KeyEventArgs e) {
 			if (e.Key == Key.Enter) InputSend();
 		}
 
@@ -62,7 +62,7 @@ namespace ChattingClient {
 			TextDisplayTextBox.ScrollToEnd();
 		}
 
-		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+		private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e) {
 			Server.Logout();
 		}
 
