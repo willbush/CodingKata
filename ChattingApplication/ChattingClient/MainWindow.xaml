@@ -1,0 +1,15 @@
+﻿<Window x:Class="ChattingClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525" Closing="WindowClosing">
+	<Grid>
+		<Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Left" Margin="175,10,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="LoginButtonClick" />
+		<TextBox x:Name="UserNameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" KeyUp="LoginKeyUp" />
+		<TextBox x:Name="TextDisplayTextBox" HorizontalAlignment="Left" Height="243" Margin="10,38,0,0" VerticalAlignment="Top" Width="405" />
+		<Button x:Name="SendButton" Content="Send&#xD;&#xA;" HorizontalAlignment="Left" Margin="420,286,0,0" VerticalAlignment="Top" Width="63.5" Height="23" Click="SendButtonClick" />
+		<TextBox x:Name="InputTextBox" HorizontalAlignment="Left" Height="23" Margin="10,286,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="405" KeyUp="InputKeyUp" />
+		<Label x:Name="WelcomeLabel" Content="" HorizontalAlignment="Left" Margin="282.007,5.5,0,0" VerticalAlignment="Top" Width="132.993" FontSize="14.667" Height="27.5" />
+		<ListBox x:Name="UsersListBox" HorizontalAlignment="Left" Height="243" Margin="420,38,0,0" VerticalAlignment="Top" Width="87" />
+		<Label Content="Users:" HorizontalAlignment="Left" Margin="420,14.5,0,0" VerticalAlignment="Top" Width="41.38" Height="23.5" />
+	</Grid>
+</Window>

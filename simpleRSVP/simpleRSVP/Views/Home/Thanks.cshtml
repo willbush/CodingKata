@@ -1,0 +1,48 @@
+﻿@model simpleRSVP.Models.GuestResponse
+
+@{
+  Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+  <link href="~/Content/bootstrap.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Thanks</title>
+  <style>
+    body {
+      background-color: #F1F1F1;
+    }
+  </style>
+</head>
+<body>
+  <div class="text-center">
+    <h1>Thank you, @Model.Name!</h1>
+    <div class="lead">
+      @if (Model.WillAttend == true) {
+        @:It's great that you're coming.
+			} else {
+        @:Sorry to hear you cannot make it.
+			}
+      @{
+        try {
+          WebMail.SmtpServer = "smtp.example.com";
+          WebMail.SmtpPort = 587;
+          WebMail.EnableSsl = true;
+          WebMail.UserName = "smtpUserName";
+          WebMail.Password = "smtpPassword";
+          WebMail.From = "rsvps@example.com";
+
+          WebMail.Send("party-host@example.com", "RSVP Notification",
+            Model.Name + " is " + ((Model.WillAttend ?? false) ? "" : "not") + "attending");
+        } catch (Exception) {
+          <br />
+          @:<b>Sorry, an error occured when attempting to the RSVP email.</b>
+        }
+      }
+    </div>
+  </div>
+</body>
+</html>
