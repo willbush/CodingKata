@@ -1,0 +1,3 @@
+Waiter::~Waiter() {
+    delete[] tables;
+}
