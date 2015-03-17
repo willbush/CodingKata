@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/will/ClionProjects/theater/SeatSelection.cpp
+iostream
+-
+sstream
+-
+SeatSelection.h
+/home/will/ClionProjects/theater/SeatSelection.h
+
+/home/will/ClionProjects/theater/SeatSelection.h
+iostream
+-
+
+/home/will/ClionProjects/theater/tests/unitTest.cpp
+../SeatSelection.cpp
+/home/will/ClionProjects/theater/SeatSelection.cpp
+gtest/gtest.h
+-
+
