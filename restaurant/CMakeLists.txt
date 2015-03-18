@@ -10,7 +10,6 @@ set(SOURCE_FILES
     restaurant.cpp
     Table.cpp
     Table.h
-    testTokenizer.cpp
     Tokenizer.cpp
     Tokenizer.h
     Waiter.cpp

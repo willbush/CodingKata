@@ -1,3 +1,3 @@
-Waiter::~Waiter() {
-    delete[] tables;
-}
+//Waiter::~Waiter() {
+//    delete[] tables;
+//}

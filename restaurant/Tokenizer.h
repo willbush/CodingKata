@@ -43,14 +43,14 @@ protected:
 
 
 private:
-    void skipLeadingDelimiters();
-
-    bool isDelimiter(char c);
-
     std::string buffer;
     std::string token;
     std::string delimiter;
     std::string::const_iterator currPos;
+
+    void skipLeadingDelimiters();
+
+    bool isDelimiter(char c);
 
     void appendUntilDelimiterIsMeet();
 };
