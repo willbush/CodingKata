@@ -1,11 +1,25 @@
-//since maxSeats is defined as const, you can set only once
-//using this mechanism:
-Table::Table(int tblid, int mseats) : maxSeats(mseats) {
-    // maxSeats = mseats; <-- now allowed! because maxSeats is const.
+#include "Table.h"
+
+Table::Table(int tableID, int maxSeats) : maxSeats(maxSeats) {
+
 }
 
-// multiple const variables in the class:
-// let us assume "const int a;" in the class too.
-// Table::Table(int tblid, int mseats, int b) 
-// 								: maxSeats(mseats), a(b) {
+void Table::assignWaiter(Waiter *person) {
 
+}
+
+void Table::partySeated(int numOfPeople) {
+
+}
+
+void Table::partyOrdered(Order *order) {
+
+}
+
+void Table::partyServed(void) {
+
+}
+
+void Table::partyCheckout(void) {
+
+}

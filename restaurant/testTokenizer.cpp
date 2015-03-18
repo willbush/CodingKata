@@ -9,8 +9,9 @@ using namespace std;
 int main() {
 
     double x, y, z;
+    bool done = false;
 
-    while (1) {
+    while (!done) {
         string line;
 
         /*
@@ -25,7 +26,6 @@ int main() {
         cout << "Enter input (3 numbers):";
         getline(cin, line);
 
-// 
         // parse the input line
         istringstream input(line);
         if (input >> x >> y >> z)
@@ -52,6 +52,7 @@ int main() {
         str2.setDelimiter(" ");
         if (str2.next() == "")
             cout << "That was empty line." << endl;
+        done = true;
 
     }
 }
