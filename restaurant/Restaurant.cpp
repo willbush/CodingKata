@@ -1,6 +1,6 @@
 #include "Restaurant.h"
 
-Restaurant::Restaurant(string configLoc, string activityLoc)
+Restaurant::Restaurant(string const &configLoc, string const &activityLoc)
         : CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
 }
 
@@ -10,11 +10,6 @@ void Restaurant::run() {
 
 void Restaurant::initFromConfig() {
     configFile.open(CONFIG_LOC.c_str(), ios::in);
-
-    if (configFile.fail()) {
-        cout << CONFIG_LOC << "not found." << endl;
-        exit(1);
-    }
 
     countInputEntries();
     initializeTablesAndWaiters();
@@ -94,7 +89,7 @@ void Restaurant::updateSectionAndLine(string &line) {
     }
 }
 
-bool Restaurant::lineContains(string target, string &line) {
+bool Restaurant::lineContains(string const &target, string const &line) {
     return line.find(target, 0) != string::npos;
 }
 

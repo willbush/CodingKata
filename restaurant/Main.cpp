@@ -1,12 +1,23 @@
 #include <iostream>
 #include "Restaurant.h"
 
+bool filesExist(string const &configLocation, string const &activityLocation);
+
 int main() {
     std::string configLocation = "config.txt";
     std::string activityLocation = "activity.txt";
 
-    Restaurant program(configLocation, activityLocation);
-    program.run();
+    if (filesExist(configLocation, activityLocation)) {
+        Restaurant program(configLocation, activityLocation);
+        program.run();
+    } else {
+        cout << "config.txt or activity.txt not found in the working directory of Main.cpp\n";
+        return 1;
+    }
 
     return 0;
+}
+
+bool filesExist(string const &configLocation, string const &activityLocation) {
+    return ifstream(configLocation) && ifstream(activityLocation);
 }
