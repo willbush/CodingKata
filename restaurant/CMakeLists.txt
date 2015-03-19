@@ -4,6 +4,7 @@ project(Restaurant)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
+    Main.cpp
     Menu.cpp
     Menu.h
     MenuItem.cpp
@@ -19,4 +20,4 @@ set(SOURCE_FILES
     Waiter.cpp
     Waiter.h)
 
-add_executable(Restaurant ${SOURCE_FILES})
+add_executable(Main ${SOURCE_FILES})

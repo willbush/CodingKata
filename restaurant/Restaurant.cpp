@@ -1,13 +1,7 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include "Table.h"
 #include "Restaurant.h"
 
-using namespace std;
-
-Restaurant::Restaurant(string config, string activity)
-        : CONFIG_LOC(config), ACTIVITY_LOC(activity) {
+Restaurant::Restaurant(string configLoc, string activityLoc)
+        : CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
 }
 
 void Restaurant::run() {
@@ -128,12 +122,3 @@ Restaurant::~Restaurant() {
     delete menu;
 }
 
-int main() {
-    string configLocation = "config.txt";
-    string activityLocation = "activity.txt";
-
-    Restaurant program(configLocation, activityLocation);
-    program.run();
-
-    return 0;
-}
