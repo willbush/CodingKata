@@ -1,51 +1,20 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <cstdlib>
 #include "Table.h"
-#include "Tokenizer.h"
+#include "Restaurant.h"
 
 using namespace std;
 
-const string CONFIG_LOC = "config.txt";
-const string ACTIVITY_LOC = "activity.txt";
-unsigned int tableEntryCount = 0;
-unsigned int waiterEntryCount = 0;
-unsigned int menuEntryCount = 0;
-bool foundTableSection = false;
-bool foundWaitersSection = false;
-bool foundMenuSection = false;
-Table **tables;
-Waiter **waiters;
-Menu *menu;
-fstream configFile;
-
-void countInputEntries();
-
-bool lineContains(string, string &);
-
-bool isInTableSection();
-
-bool isInWaiterSection();
-
-bool isInMenuSection();
-
-void initFromConfig();
-
-void initializeTablesAndWaiters();
-
-void updateSectionAndLine(string &line);
-
-void freeDynamicMemory();
-
-int main() {
-    initFromConfig();
-
-    freeDynamicMemory();
-    return 0;
+Restaurant::Restaurant(string config, string activity)
+        : CONFIG_LOC(config), ACTIVITY_LOC(activity) {
 }
 
-void initFromConfig() {
+void Restaurant::run() {
+    initFromConfig();
+}
+
+void Restaurant::initFromConfig() {
     configFile.open(CONFIG_LOC.c_str(), ios::in);
 
     if (configFile.fail()) {
@@ -59,7 +28,7 @@ void initFromConfig() {
     configFile.close();
 }
 
-void countInputEntries() {
+void Restaurant::countInputEntries() {
     string line;
 
     while (getline(configFile, line)) {
@@ -67,7 +36,6 @@ void countInputEntries() {
 
         istringstream input(line);
         int tableNum = -1, maxSeats = -1;
-
 
         if (isInTableSection() && input >> tableNum >> maxSeats)
             tableEntryCount++;
@@ -82,7 +50,7 @@ void countInputEntries() {
     configFile.seekg(0, ios::beg); // reset file to the top
 }
 
-void initializeTablesAndWaiters() {
+void Restaurant::initializeTablesAndWaiters() {
     foundMenuSection = foundTableSection = foundWaitersSection = false; // reset
     tables = new Table *[tableEntryCount];
     waiters = new Waiter *[waiterEntryCount];
@@ -93,7 +61,6 @@ void initializeTablesAndWaiters() {
     while (getline(configFile, line)) {
         updateSectionAndLine(line);
 
-        Tokenizer t(line, " ");
         istringstream input(line);
         int tableNum = -1, maxSeats = -1;
 
@@ -105,6 +72,7 @@ void initializeTablesAndWaiters() {
             string name, tableList;
             input >> name >> tableList;
             waiters[waiter_i] = new Waiter(name, tableList, tables[0]);
+            waiter_i++;
         }
         else if (isInMenuSection() && line != "") {
             string code, name;
@@ -117,7 +85,7 @@ void initializeTablesAndWaiters() {
     configFile.seekg(0, ios::beg); // reset file to the top
 }
 
-void updateSectionAndLine(string &line) {
+void Restaurant::updateSectionAndLine(string &line) {
     if (!foundTableSection && lineContains("Tables:", line)) {
         foundTableSection = true;
         getline(configFile, line); // change line to next line
@@ -132,23 +100,23 @@ void updateSectionAndLine(string &line) {
     }
 }
 
-bool lineContains(string target, string &line) {
+bool Restaurant::lineContains(string target, string &line) {
     return line.find(target, 0) != string::npos;
 }
 
-bool isInTableSection() {
+bool Restaurant::isInTableSection() {
     return foundTableSection && !foundWaitersSection && !foundMenuSection;
 }
 
-bool isInWaiterSection() {
+bool Restaurant::isInWaiterSection() {
     return foundTableSection && foundWaitersSection && !foundMenuSection;
 }
 
-bool isInMenuSection() {
+bool Restaurant::isInMenuSection() {
     return foundTableSection && foundWaitersSection && foundMenuSection;
 }
 
-void freeDynamicMemory() {
+Restaurant::~Restaurant() {
     for (int i = 0; i < tableEntryCount; i++) {
         delete tables[i];
     }
@@ -158,4 +126,14 @@ void freeDynamicMemory() {
     delete[] waiters;
     delete[] tables;
     delete menu;
+}
+
+int main() {
+    string configLocation = "config.txt";
+    string activityLocation = "activity.txt";
+
+    Restaurant program(configLocation, activityLocation);
+    program.run();
+
+    return 0;
 }

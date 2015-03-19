@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(restaurant)
+project(Restaurant)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -10,7 +10,8 @@ set(SOURCE_FILES
     MenuItem.h
     Order.cpp
     Order.h
-    restaurant.cpp
+    Restaurant.cpp
+    Restaurant.h
     Table.cpp
     Table.h
     Tokenizer.cpp
@@ -18,4 +19,4 @@ set(SOURCE_FILES
     Waiter.cpp
     Waiter.h)
 
-add_executable(restaurant ${SOURCE_FILES})
+add_executable(Restaurant ${SOURCE_FILES})
