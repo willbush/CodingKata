@@ -4,8 +4,11 @@ project(restaurant)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
+    Menu.cpp
     Menu.h
+    MenuItem.cpp
     MenuItem.h
+    Order.cpp
     Order.h
     restaurant.cpp
     Table.cpp

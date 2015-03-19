@@ -16,7 +16,7 @@ public:
     int addItem(MenuItem *itemp); // add one item at a time to the order
 
     //mechanism #2: order string
-    Order(string orderList, Menu *menu); // alternate way to setup the order
+//    Order(string orderList, Menu *menu); // alternate way to setup the order
 
     ~Order();
 };

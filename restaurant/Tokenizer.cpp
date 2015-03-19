@@ -9,72 +9,71 @@
 * the delimiters. Note that the delimiter string can hold multiple characters.
 *
 *  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
-* CREATED: 2005-05-25
-* UPDATED: 2008-01-22
 */
 
 #include "Tokenizer.h"
 
+using namespace std;
+
 
 Tokenizer::Tokenizer() : buffer(""), token(""), delimiter(DEFAULT_DELIMITER) {
-    currPos = buffer.begin();
+    currentPosition = buffer.begin();
 }
 
-Tokenizer::Tokenizer(const std::string &str, const std::string &delimiter)
-        : buffer(str), token(""), delimiter(delimiter) {
-    currPos = buffer.begin();
+Tokenizer::Tokenizer(const string &buffer, const string &delimiter)
+        : buffer(buffer), token(""), delimiter(delimiter) {
+    currentPosition = buffer.begin();
 }
 
 Tokenizer::~Tokenizer() {
 }
 
-
 /*
 * reset string buffer, delimiter and the cursor position
 */
-void Tokenizer::set(const std::string &str, const std::string &delimiter) {
-    this->buffer = str;
+void Tokenizer::set(const string &buffer, const string &delimiter) {
+    this->buffer = buffer;
     this->delimiter = delimiter;
-    this->currPos = buffer.begin();
+    currentPosition = buffer.begin();
 }
 
-void Tokenizer::setString(const std::string &str) {
-    this->buffer = str;
-    this->currPos = buffer.begin();
+void Tokenizer::setBuffer(string const &buffer) {
+    this->buffer = buffer;
+    currentPosition = buffer.begin();
 }
 
-void Tokenizer::setDelimiter(const std::string &delimiter) {
+void Tokenizer::setDelimiter(const string &delimiter) {
     this->delimiter = delimiter;
-    this->currPos = buffer.begin();
+    currentPosition = buffer.begin();
 }
 
 /*
 * return the next token
 * If cannot find a token anymore, return "".
 */
-std::string Tokenizer::next() {
+string Tokenizer::next() {
     if (buffer.size() <= 0) return ""; // skip if buffer is empty
 
     token.clear(); // reset token string
 
-    this->skipLeadingDelimiters();
-
+    skipLeadingDelimiters();
     appendUntilDelimiterIsMeet();
+
     return token;
 }
 
+void Tokenizer::skipLeadingDelimiters() {
+    while (currentPosition != buffer.end() && isDelimiter(*currentPosition))
+        ++currentPosition;
+}
+
 void Tokenizer::appendUntilDelimiterIsMeet() {
-    while (currPos != buffer.end() && !isDelimiter(*currPos)) {
-        token += *currPos;
-        ++currPos;
+    while (currentPosition != buffer.end() && !isDelimiter(*currentPosition)) {
+        token += *currentPosition;
+        ++currentPosition;
     }
 }
 
-void Tokenizer::skipLeadingDelimiters() {
-    while (currPos != buffer.end() && isDelimiter(*currPos))
-        ++currPos;
-}
-
 bool Tokenizer::isDelimiter(char c) {
-    return (delimiter.find(c) != std::string::npos);
+    return (delimiter.find(c) != string::npos);
 }

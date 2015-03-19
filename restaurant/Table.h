@@ -24,8 +24,10 @@ public:
     void assignWaiter(Waiter *person); // initially no waiter
     void partySeated(int numOfPeople); // process IDLE --> SEATED
     void partyOrdered(Order *order);  // process SEATED --> ORDERED
-    void partyServed(void); // process ORDERED --> SERVED
-    void partyCheckout(void); // process SERVED --> IDLE
+    void partyServed(); // process ORDERED --> SERVED
+    void partyCheckout(); // process SERVED --> IDLE
+    void print();
+    ~Table();
 };
 
 #endif

@@ -10,11 +10,10 @@ private:
     MenuItem *menup;
 
 public:
-
     Menu(int items = 100); //constructor to allocate memory
     void addItem(MenuItem item); //add one menu item at a time
     MenuItem *findItem(string code); //lookup operation
-    ~Menu(); //destructor
+    ~Menu();
 };
 
 // Usage:

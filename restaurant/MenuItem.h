@@ -13,7 +13,7 @@ private:
     double price; // price of the item
 
 public:
-    MenuItem(string mcode = "", string mname = "", double mprice = 0);
+    MenuItem(string code = "", string name = "", double price = 0);
     //add get methods, etc.
 };
 

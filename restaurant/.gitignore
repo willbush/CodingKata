@@ -2,6 +2,8 @@ CMakeFiles/
 Makefile
 CMakeCache.txt
 *.o
+*.out
+*.gch
 *.cmake
 .idea/
 *.iml
