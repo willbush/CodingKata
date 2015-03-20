@@ -17,17 +17,23 @@ public:
 
     void run();
 
+    void printTables() const;
+
+    void printWaiters() const;
+
+    void printMenu() const;
+
 private:
     const string CONFIG_LOC;
     const string ACTIVITY_LOC;
 
-    unsigned int tableEntryCount = 0;
-    unsigned int waiterEntryCount = 0;
-    unsigned int menuEntryCount = 0;
+    unsigned int tableEntryCount;
+    unsigned int waiterEntryCount;
+    unsigned int menuEntryCount;
 
-    bool foundTableSection = false;
-    bool foundWaitersSection = false;
-    bool foundMenuSection = false;
+    bool foundTableSection;
+    bool foundWaitersSection;
+    bool foundMenuSection;
 
     Table **tables;
     Waiter **waiters;
@@ -39,7 +45,7 @@ private:
 
     void countInputEntries();
 
-    void initializeTablesAndWaiters();
+    void initializeObjects();
 
     void updateSectionAndLine(string &line);
 
@@ -50,6 +56,8 @@ private:
     bool isInWaiterSection();
 
     bool isInMenuSection();
+
+    void loadEntriesFromConfig();
 };
 
 #endif

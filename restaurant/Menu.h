@@ -4,16 +4,18 @@
 #include "MenuItem.h"
 
 class Menu {
-private:
-    int maxItems; // MAX capacity
-    int numItems; // current # of items in menu
-    MenuItem *menup;
-
 public:
     Menu(int items = 100); //constructor to allocate memory
     void addItem(MenuItem item); //add one menu item at a time
-    MenuItem *findItem(string code); //lookup operation
+//    MenuItem *findItem(string code); //lookup operation
     ~Menu();
+
+    void print() const;
+
+private:
+    int maxItems;
+    int itemCount;
+    MenuItem *items;
 };
 
 // Usage:

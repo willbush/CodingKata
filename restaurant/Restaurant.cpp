@@ -2,6 +2,8 @@
 
 Restaurant::Restaurant(string const &configLoc, string const &activityLoc)
         : CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
+    tableEntryCount = waiterEntryCount = menuEntryCount = 0;
+    foundTableSection = foundWaitersSection = foundMenuSection = false;
 }
 
 void Restaurant::run() {
@@ -10,10 +12,9 @@ void Restaurant::run() {
 
 void Restaurant::initFromConfig() {
     configFile.open(CONFIG_LOC.c_str(), ios::in);
-
     countInputEntries();
-    initializeTablesAndWaiters();
-
+    initializeObjects();
+    loadEntriesFromConfig();
     configFile.close();
 }
 
@@ -36,14 +37,17 @@ void Restaurant::countInputEntries() {
             menuEntryCount++;
     }
     configFile.clear();
-    configFile.seekg(0, ios::beg); // reset file to the top
+    configFile.seekg(0, ios::beg); // reset to the top of the file
 }
 
-void Restaurant::initializeTablesAndWaiters() {
-    foundMenuSection = foundTableSection = foundWaitersSection = false; // reset
+void Restaurant::initializeObjects() {
     tables = new Table *[tableEntryCount];
     waiters = new Waiter *[waiterEntryCount];
     menu = new Menu(menuEntryCount);
+}
+
+void Restaurant::loadEntriesFromConfig() {
+    foundMenuSection = foundTableSection = foundWaitersSection = false; // reset
     unsigned int table_i = 0, waiter_i = 0;
     string line;
 
@@ -60,7 +64,7 @@ void Restaurant::initializeTablesAndWaiters() {
         else if (isInWaiterSection() && line != "") {
             string name, tableList;
             input >> name >> tableList;
-            waiters[waiter_i] = new Waiter(name, tableList, tables[0]);
+            waiters[waiter_i] = new Waiter(name, tableList, *tables);
             waiter_i++;
         }
         else if (isInMenuSection() && line != "") {
@@ -71,7 +75,7 @@ void Restaurant::initializeTablesAndWaiters() {
         }
     }
     configFile.clear();
-    configFile.seekg(0, ios::beg); // reset file to the top
+    configFile.seekg(0, ios::beg); // reset to the top of the file
 }
 
 void Restaurant::updateSectionAndLine(string &line) {
@@ -115,5 +119,21 @@ Restaurant::~Restaurant() {
     delete[] waiters;
     delete[] tables;
     delete menu;
+    waiters = NULL;
+    tables = NULL;
+    menu = NULL;
 }
 
+void Restaurant::printTables() const {
+    for (int i = 0; i < tableEntryCount; i++)
+        tables[i]->print();
+}
+
+void Restaurant::printWaiters() const {
+    for (int i = 0; i < waiterEntryCount; i++)
+        waiters[i]->print();
+}
+
+void Restaurant::printMenu() const {
+    menu->print();
+}

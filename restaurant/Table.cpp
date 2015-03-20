@@ -1,6 +1,6 @@
 #include "Table.h"
 
-Table::Table(int tableID, int maxSeats) : maxSeats(maxSeats) {
+Table::Table(int tableID, int maxSeats) : MAX_SEATS(maxSeats) {
     this->tableId = tableID;
 }
 
@@ -24,9 +24,9 @@ void Table::partyCheckout() {
 
 }
 
-void Table::print() {
+void Table::print() const {
     cout << "table ID: " << tableId << " "
-            << "max seats: " << maxSeats << endl;
+            << "max seats: " << MAX_SEATS << endl;
 }
 
 Table::~Table() {

@@ -10,6 +10,9 @@ int main() {
     if (filesExist(configLocation, activityLocation)) {
         Restaurant program(configLocation, activityLocation);
         program.run();
+        program.printTables();
+        program.printWaiters();
+        program.printMenu();
     } else {
         cout << "config.txt or activity.txt not found in the working directory of Main.cpp\n";
         return 1;
@@ -19,5 +22,5 @@ int main() {
 }
 
 bool filesExist(string const &configLocation, string const &activityLocation) {
-    return ifstream(configLocation) && ifstream(activityLocation);
+    return ifstream(configLocation.c_str()) && ifstream(activityLocation.c_str());
 }

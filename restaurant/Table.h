@@ -12,19 +12,19 @@ class Waiter; // to take care of circular reference.
 
 class Table {
 public:
-    Table(int tblid = 0, int mseats = 0); // initialization, IDLE
+    Table(int tableID = 0, int maxSeats = 0); // initialization, IDLE
     void assignWaiter(Waiter *person); // initially no waiter
     void partySeated(int numOfPeople); // process IDLE --> SEATED
     void partyOrdered(Order *order);  // process SEATED --> ORDERED
     void partyServed(); // process ORDERED --> SERVED
     void partyCheckout(); // process SERVED --> IDLE
-    void print();
+    void print() const;
 
     ~Table();
 
 private:
+    const int MAX_SEATS;
     int tableId;
-    const int maxSeats;
     TableStatus status;
     int numPeople;
     Order *order;
