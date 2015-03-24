@@ -69,7 +69,7 @@ void Restaurant::loadEntriesFromConfig() {
         }
         else if (isInMenuSection() && line != "") {
             string code, name;
-            double price;
+            double price = 0;
             input >> code >> name >> price;
             menu->addItem(MenuItem(code, name, price));
         }

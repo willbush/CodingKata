@@ -1,13 +1,9 @@
 #include "Order.h"
 
-Order::Order(int count) {
+Order::Order(string orderList, Menu *menu) {
 
-}
-
-int Order::addItem(MenuItem *item) {
-    return 0;
 }
 
 Order::~Order() {
-    delete [] items;
+    delete[] items;
 }
