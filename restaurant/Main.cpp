@@ -10,9 +10,9 @@ int main() {
     if (filesExist(configLocation, activityLocation)) {
         Restaurant program(configLocation, activityLocation);
         program.run();
-//        program.printTables();
-//        program.printWaiters();
-//        program.printMenu();
+        program.printTables();
+        program.printWaiters();
+        program.printMenu();
     } else {
         cout << "config.txt or activity.txt not found in the working directory of Main.cpp\n";
         return 1;
