@@ -2,6 +2,7 @@
 
 Waiter::Waiter(string name, string TableList, Table *tables) {
     this->name = name;
+    tables = NULL;
 }
 
 Waiter::~Waiter() {

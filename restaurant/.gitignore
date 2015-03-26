@@ -1,10 +1,13 @@
 CMakeFiles/
+RemoteSystemsTempFiles/
+RestaurantTest/cute/
+RestaurantTest/boost/
+.metadata/
+.project
+.cproject
 Makefile
 CMakeCache.txt
 *.o
 *.out
 *.gch
 *.cmake
-.idea/
-*.iml
-runTests

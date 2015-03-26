@@ -1,9 +1,12 @@
 #include "Table.h"
 
-Table::Table(int tableID, int maxSeats) : MAX_SEATS(maxSeats) {
+Table::Table(int tableID, int maxSeats) :
+		MAX_SEATS { maxSeats } {
     this->tableId = tableID;
     numPeople = 0;
     status = IDLE;
+    waiter = NULL;
+    order = NULL;
 }
 
 void Table::assignWaiter(Waiter *person) {

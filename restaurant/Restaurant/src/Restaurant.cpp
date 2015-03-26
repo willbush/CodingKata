@@ -49,7 +49,7 @@ void Restaurant::initializeObjects() {
 void Restaurant::loadEntriesFromConfig() {
     foundMenuSection = foundTableSection = foundWaitersSection = false; // reset
     unsigned int table_i = 0, waiter_i = 0;
-    string line;
+    string line = "";
 
     while (getline(configFile, line)) {
         updateSectionAndLine(line);

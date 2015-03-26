@@ -9,3 +9,7 @@ MenuItem::MenuItem(string code, string name, double price) {
 void MenuItem::print() const {
     cout << code << " " << name << " " << price << endl;
 }
+
+string MenuItem::getCode() const {
+    return code;
+}

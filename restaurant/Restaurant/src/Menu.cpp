@@ -22,3 +22,12 @@ void Menu::print() const {
         items[i].print();
     }
 }
+
+MenuItem *Menu::findItem(string code) {
+    MenuItem *item;
+    for (int i = 0; i < maxItems; i++)
+        if (items[i].getCode() == code)
+            *item = items[i];
+
+    return item;
+}
