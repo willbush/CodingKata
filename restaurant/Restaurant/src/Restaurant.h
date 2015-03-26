@@ -6,8 +6,6 @@
 #include <sstream>
 #include "Table.h"
 
-using namespace std;
-
 class Restaurant {
 
 public:

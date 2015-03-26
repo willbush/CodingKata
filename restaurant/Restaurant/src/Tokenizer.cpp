@@ -1,27 +1,27 @@
 /**
-* Tokenizer.cpp
-* =============
-* General purpose string tokenizer (C++ string version)
+ * Tokenizer.cpp
+ * =============
+ * General purpose string tokenizer (C++ string version)
 
-* The default delimiters are space(" "), tab(\t, \v), newline(\n),
-* carriage return(\r), and form feed(\f).
-* If you want to use different delimiters, then use setDelimiter() to override
-* the delimiters. Note that the delimiter string can hold multiple characters.
-*
-*  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
-*/
+ * The default delimiters are space(" "), tab(\t, \v), newline(\n),
+ * carriage return(\r), and form feed(\f).
+ * If you want to use different delimiters, then use setDelimiter() to override
+ * the delimiters. Note that the delimiter string can hold multiple characters.
+ *
+ *  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
+ */
 
 #include "Tokenizer.h"
 
 using namespace std;
 
-
-Tokenizer::Tokenizer() : buffer(""), token(""), delimiter(DEFAULT_DELIMITER) {
+Tokenizer::Tokenizer() :
+        buffer(""), token(""), delimiter(DEFAULT_DELIMITER) {
     currentPosition = buffer.begin();
 }
 
-Tokenizer::Tokenizer(const string &buffer, const string &delimiter)
-        : buffer(buffer), token(""), delimiter(delimiter) {
+Tokenizer::Tokenizer(const string &buffer, const string &delimiter) :
+        buffer(buffer), token(""), delimiter(delimiter) {
     currentPosition = buffer.begin();
 }
 
@@ -29,8 +29,8 @@ Tokenizer::~Tokenizer() {
 }
 
 /*
-* reset string buffer, delimiter and the cursor position
-*/
+ * reset string buffer, delimiter and the cursor position
+ */
 void Tokenizer::set(const string &buffer, const string &delimiter) {
     this->buffer = buffer;
     this->delimiter = delimiter;
@@ -48,11 +48,12 @@ void Tokenizer::setDelimiter(const string &delimiter) {
 }
 
 /*
-* return the next token
-* If cannot find a token anymore, return "".
-*/
+ * return the next token
+ * If cannot find a token anymore, return "".
+ */
 string Tokenizer::next() {
-    if (buffer.size() <= 0) return ""; // skip if buffer is empty
+    if (buffer.size() <= 0)
+        return ""; // skip if buffer is empty
 
     token.clear(); // reset token string
 

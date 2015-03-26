@@ -5,14 +5,15 @@
 #include "Waiter.h"
 
 /*
-* An idle table is one that has no waiter. A ready table is one that
-* has a waiter and is ready for a party to be seated.
-*/
+ * An idle table is one that has no waiter. A ready table is one that
+ * has a waiter and is ready for a party to be seated.
+ */
 enum TableStatus {
     IDLE, READY, SEATED, ORDERED, SERVED
 };
 
-class Waiter; // to take care of circular reference.
+class Waiter;
+// to take care of circular reference.
 
 class Table {
 public:

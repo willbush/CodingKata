@@ -4,7 +4,8 @@
 #include <string>
 #include "Table.h"
 
-class Table; // to take care of circular reference.
+class Table;
+// to take care of circular reference.
 
 class Waiter {
 public:

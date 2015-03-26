@@ -14,7 +14,9 @@ int main() {
         program.printWaiters();
         program.printMenu();
     } else {
-        cout << "config.txt or activity.txt not found in the working directory of Main.cpp\n";
+        string notFound = "config.txt or activity.txt not found"
+                " in the working directory of Main.cpp";
+        cout << notFound << endl;
         return 1;
     }
 
@@ -22,5 +24,6 @@ int main() {
 }
 
 bool filesExist(string const &configLocation, string const &activityLocation) {
-    return ifstream(configLocation.c_str()) && ifstream(activityLocation.c_str());
+    return ifstream(configLocation.c_str())
+            && ifstream(activityLocation.c_str());
 }
