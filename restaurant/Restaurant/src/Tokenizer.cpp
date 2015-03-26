@@ -75,6 +75,6 @@ void Tokenizer::appendUntilDelimiterIsMeet() {
     }
 }
 
-bool Tokenizer::isDelimiter(char c) {
+bool Tokenizer::isDelimiter(char c) const {
     return (delimiter.find(c) != string::npos);
 }

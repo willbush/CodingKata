@@ -29,11 +29,11 @@ private:
     const string CONFIG_LOC;
     const string ACTIVITY_LOC;
 
-    unsigned int tableEntryCount;
-    unsigned int waiterEntryCount;
-    unsigned int menuEntryCount;
+    int tableEntryCount;
+    int waiterEntryCount;
+    int menuEntryCount;
 
-    ConfigSection configLocation;
+    ConfigSection configSection;
 
     Table **tables;
     Waiter **waiters;
@@ -52,6 +52,8 @@ private:
     bool lineContains(string const &, string const &);
 
     void loadEntriesFromConfig();
+
+    void parseTableList(string const &);
 };
 
 #endif

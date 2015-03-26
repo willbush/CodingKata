@@ -1,11 +1,12 @@
 #include "Restaurant.h"
+#include "Tokenizer.h"
 
 using namespace std;
 
-Restaurant::Restaurant(string const &configLoc, string const &activityLoc) :
+Restaurant::Restaurant(const string &configLoc, const string &activityLoc) :
         CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
     tableEntryCount = waiterEntryCount = menuEntryCount = 0;
-    configLocation = NOT_FOUND;
+    configSection = NOT_FOUND;
     tables = NULL;
     waiters = NULL;
     menu = NULL;
@@ -32,13 +33,13 @@ void Restaurant::countInputEntries() {
         istringstream input(line);
         int tableNum = -1, maxSeats = -1;
 
-        if (configLocation == TABLE && input >> tableNum >> maxSeats)
+        if (configSection == TABLE && input >> tableNum >> maxSeats)
             tableEntryCount++;
 
-        else if (configLocation == WAITER && line != "")
+        else if (configSection == WAITER && line != "")
             waiterEntryCount++;
 
-        else if (configLocation == MENU && line != "")
+        else if (configSection == MENU && line != "")
             menuEntryCount++;
     }
     configFile.clear();
@@ -61,15 +62,16 @@ void Restaurant::loadEntriesFromConfig() {
         istringstream input(line);
         int tableNum = -1, maxSeats = -1;
 
-        if (configLocation == TABLE && input >> tableNum >> maxSeats) {
+        if (configSection == TABLE && input >> tableNum >> maxSeats) {
             tables[table_i] = new Table(tableNum, maxSeats);
             table_i++;
-        } else if (configLocation == WAITER && line != "") {
+        } else if (configSection == WAITER && line != "") {
             string name = "", tableList = "";
             input >> name >> tableList;
+            parseTableList(tableList);
             waiters[waiter_i] = new Waiter(name, tableList, *tables);
             waiter_i++;
-        } else if (configLocation == MENU && line != "") {
+        } else if (configSection == MENU && line != "") {
             string code = "", name = "";
             double price = 0;
             input >> code >> name >> price;
@@ -80,20 +82,30 @@ void Restaurant::loadEntriesFromConfig() {
     configFile.seekg(0, ios::beg); // reset to the top of the file
 }
 
+void Restaurant::parseTableList(const string &tableList) {
+    cout << tableList << endl;
+    Tokenizer t(tableList, ",");
+    string token = "";
+    do {
+        token = t.next();
+        cout << token << endl;
+    } while (token != "");
+}
+
 void Restaurant::updateSectionAndLine(string &line) {
-    if (configLocation != TABLE && lineContains("Tables:", line)) {
-        configLocation = TABLE;
+    if (configSection != TABLE && lineContains("Tables:", line)) {
+        configSection = TABLE;
         getline(configFile, line); // change line to next line
-    } else if (configLocation != WAITER && lineContains("Waiters:", line)) {
-        configLocation = WAITER;
+    } else if (configSection != WAITER && lineContains("Waiters:", line)) {
+        configSection = WAITER;
         getline(configFile, line);
-    } else if (configLocation != MENU && lineContains("Menu:", line)) {
-        configLocation = MENU;
+    } else if (configSection != MENU && lineContains("Menu:", line)) {
+        configSection = MENU;
         getline(configFile, line);
     }
 }
 
-bool Restaurant::lineContains(string const &target, string const &line) {
+bool Restaurant::lineContains(const string &target, const string &line) {
     return line.find(target, 0) != string::npos;
 }
 

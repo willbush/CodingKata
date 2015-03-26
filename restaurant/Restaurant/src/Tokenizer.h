@@ -50,7 +50,7 @@ private:
 
     void skipLeadingDelimiters();
 
-    bool isDelimiter(char c);
+    bool isDelimiter(char c) const;
 
     void appendUntilDelimiterIsMeet();
 };
