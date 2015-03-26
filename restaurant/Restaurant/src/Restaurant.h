@@ -6,6 +6,10 @@
 #include <sstream>
 #include "Table.h"
 
+enum ConfigSection {
+    NOT_FOUND, TABLE, WAITER, MENU
+};
+
 class Restaurant {
 
 public:
@@ -29,9 +33,7 @@ private:
     unsigned int waiterEntryCount;
     unsigned int menuEntryCount;
 
-    bool foundTableSection;
-    bool foundWaitersSection;
-    bool foundMenuSection;
+    ConfigSection configLocation;
 
     Table **tables;
     Waiter **waiters;
@@ -48,12 +50,6 @@ private:
     void updateSectionAndLine(string &line);
 
     bool lineContains(string const &, string const &);
-
-    bool isInTableSection();
-
-    bool isInWaiterSection();
-
-    bool isInMenuSection();
 
     void loadEntriesFromConfig();
 };

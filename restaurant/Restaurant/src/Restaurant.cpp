@@ -5,7 +5,7 @@ using namespace std;
 Restaurant::Restaurant(string const &configLoc, string const &activityLoc) :
         CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
     tableEntryCount = waiterEntryCount = menuEntryCount = 0;
-    foundTableSection = foundWaitersSection = foundMenuSection = false;
+    configLocation = NOT_FOUND;
     tables = NULL;
     waiters = NULL;
     menu = NULL;
@@ -32,13 +32,13 @@ void Restaurant::countInputEntries() {
         istringstream input(line);
         int tableNum = -1, maxSeats = -1;
 
-        if (isInTableSection() && input >> tableNum >> maxSeats)
+        if (configLocation == TABLE && input >> tableNum >> maxSeats)
             tableEntryCount++;
 
-        else if (isInWaiterSection() && line != "")
+        else if (configLocation == WAITER && line != "")
             waiterEntryCount++;
 
-        else if (isInMenuSection() && line != "")
+        else if (configLocation == MENU && line != "")
             menuEntryCount++;
     }
     configFile.clear();
@@ -52,7 +52,6 @@ void Restaurant::initializeObjects() {
 }
 
 void Restaurant::loadEntriesFromConfig() {
-    foundMenuSection = foundTableSection = foundWaitersSection = false; // reset
     unsigned int table_i = 0, waiter_i = 0;
     string line = "";
 
@@ -62,15 +61,15 @@ void Restaurant::loadEntriesFromConfig() {
         istringstream input(line);
         int tableNum = -1, maxSeats = -1;
 
-        if (isInTableSection() && input >> tableNum >> maxSeats) {
+        if (configLocation == TABLE && input >> tableNum >> maxSeats) {
             tables[table_i] = new Table(tableNum, maxSeats);
             table_i++;
-        } else if (isInWaiterSection() && line != "") {
+        } else if (configLocation == WAITER && line != "") {
             string name = "", tableList = "";
             input >> name >> tableList;
             waiters[waiter_i] = new Waiter(name, tableList, *tables);
             waiter_i++;
-        } else if (isInMenuSection() && line != "") {
+        } else if (configLocation == MENU && line != "") {
             string code = "", name = "";
             double price = 0;
             input >> code >> name >> price;
@@ -82,32 +81,20 @@ void Restaurant::loadEntriesFromConfig() {
 }
 
 void Restaurant::updateSectionAndLine(string &line) {
-    if (!foundTableSection && lineContains("Tables:", line)) {
-        foundTableSection = true;
+    if (configLocation != TABLE && lineContains("Tables:", line)) {
+        configLocation = TABLE;
         getline(configFile, line); // change line to next line
-    } else if (!foundWaitersSection && lineContains("Waiters:", line)) {
-        foundWaitersSection = true;
+    } else if (configLocation != WAITER && lineContains("Waiters:", line)) {
+        configLocation = WAITER;
         getline(configFile, line);
-    } else if (!foundMenuSection && lineContains("Menu:", line)) {
-        foundMenuSection = true;
+    } else if (configLocation != MENU && lineContains("Menu:", line)) {
+        configLocation = MENU;
         getline(configFile, line);
     }
 }
 
 bool Restaurant::lineContains(string const &target, string const &line) {
     return line.find(target, 0) != string::npos;
-}
-
-bool Restaurant::isInTableSection() {
-    return foundTableSection && !foundWaitersSection && !foundMenuSection;
-}
-
-bool Restaurant::isInWaiterSection() {
-    return foundTableSection && foundWaitersSection && !foundMenuSection;
-}
-
-bool Restaurant::isInMenuSection() {
-    return foundTableSection && foundWaitersSection && foundMenuSection;
 }
 
 Restaurant::~Restaurant() {
