@@ -1,0 +1,1 @@
+This is a C++ solo project that simulates the activity of a restaurant. No templates like vector were allowed in the project. The spec of the project requires a lot of dynamic memory usage with pointers (no smart pointers). So if the design seems terrible (pass pointers left and right), don't judge me, that's the design of the spec. 
