@@ -15,7 +15,7 @@ int main() {
         program.printMenu();
     } else {
         string notFound = "config.txt or activity.txt not found"
-                " in the working directory of Main.cpp";
+                " in the working directory of the program.";
         cout << notFound << endl;
         return 1;
     }

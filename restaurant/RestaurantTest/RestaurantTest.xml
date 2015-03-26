@@ -1,8 +1,11 @@
 <testsuites>
-	<testsuite name="RTester" tests="4">
+	<testsuite name="RTester" tests="7">
 		<testcase classname="RTester" name="emptyTableIsIdle"/>
 		<testcase classname="RTester" name="seatingAnIdleTableFails"/>
 		<testcase classname="RTester" name="tableWithWaiterIsRead"/>
 		<testcase classname="RTester" name="canSeatTable"/>
+		<testcase classname="RTester" name="canOrder"/>
+		<testcase classname="RTester" name="canServe"/>
+		<testcase classname="RTester" name="serveFailsIfNotOrdered"/>
 	</testsuite>
 </testsuites>

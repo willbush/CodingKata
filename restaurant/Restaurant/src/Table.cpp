@@ -1,7 +1,7 @@
 #include "Table.h"
 
 Table::Table(int tableID, int maxSeats) :
-        MAX_SEATS { maxSeats } {
+        MAX_SEATS(maxSeats) {
     this->tableId = tableID;
     numPeople = 0;
     status = IDLE;
@@ -22,15 +22,20 @@ void Table::seatParty(int numOfPeople) {
 }
 
 void Table::partyOrdered(Order *order) {
-    this->order = order;
+    if (status == SEATED) {
+        this->order = order;
+        status = ORDERED;
+    }
 }
 
 void Table::partyServed() {
-
+    if (status == ORDERED)
+        status = SERVED;
 }
 
 void Table::partyCheckout() {
-
+    if (status == SERVED)
+        status = IDLE;
 }
 
 void Table::print() const {

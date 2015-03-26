@@ -35,9 +35,47 @@ void canSeatTable() {
 
     t.seatParty(2);
     ASSERT_EQUAL(2, t.getPartySize());
+    ASSERT_EQUAL(SEATED, t.getStatus());
     // cannot seat another party once table is seated.
     t.seatParty(4);
     ASSERT_EQUAL(2, t.getPartySize());
+}
+
+void canOrder() {
+    Table t(1, maxSeats);
+    Waiter *waiter = new Waiter { "John", "", 0 };
+    t.assignWaiter(waiter);
+    t.seatParty(2);
+    ASSERT_EQUAL(2, t.getPartySize());
+    Order *order = new Order { "", 0 };
+
+    ASSERT_EQUAL(SEATED, t.getStatus());
+    t.partyOrdered(order);
+    ASSERT_EQUAL(ORDERED, t.getStatus());
+}
+
+void canServe() {
+    Table t(1, maxSeats);
+    Waiter *waiter = new Waiter { "John", "", 0 };
+    t.assignWaiter(waiter);
+    t.seatParty(2);
+    Order *order = new Order { "", 0 };
+
+    ASSERT_EQUAL(SEATED, t.getStatus());
+    t.partyOrdered(order);
+    ASSERT_EQUAL(ORDERED, t.getStatus());
+    t.partyServed();
+    ASSERT_EQUAL(SERVED, t.getStatus());
+}
+
+void serveFailsIfNotOrdered() {
+    Table t(1, maxSeats);
+    Waiter *waiter = new Waiter { "John", "", 0 };
+    t.assignWaiter(waiter);
+    t.seatParty(2);
+
+    t.partyServed();
+    ASSERT_EQUAL(SEATED, t.getStatus());
 }
 
 cute::suite makeSuiteTableTest() {
@@ -46,5 +84,8 @@ cute::suite makeSuiteTableTest() {
     s.push_back(CUTE(seatingAnIdleTableFails));
     s.push_back(CUTE(tableWithWaiterIsRead));
     s.push_back(CUTE(canSeatTable));
+    s.push_back(CUTE(canOrder));
+    s.push_back(CUTE(canServe));
+	s.push_back(CUTE(serveFailsIfNotOrdered));
     return s;
 }

@@ -6,6 +6,9 @@ Restaurant::Restaurant(string const &configLoc, string const &activityLoc) :
         CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
     tableEntryCount = waiterEntryCount = menuEntryCount = 0;
     foundTableSection = foundWaitersSection = foundMenuSection = false;
+    tables = NULL;
+    waiters = NULL;
+    menu = NULL;
 }
 
 void Restaurant::run() {
@@ -21,7 +24,7 @@ void Restaurant::initFromConfig() {
 }
 
 void Restaurant::countInputEntries() {
-    string line;
+    string line = "";
 
     while (getline(configFile, line)) {
         updateSectionAndLine(line);
@@ -63,12 +66,12 @@ void Restaurant::loadEntriesFromConfig() {
             tables[table_i] = new Table(tableNum, maxSeats);
             table_i++;
         } else if (isInWaiterSection() && line != "") {
-            string name, tableList;
+            string name = "", tableList = "";
             input >> name >> tableList;
             waiters[waiter_i] = new Waiter(name, tableList, *tables);
             waiter_i++;
         } else if (isInMenuSection() && line != "") {
-            string code, name;
+            string code = "", name = "";
             double price = 0;
             input >> code >> name >> price;
             menu->addItem(MenuItem(code, name, price));
