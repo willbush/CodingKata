@@ -8,13 +8,13 @@ Menu::Menu(int maxItems) {
     itemCount = 0;
 }
 
+Menu::~Menu() {
+    delete[] items;
+}
+
 void Menu::addItem(MenuItem item) {
     items[itemCount] = item;
     itemCount++;
-}
-
-Menu::~Menu() {
-    delete[] items;
 }
 
 void Menu::print() const {

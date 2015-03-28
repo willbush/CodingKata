@@ -11,6 +11,13 @@ Table::Table(int tableID, int maxSeats) :
     order = NULL;
 }
 
+Table::~Table() {
+    delete order;
+    delete waiter;
+    order = NULL;
+    waiter = NULL;
+}
+
 void Table::assignWaiter(Waiter *person) {
     waiter = person;
     status = READY;
@@ -41,14 +48,8 @@ void Table::partyCheckout() {
 }
 
 void Table::print() const {
-    cout << "table ID: " << tableId << " " << "max seats: " << MAX_SEATS << endl;
-}
-
-Table::~Table() {
-    delete order;
-    delete waiter;
-    order = NULL;
-    waiter = NULL;
+    cout << "table ID: " << tableId << " " << "max seats: " << MAX_SEATS
+            << endl;
 }
 
 TableStatus Table::getStatus() {

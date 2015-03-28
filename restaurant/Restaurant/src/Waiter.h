@@ -9,7 +9,7 @@ class Table;
 class Waiter {
 public:
 
-    Waiter(std::string name = "", std::string tableList = "",
+    Waiter(const std::string& name = "", const std::string& tableList = "",
             Table **table = NULL);
 
     ~Waiter();
@@ -20,7 +20,6 @@ private:
     int tableAssignmentCount;
     std::string myName;
     Table **myTables;
-    int listMaxLength;
 
     void assignTablesToWaiter(const std::string& tableList, Table **tables);
 };

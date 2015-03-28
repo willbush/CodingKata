@@ -14,8 +14,25 @@ Restaurant::Restaurant(const string& configLoc, const string& activityLoc) :
     menu = NULL;
 }
 
+Restaurant::~Restaurant() {
+    for (int i = 0; i < tableEntryCount; i++)
+        delete tables[i];
+
+    for (int i = 0; i < waiterEntryCount; i++)
+        delete waiters[i];
+
+    delete[] waiters;
+    delete[] tables;
+    delete menu;
+
+    waiters = NULL;
+    tables = NULL;
+    menu = NULL;
+}
+
 void Restaurant::run() {
     initFromConfig();
+    processActivities();
 }
 
 void Restaurant::initFromConfig() {
@@ -98,19 +115,56 @@ bool Restaurant::lineContains(const string& target, const string& line) {
     return line.find(target, 0) != string::npos;
 }
 
-Restaurant::~Restaurant() {
-    for (int i = 0; i < tableEntryCount; i++) {
-        delete tables[i];
+void Restaurant::processActivities() {
+    actvityfile.open(ACTIVITY_LOC.c_str(), ios::in);
+    string line, entryList;
+    char table, command;
+    int tableID, partySize;
+
+    while (getline(actvityfile, line)) {
+        cout << line << endl;
+        stringstream input(line);
+
+        input >> table >> tableID >> command;
+
+        switch (command) {
+
+        case 'P':
+            seatParty(partySize, tableID);
+            input >> partySize;
+            break;
+
+        case 'O':
+            getline(input, entryList);
+            placeOrder(entryList, tableID);
+            break;
+
+        case 'S':
+            serve(tableID);
+            break;
+
+        case 'C':
+            giveCheck(tableID);
+            break;
+        }
     }
-    for (int i = 0; i < waiterEntryCount; i++) {
-        delete waiters[i];
-    }
-    delete[] waiters;
-    delete[] tables;
-    delete menu;
-    waiters = NULL;
-    tables = NULL;
-    menu = NULL;
+    actvityfile.close();
+}
+
+void Restaurant::seatParty(int partySize, int tableID) {
+
+}
+
+void Restaurant::placeOrder(const string& entryList, int tableID) {
+
+}
+
+void Restaurant::serve(int tableID) {
+
+}
+
+void Restaurant::giveCheck(int tableID) {
+
 }
 
 void Restaurant::printTables() const {

@@ -39,6 +39,8 @@ private:
 
     std::fstream configFile;
 
+    std::fstream actvityfile;
+
     void initFromConfig();
 
     void countInputEntries();
@@ -50,6 +52,16 @@ private:
     bool lineContains(const std::string&, const std::string&);
 
     void loadEntriesFromConfig();
+
+    void processActivities();
+
+    void seatParty(int partySize, int tableID);
+
+    void placeOrder(const std::string& entryList, int tableID);
+
+    void serve(int tableID);
+
+    void giveCheck(int tableID);
 };
 
 #endif

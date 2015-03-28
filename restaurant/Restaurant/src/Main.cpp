@@ -3,17 +3,17 @@
 
 using namespace std;
 
-bool filesExist(string const &configLocation, string const &activityLocation);
+bool filesExist(const string& configLocation, const string& activityLocation);
 
 int main() {
-    std::string configLocation = "config.txt";
-    std::string activityLocation = "activity.txt";
+    string configLocation = "config.txt";
+    string activityLocation = "activity.txt";
 
     if (filesExist(configLocation, activityLocation)) {
         Restaurant program(configLocation, activityLocation);
         program.run();
 //        program.printTables();
-        program.printWaiters();
+//        program.printWaiters();
 //        program.printMenu();
     } else {
         string notFound = "config.txt or activity.txt not found"
@@ -25,7 +25,7 @@ int main() {
     return 0;
 }
 
-bool filesExist(string const &configLocation, string const &activityLocation) {
+bool filesExist(const string& configLocation, const string& activityLocation) {
     return ifstream(configLocation.c_str())
             && ifstream(activityLocation.c_str());
 }

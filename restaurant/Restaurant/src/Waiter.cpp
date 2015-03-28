@@ -3,11 +3,10 @@
 
 using namespace std;
 
-Waiter::Waiter(string name, string tableList, Table **tables) {
-    listMaxLength = tableList.length();
+Waiter::Waiter(const string& name, const string& tableList, Table **tables) {
     myName = name;
     tableAssignmentCount = 0;
-    myTables = new Table *[listMaxLength];
+    myTables = new Table *[tableList.length()];
 
     assignTablesToWaiter(tableList, tables);
 }
