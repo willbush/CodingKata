@@ -6,11 +6,12 @@ using namespace std;
 Restaurant::Restaurant(const string& configLoc, const string& activityLoc) :
         CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
 
-    tableEntryCount = waiterEntryCount = menuEntryCount = 0;
+    tableEntryCount = waiterEntryCount = menuEntryCount = orderCount = 0;
     configSection = NOT_FOUND;
 
     tables = NULL;
     waiters = NULL;
+    orders = NULL;
     menu = NULL;
 }
 
@@ -21,12 +22,17 @@ Restaurant::~Restaurant() {
     for (int i = 0; i < waiterEntryCount; i++)
         delete waiters[i];
 
+    for (int i = 0; i < menuEntryCount; i++)
+        delete orders[i];
+
     delete[] waiters;
     delete[] tables;
+    delete[] orders;
     delete menu;
 
     waiters = NULL;
     tables = NULL;
+    orders = NULL;
     menu = NULL;
 }
 
@@ -68,6 +74,17 @@ void Restaurant::countInputEntries() {
 void Restaurant::initializeObjects() {
     tables = new Table *[tableEntryCount];
     waiters = new Waiter *[waiterEntryCount];
+    orders = new Order *[menuEntryCount];
+
+    for (int i = 0; i < tableEntryCount; i++)
+        tables[i] = NULL;
+
+    for (int i = 0; i < waiterEntryCount; i++)
+        waiters[i] = NULL;
+
+    for (int i = 0; i < menuEntryCount; i++)
+        orders[i] = NULL;
+
     menu = new Menu(menuEntryCount);
 }
 
@@ -122,20 +139,19 @@ void Restaurant::processActivities() {
     int tableID, partySize;
 
     while (getline(actvityfile, line)) {
-        cout << line << endl;
-        stringstream input(line);
+        istringstream ss(line);
 
-        input >> table >> tableID >> command;
+        ss >> table >> tableID >> command;
 
         switch (command) {
 
         case 'P':
             seatParty(partySize, tableID);
-            input >> partySize;
+            ss >> partySize;
             break;
 
         case 'O':
-            getline(input, entryList);
+            getline(ss, entryList);
             placeOrder(entryList, tableID);
             break;
 
@@ -152,11 +168,12 @@ void Restaurant::processActivities() {
 }
 
 void Restaurant::seatParty(int partySize, int tableID) {
-
+    tables[tableID - 1]->seatParty(partySize);
 }
 
 void Restaurant::placeOrder(const string& entryList, int tableID) {
-
+    orders[orderCount] = new Order(entryList, menu);
+    tables[tableID - 1]->partyOrdered(orders[orderCount++]);
 }
 
 void Restaurant::serve(int tableID) {

@@ -30,11 +30,13 @@ private:
     int tableEntryCount;
     int waiterEntryCount;
     int menuEntryCount;
+    int orderCount;
 
     ConfigSection configSection;
 
     Table **tables;
     Waiter **waiters;
+    Order **orders;
     Menu *menu;
 
     std::fstream configFile;

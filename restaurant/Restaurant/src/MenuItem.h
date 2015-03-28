@@ -6,7 +6,6 @@
 class MenuItem {
 public:
     MenuItem(std::string code = "", std::string name = "", double price = 0);
-    //add get methods, etc.
 
     std::string getCode() const;
 

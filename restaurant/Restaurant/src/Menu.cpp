@@ -2,9 +2,10 @@
 
 using namespace std;
 
-Menu::Menu(int maxItems) {
-    this->maxItems = maxItems;
-    items = new MenuItem[maxItems];
+Menu::Menu(int maxItems) : MAX_ITEMS(maxItems) {
+
+    items = new MenuItem[MAX_ITEMS];
+
     itemCount = 0;
 }
 
@@ -13,24 +14,22 @@ Menu::~Menu() {
 }
 
 void Menu::addItem(MenuItem item) {
-    items[itemCount] = item;
-    itemCount++;
+    items[itemCount++] = item;
+}
+
+MenuItem* Menu::findItem(const string& code) const {
+    for (int i = 0; i < MAX_ITEMS; i++)
+        if (items[i].getCode() == code)
+            return &items[i];
+
+    return NULL;
 }
 
 void Menu::print() const {
-    cout << "max number of items: " << maxItems << endl;
+    cout << "max number of items: " << MAX_ITEMS << endl;
     cout << "Number of items added: " << itemCount << endl;
 
-    for (int i = 0; i < maxItems; i++) {
+    for (int i = 0; i < MAX_ITEMS; i++) {
         items[i].print();
     }
-}
-
-MenuItem *Menu::findItem(string code) {
-    MenuItem *item;
-    for (int i = 0; i < maxItems; i++)
-        if (items[i].getCode() == code)
-            *item = items[i];
-
-    return item;
 }

@@ -12,9 +12,9 @@ int main() {
     if (filesExist(configLocation, activityLocation)) {
         Restaurant program(configLocation, activityLocation);
         program.run();
-//        program.printTables();
-//        program.printWaiters();
-//        program.printMenu();
+        program.printTables();
+        program.printWaiters();
+        program.printMenu();
     } else {
         string notFound = "config.txt or activity.txt not found"
                 " in the working directory of the program.";
