@@ -1,9 +1,7 @@
 #ifndef RESTAURANT_H
 #define RESTAURANT_H
 
-#include <iostream>
 #include <fstream>
-#include <sstream>
 #include "Table.h"
 
 enum ConfigSection {
@@ -13,7 +11,7 @@ enum ConfigSection {
 class Restaurant {
 
 public:
-    Restaurant(string const &, string const &);
+    Restaurant(const std::string&, const std::string&);
 
     ~Restaurant();
 
@@ -26,8 +24,8 @@ public:
     void printMenu() const;
 
 private:
-    const string CONFIG_LOC;
-    const string ACTIVITY_LOC;
+    const std::string CONFIG_LOC;
+    const std::string ACTIVITY_LOC;
 
     int tableEntryCount;
     int waiterEntryCount;
@@ -39,7 +37,7 @@ private:
     Waiter **waiters;
     Menu *menu;
 
-    fstream configFile;
+    std::fstream configFile;
 
     void initFromConfig();
 
@@ -47,13 +45,11 @@ private:
 
     void initializeObjects();
 
-    void updateSectionAndLine(string &line);
+    void updateSectionAndLine(std::string& line);
 
-    bool lineContains(string const &, string const &);
+    bool lineContains(const std::string&, const std::string&);
 
     void loadEntriesFromConfig();
-
-    void parseTableList(string const &);
 };
 
 #endif

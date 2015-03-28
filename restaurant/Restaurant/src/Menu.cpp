@@ -1,5 +1,7 @@
 #include "Menu.h"
 
+using namespace std;
+
 Menu::Menu(int maxItems) {
     this->maxItems = maxItems;
     items = new MenuItem[maxItems];
@@ -18,6 +20,7 @@ Menu::~Menu() {
 void Menu::print() const {
     cout << "max number of items: " << maxItems << endl;
     cout << "Number of items added: " << itemCount << endl;
+
     for (int i = 0; i < maxItems; i++) {
         items[i].print();
     }

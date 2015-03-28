@@ -1,5 +1,7 @@
 #include "MenuItem.h"
 
+using namespace std;
+
 MenuItem::MenuItem(string code, string name, double price) {
     this->code = code;
     this->name = name;

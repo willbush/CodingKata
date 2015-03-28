@@ -1,16 +1,42 @@
 #include "Waiter.h"
+#include "stdlib.h"
 
-Waiter::Waiter(string name, string TableList, Table *tables) {
-    this->name = name;
-    this->tables = NULL;
-    numTables = 0;
+using namespace std;
+
+Waiter::Waiter(string name, string tableList, Table **tables) {
+    listMaxLength = tableList.length();
+    myName = name;
+    tableAssignmentCount = 0;
+    myTables = new Table *[listMaxLength];
+
+    assignTablesToWaiter(tableList, tables);
 }
 
 Waiter::~Waiter() {
-    delete[] tables;
-    tables = NULL;
+    // deleting each pointer in the array
+    // is not needed since Restaurant class will handle that
+    delete[] myTables;
+    myTables = NULL;
+}
+
+void Waiter::assignTablesToWaiter(const string &tableList, Table **tables) {
+    string buffer = "";
+    int tableID = -1;
+
+    for (string::size_type i = 0; i < tableList.size(); i++) {
+        if (tableList[i] == ',') {
+            tableID = atoi(buffer.c_str());
+            myTables[tableAssignmentCount++] = tables[tableID - 1];
+            buffer = "";
+        } else
+            buffer += tableList[i];
+    }
+    tableID = atoi(buffer.c_str());
+    myTables[tableAssignmentCount++] = tables[tableID - 1];
 }
 
 void Waiter::print() const {
-    cout << "Waiter name: " << name << endl;
+    cout << "Waiter name: " << myName << endl;
+    for (int i = 0; i < tableAssignmentCount; i++)
+        myTables[i]->print();
 }

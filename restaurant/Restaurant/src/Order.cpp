@@ -1,5 +1,7 @@
 #include "Order.h"
 
+using namespace std;
+
 Order::Order(string orderList, Menu *menu) {
     numItems = 0;
     items = NULL;

@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Restaurant.h"
 
+using namespace std;
+
 bool filesExist(string const &configLocation, string const &activityLocation);
 
 int main() {
@@ -10,9 +12,9 @@ int main() {
     if (filesExist(configLocation, activityLocation)) {
         Restaurant program(configLocation, activityLocation);
         program.run();
-        program.printTables();
+//        program.printTables();
         program.printWaiters();
-        program.printMenu();
+//        program.printMenu();
     } else {
         string notFound = "config.txt or activity.txt not found"
                 " in the working directory of the program.";

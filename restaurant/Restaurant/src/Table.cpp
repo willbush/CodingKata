@@ -1,5 +1,7 @@
 #include "Table.h"
 
+using namespace std;
+
 Table::Table(int tableID, int maxSeats) :
         MAX_SEATS(maxSeats) {
     this->tableId = tableID;
@@ -39,8 +41,7 @@ void Table::partyCheckout() {
 }
 
 void Table::print() const {
-    cout << "table ID: " << tableId << " " << "max seats: " << MAX_SEATS
-            << endl;
+    cout << "table ID: " << tableId << " " << "max seats: " << MAX_SEATS << endl;
 }
 
 Table::~Table() {

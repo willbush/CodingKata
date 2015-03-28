@@ -1,12 +1,14 @@
 #include "Restaurant.h"
-#include "Tokenizer.h"
+#include <sstream>
 
 using namespace std;
 
-Restaurant::Restaurant(const string &configLoc, const string &activityLoc) :
+Restaurant::Restaurant(const string& configLoc, const string& activityLoc) :
         CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
+
     tableEntryCount = waiterEntryCount = menuEntryCount = 0;
     configSection = NOT_FOUND;
+
     tables = NULL;
     waiters = NULL;
     menu = NULL;
@@ -62,15 +64,12 @@ void Restaurant::loadEntriesFromConfig() {
         istringstream input(line);
         int tableNum = -1, maxSeats = -1;
 
-        if (configSection == TABLE && input >> tableNum >> maxSeats) {
-            tables[table_i] = new Table(tableNum, maxSeats);
-            table_i++;
-        } else if (configSection == WAITER && line != "") {
+        if (configSection == TABLE && input >> tableNum >> maxSeats)
+            tables[table_i++] = new Table(tableNum, maxSeats);
+        else if (configSection == WAITER && line != "") {
             string name = "", tableList = "";
             input >> name >> tableList;
-            parseTableList(tableList);
-            waiters[waiter_i] = new Waiter(name, tableList, *tables);
-            waiter_i++;
+            waiters[waiter_i++] = new Waiter(name, tableList, tables);
         } else if (configSection == MENU && line != "") {
             string code = "", name = "";
             double price = 0;
@@ -82,17 +81,7 @@ void Restaurant::loadEntriesFromConfig() {
     configFile.seekg(0, ios::beg); // reset to the top of the file
 }
 
-void Restaurant::parseTableList(const string &tableList) {
-    cout << tableList << endl;
-    Tokenizer t(tableList, ",");
-    string token = "";
-    do {
-        token = t.next();
-        cout << token << endl;
-    } while (token != "");
-}
-
-void Restaurant::updateSectionAndLine(string &line) {
+void Restaurant::updateSectionAndLine(string& line) {
     if (configSection != TABLE && lineContains("Tables:", line)) {
         configSection = TABLE;
         getline(configFile, line); // change line to next line
@@ -105,7 +94,7 @@ void Restaurant::updateSectionAndLine(string &line) {
     }
 }
 
-bool Restaurant::lineContains(const string &target, const string &line) {
+bool Restaurant::lineContains(const string& target, const string& line) {
     return line.find(target, 0) != string::npos;
 }
 
