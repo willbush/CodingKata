@@ -5,12 +5,13 @@
 
 class Menu {
 public:
-    Menu(int maxItems = 100); //constructor to allocate memory
-    void addItem(MenuItem item); //add one menu item at a time
-    MenuItem* findItem(const std::string& code) const;
+    Menu(int maxItems = 100);
+
     ~Menu();
 
-    void print() const;
+    void addItem(MenuItem item);
+
+    MenuItem* findItem(const std::string& code) const;
 
 private:
     const int MAX_ITEMS;

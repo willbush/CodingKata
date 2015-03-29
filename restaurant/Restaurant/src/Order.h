@@ -12,9 +12,11 @@ public:
 
     double getTotal() const;
 
+    void print() const;
+
 private:
     int numItems;
-    const int MAX_ITEMS;
+    const unsigned int MAX_ITEMS;
     double total;
     MenuItem **items;
 

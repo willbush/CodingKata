@@ -1,5 +1,4 @@
 #include "Restaurant.h"
-#include <cstdlib>
 #include <sstream>
 
 using namespace std;
@@ -30,11 +29,6 @@ Restaurant::~Restaurant() {
     delete[] tables;
     delete[] orders;
     delete menu;
-
-    waiters = NULL;
-    tables = NULL;
-    orders = NULL;
-    menu = NULL;
 }
 
 void Restaurant::run() {
@@ -46,7 +40,7 @@ void Restaurant::initFromConfig() {
     configFile.open(CONFIG_LOC.c_str(), ios::in);
     countInputEntries();
     initializeObjects();
-    loadEntriesFromConfig();
+    tryLoadEntriesFromConfig();
     configFile.close();
 }
 
@@ -76,17 +70,16 @@ void Restaurant::initializeObjects() {
     tables = new Table *[tableEntryCount];
     waiters = new Waiter *[waiterEntryCount];
     orders = new Order *[menuEntryCount];
-
-    for (int i = 0; i < tableEntryCount; i++)
-        tables[i] = NULL;
-
-    for (int i = 0; i < waiterEntryCount; i++)
-        waiters[i] = NULL;
-
-    for (int i = 0; i < menuEntryCount; i++)
-        orders[i] = NULL;
-
     menu = new Menu(menuEntryCount);
+}
+
+void Restaurant::tryLoadEntriesFromConfig() {
+    try {
+        loadEntriesFromConfig();
+    } catch (const char* exceptionMessage) {
+        cout << exceptionMessage << endl;
+        throw 1; // let main catch and stack unwind.
+    }
 }
 
 void Restaurant::loadEntriesFromConfig() {
@@ -97,11 +90,13 @@ void Restaurant::loadEntriesFromConfig() {
         updateSectionAndLine(line);
 
         istringstream input(line);
-        int tableNum = -1, maxSeats = -1;
+        int tableID = -1, maxSeats = -1;
 
-        if (configSection == TABLE && input >> tableNum >> maxSeats)
-            tables[table_i++] = new Table(tableNum, maxSeats);
-        else if (configSection == WAITER && line != "") {
+        if (configSection == TABLE && input >> tableID >> maxSeats) {
+            checkTableID(tableID, table_i);
+            checkMaxSeats(maxSeats);
+            tables[table_i++] = new Table(tableID, maxSeats);
+        } else if (configSection == WAITER && line != "") {
             string name = "", tableList = "";
             input >> name >> tableList;
             waiters[waiter_i++] = new Waiter(name, tableList, tables);
@@ -114,6 +109,21 @@ void Restaurant::loadEntriesFromConfig() {
     }
     configFile.clear();
     configFile.seekg(0, ios::beg); // reset to the top of the file
+}
+
+void Restaurant::checkTableID(int tableID, int table_i) const {
+    if (tableID != (table_i + 1)) {
+        throw "The configuration file is incorrectly formatted:\n"
+                "The tableID must be greater than 0 and sorted in increasing order\n"
+                "from the top of the Table section to the end of it.";
+    }
+}
+
+void Restaurant::checkMaxSeats(int maxSeats) const {
+    if (maxSeats < 0) {
+        throw "The configuration file is incorrectly formatted:\n"
+                "max seats cannot be negative";
+    }
 }
 
 void Restaurant::updateSectionAndLine(string& line) {
@@ -134,14 +144,18 @@ bool Restaurant::lineContains(const string& target, const string& line) {
 }
 
 void Restaurant::openActivityFile() {
-    actvityfile.open(ACTIVITY_LOC.c_str(), ios::in);
+    activityFile.open(ACTIVITY_LOC.c_str(), ios::in);
+    tryProcessActiviies();
+    activityFile.close();
+}
+
+void Restaurant::tryProcessActiviies() {
     try {
         processActivities();
     } catch (const string& exceptionMessage) {
         cout << exceptionMessage << endl;
-        exit(EXIT_FAILURE);
+        throw 1; // let main catch and stack unwind.
     }
-    actvityfile.close();
 }
 
 void Restaurant::processActivities() {
@@ -151,7 +165,7 @@ void Restaurant::processActivities() {
     char table, command;
     int tableID = -1, partySize = -1;
 
-    while (getline(actvityfile, line)) {
+    while (getline(activityFile, line)) {
         istringstream input(line);
 
         input >> table >> tableID >> command;
@@ -159,12 +173,14 @@ void Restaurant::processActivities() {
         if (table != 'T')
             throw formatError + line
                     + "\nExpected table command T. Found command: " + table;
+        if (tableID < 1)
+            throw formatError + line + "\nTableID must be greater than 0.";
 
         switch (command) {
 
         case 'P':
-            seatParty(partySize, tableID);
             input >> partySize;
+            seatParty(partySize, tableID);
             break;
 
         case 'O':
@@ -203,18 +219,4 @@ void Restaurant::serve(int tableID) {
 
 void Restaurant::checkPartyOut(int tableID) {
     tables[tableID - 1]->partyCheckout();
-}
-
-void Restaurant::printTables() const {
-    for (int i = 0; i < tableEntryCount; i++)
-        tables[i]->print();
-}
-
-void Restaurant::printWaiters() const {
-    for (int i = 0; i < waiterEntryCount; i++)
-        waiters[i]->print();
-}
-
-void Restaurant::printMenu() const {
-    menu->print();
 }

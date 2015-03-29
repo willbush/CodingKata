@@ -4,33 +4,29 @@
 #include "Order.h"
 #include "Waiter.h"
 
-/*
- * An idle table is one that has no waiter. A ready table is one that
- * has a waiter and is ready for a party to be seated.
- */
 enum TableStatus {
-    NO_WAITER, IDLE, SEATED, ORDERED, SERVED
+    UNASSIGNED, IDLE, SEATED, ORDERED, SERVED
 };
 
-class Waiter;
 // to take care of circular reference.
+class Waiter;
 
 class Table {
 public:
 
-    Table(int tableID = 0, int maxSeats = 0); // initialization, IDLE
-    TableStatus getStatus();
-
-    int getPartySize();
-
-    void assignWaiter(Waiter *person); // initially no waiter
-    void seatParty(int numOfPeople); // process IDLE --> SEATED
-    void partyOrdered(Order *order);  // process SEATED --> ORDERED
-    void partyServed(); // process ORDERED --> SERVED
-    void partyCheckout(); // process SERVED --> IDLE
-    void print() const;
+    Table(int tableID = 0, int maxSeats = 0); // initialization, UNASSGINED
 
     ~Table();
+
+    void assignWaiter(Waiter *person); // UNASSIGNED --> IDLE
+
+    void seatParty(int numOfPeople); // IDLE --> SEATED
+
+    void partyOrdered(Order *order);  // SEATED --> ORDERED
+
+    void partyServed(); // ORDERED --> SERVED
+
+    void partyCheckout(); // SERVED --> IDLE
 
 private:
     TableStatus status;
@@ -39,6 +35,10 @@ private:
     const int MAX_SEATS;
     int tableID;
     int numPeople;
+
+    bool partySizeIsValid(int numOfPeople);
+
+    void displayCheck() const;
 };
 
 #endif

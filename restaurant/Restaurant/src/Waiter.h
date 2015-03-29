@@ -14,13 +14,13 @@ public:
 
     ~Waiter();
 
-    void print() const;
+    std::string getName() const;
 
 private:
     int tableAssignmentCount;
     std::string myName;
     Table **myTables;
-    void assignTablesToWaiter(const std::string& tableList, Table **tables);
+    void assignWaiterToTables(const std::string& tableList, Table **tables);
 };
 
 #endif

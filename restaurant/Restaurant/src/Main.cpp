@@ -3,18 +3,20 @@
 
 using namespace std;
 
-bool filesExist(const string& configLocation, const string& activityLocation);
+const string configLocation = "config.txt";
+const string activityLocation = "activity.txt";
+
+bool filesExist();
 
 int main() {
-    string configLocation = "config.txt";
-    string activityLocation = "activity.txt";
 
-    if (filesExist(configLocation, activityLocation)) {
+    if (filesExist()) {
         Restaurant program(configLocation, activityLocation);
-        program.run();
-//        program.printTables();
-//        program.printWaiters();
-//        program.printMenu();
+        try {
+            program.run();
+        } catch (int status) {
+            return status;
+        }
     } else {
         string notFound = "config.txt or activity.txt not found"
                 " in the working directory of the program.";
@@ -24,7 +26,7 @@ int main() {
     return 0;
 }
 
-bool filesExist(const string& configLocation, const string& activityLocation) {
+bool filesExist() {
     return ifstream(configLocation.c_str())
             && ifstream(activityLocation.c_str());
 }

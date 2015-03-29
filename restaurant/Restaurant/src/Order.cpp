@@ -10,22 +10,23 @@ Order::Order(string entryList, Menu* menu)
     total = 0;
     items = new MenuItem*[MAX_ITEMS];
 
-    for (int i = 0; i < MAX_ITEMS; i++)
-        items[i] = NULL;
-
-    buildOrder(entryList, menu);
+    if (menu != NULL)
+        buildOrder(entryList, menu);
 }
 
+/*
+ * The deallocation of each MenuItem in items is handled in
+ * the Restaurant class.
+ */
 Order::~Order() {
     delete[] items;
-    items = NULL;
 }
 
 void Order::buildOrder(const string& entryList, Menu* menu) {
-    istringstream ss(entryList);
+    istringstream input(entryList);
     string entryCode;
 
-    while (ss >> entryCode) {
+    while (input >> entryCode) {
         items[numItems] = menu->findItem(entryCode);
         total += items[numItems]->getPrice();
         numItems++;
@@ -34,4 +35,9 @@ void Order::buildOrder(const string& entryList, Menu* menu) {
 
 double Order::getTotal() const {
     return total;
+}
+
+void Order::print() const {
+    for (int i = 0; i < numItems; i++)
+        items[i]->print();
 }

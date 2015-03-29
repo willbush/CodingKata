@@ -17,12 +17,6 @@ public:
 
     void run();
 
-    void printTables() const;
-
-    void printWaiters() const;
-
-    void printMenu() const;
-
 private:
     const std::string CONFIG_LOC;
     const std::string ACTIVITY_LOC;
@@ -41,7 +35,7 @@ private:
 
     std::fstream configFile;
 
-    std::fstream actvityfile;
+    std::fstream activityFile;
 
     void initFromConfig();
 
@@ -51,11 +45,19 @@ private:
 
     void updateSectionAndLine(std::string& line);
 
+    void checkTableID(int tableID, int table_i) const;
+
+    void checkMaxSeats(int maxSeats) const;
+
     bool lineContains(const std::string&, const std::string&);
+
+    void tryLoadEntriesFromConfig();
 
     void loadEntriesFromConfig();
 
     void openActivityFile();
+
+    void tryProcessActiviies();
 
     void processActivities();
 

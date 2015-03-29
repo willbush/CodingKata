@@ -10,19 +10,18 @@ Waiter::Waiter(const string& name, const string& tableList, Table **tables) {
     myTables = new Table *[maxPossibleSize];
     tableAssignmentCount = 0;
 
-    for (int i = 0; i < maxPossibleSize; i++) {
-        myTables[i] = NULL;
-    }
-
-    assignTablesToWaiter(tableList, tables);
+    if (tables != NULL)
+        assignWaiterToTables(tableList, tables);
 }
-
+/*
+ * Each table in the array is deallocated in the Restaurant class.
+ */
 Waiter::~Waiter() {
     delete[] myTables;
     myTables = NULL;
 }
 
-void Waiter::assignTablesToWaiter(const string &tableList, Table **tables) {
+void Waiter::assignWaiterToTables(const string &tableList, Table **tables) {
     string buffer = "";
     int tableID = -1;
 
@@ -40,9 +39,6 @@ void Waiter::assignTablesToWaiter(const string &tableList, Table **tables) {
     myTables[tableAssignmentCount++] = tables[tableID - 1];
 }
 
-void Waiter::print() const {
-    cout << "waiter name: " << myName << endl;
-    for (int i = 0; i < tableAssignmentCount; i++) {
-        myTables[i]->print();
-    }
+string Waiter::getName() const {
+    return myName;
 }

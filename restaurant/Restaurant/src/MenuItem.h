@@ -14,9 +14,9 @@ public:
     void print() const;
 
 private:
-    std::string code; // See sample codes in config.txt
-    std::string name; // Full name of the entry
-    double price; // price of the item
+    std::string code;
+    std::string name;
+    double price;
 };
 
 #endif
