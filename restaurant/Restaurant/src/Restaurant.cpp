@@ -168,38 +168,38 @@ void Restaurant::processActivities() {
     while (getline(activityFile, line)) {
         istringstream input(line);
 
-        input >> table >> tableID >> command;
+        if (input >> table >> tableID >> command) {
+            if (table != 'T')
+                throw formatError + line
+                        + "\nExpected table command T. Found command: " + table;
+            if (tableID < 1)
+                throw formatError + line + "\nTableID must be greater than 0.";
 
-        if (table != 'T')
-            throw formatError + line
-                    + "\nExpected table command T. Found command: " + table;
-        if (tableID < 1)
-            throw formatError + line + "\nTableID must be greater than 0.";
+            switch (command) {
 
-        switch (command) {
+            case 'P':
+                input >> partySize;
+                seatParty(partySize, tableID);
+                break;
 
-        case 'P':
-            input >> partySize;
-            seatParty(partySize, tableID);
-            break;
+            case 'O':
+                getline(input, entryList); // gets rest of line after 'O'
+                placeOrder(entryList, tableID);
+                break;
 
-        case 'O':
-            getline(input, entryList); // gets rest of line after 'O'
-            placeOrder(entryList, tableID);
-            break;
+            case 'S':
+                serve(tableID);
+                break;
 
-        case 'S':
-            serve(tableID);
-            break;
+            case 'C':
+                checkPartyOut(tableID);
+                break;
 
-        case 'C':
-            checkPartyOut(tableID);
-            break;
-
-        default:
-            throw formatError + line
-                    + "\nExpected command P, O, S, or C. Found command: "
-                    + command;
+            default:
+                throw formatError + line
+                        + "\nExpected command P, O, S, or C. Found command: "
+                        + command;
+            }
         }
     }
 }
