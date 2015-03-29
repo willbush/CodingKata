@@ -2,35 +2,48 @@
 
 using namespace std;
 
-Table::Table(int tableID, int maxSeats) :
-        MAX_SEATS(maxSeats) {
-    this->tableId = tableID;
+Table::Table(int tableID, int maxSeats)
+        : MAX_SEATS(maxSeats) {
+    this->tableID = tableID;
     numPeople = 0;
-    status = IDLE;
+    status = NO_WAITER;
     waiter = NULL;
     order = NULL;
 }
 
+/*
+ * The deletion of waiter and order pointers is not required here
+ * because it is handled in the Restaurant class.
+ */
 Table::~Table() {
-    delete order;
-    delete waiter;
     order = NULL;
     waiter = NULL;
 }
 
-void Table::assignWaiter(Waiter *person) {
-    waiter = person;
-    status = READY;
+void Table::assignWaiter(Waiter *waiter) {
+    cout << "try to assign waiter: " << endl;
+    cout << " at table " << tableID << endl;
+    waiter->print();
+    if (status == NO_WAITER) {
+        this->waiter = waiter;
+        status = IDLE;
+        cout << "waiter assigned" << endl;
+    }
 }
 
 void Table::seatParty(int numOfPeople) {
-    if (status == READY && numOfPeople <= MAX_SEATS) {
+    cout << "try to seat " << numOfPeople << endl;
+    cout << " at table " << tableID << endl;
+    if (status == IDLE && numOfPeople <= MAX_SEATS) {
+        cout << "party seated" << endl;
         this->numPeople = numOfPeople;
         status = SEATED;
     }
 }
 
 void Table::partyOrdered(Order *order) {
+    cout << "try to order..." << endl;
+    cout << " at table " << tableID << endl;
     if (status == SEATED) {
         this->order = order;
         status = ORDERED;
@@ -38,17 +51,25 @@ void Table::partyOrdered(Order *order) {
 }
 
 void Table::partyServed() {
-    if (status == ORDERED)
+    cout << "try to serve..." << endl;
+    cout << " at table " << tableID << endl;
+    if (status == ORDERED) {
+        cout << "table served." << endl;
         status = SERVED;
+    }
 }
 
 void Table::partyCheckout() {
-    if (status == SERVED)
+    cout << "try to check out..." << endl;
+    cout << " at table " << tableID << endl;
+    if (status == SERVED) {
         status = IDLE;
+        cout << "Order total: " << order->getTotal() << endl;
+    }
 }
 
 void Table::print() const {
-    cout << "table ID: " << tableId << " " << "max seats: " << MAX_SEATS
+    cout << "table ID: " << tableID << " " << "max seats: " << MAX_SEATS
             << endl;
 }
 

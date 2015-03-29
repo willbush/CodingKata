@@ -1,10 +1,11 @@
 #include "Restaurant.h"
+#include <cstdlib>
 #include <sstream>
 
 using namespace std;
 
-Restaurant::Restaurant(const string& configLoc, const string& activityLoc) :
-        CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
+Restaurant::Restaurant(const string& configLoc, const string& activityLoc)
+        : CONFIG_LOC(configLoc), ACTIVITY_LOC(activityLoc) {
 
     tableEntryCount = waiterEntryCount = menuEntryCount = orderCount = 0;
     configSection = NOT_FOUND;
@@ -22,7 +23,7 @@ Restaurant::~Restaurant() {
     for (int i = 0; i < waiterEntryCount; i++)
         delete waiters[i];
 
-    for (int i = 0; i < menuEntryCount; i++)
+    for (int i = 0; i < orderCount; i++)
         delete orders[i];
 
     delete[] waiters;
@@ -38,7 +39,7 @@ Restaurant::~Restaurant() {
 
 void Restaurant::run() {
     initFromConfig();
-    processActivities();
+    openActivityFile();
 }
 
 void Restaurant::initFromConfig() {
@@ -56,9 +57,9 @@ void Restaurant::countInputEntries() {
         updateSectionAndLine(line);
 
         istringstream input(line);
-        int tableNum = -1, maxSeats = -1;
+        int tableID = -1, maxSeats = -1;
 
-        if (configSection == TABLE && input >> tableNum >> maxSeats)
+        if (configSection == TABLE && input >> tableID >> maxSeats)
             tableEntryCount++;
 
         else if (configSection == WAITER && line != "")
@@ -132,26 +133,42 @@ bool Restaurant::lineContains(const string& target, const string& line) {
     return line.find(target, 0) != string::npos;
 }
 
-void Restaurant::processActivities() {
+void Restaurant::openActivityFile() {
     actvityfile.open(ACTIVITY_LOC.c_str(), ios::in);
+    try {
+        processActivities();
+    } catch (const string& exceptionMessage) {
+        cout << exceptionMessage << endl;
+        exit(EXIT_FAILURE);
+    }
+    actvityfile.close();
+}
+
+void Restaurant::processActivities() {
+    string formatError = "The following line in the activity "
+            "file is incorrectly formatted:\n";
     string line, entryList;
     char table, command;
-    int tableID, partySize;
+    int tableID = -1, partySize = -1;
 
     while (getline(actvityfile, line)) {
-        istringstream ss(line);
+        istringstream input(line);
 
-        ss >> table >> tableID >> command;
+        input >> table >> tableID >> command;
+
+        if (table != 'T')
+            throw formatError + line
+                    + "\nExpected table command T. Found command: " + table;
 
         switch (command) {
 
         case 'P':
             seatParty(partySize, tableID);
-            ss >> partySize;
+            input >> partySize;
             break;
 
         case 'O':
-            getline(ss, entryList);
+            getline(input, entryList); // gets rest of line after 'O'
             placeOrder(entryList, tableID);
             break;
 
@@ -160,11 +177,15 @@ void Restaurant::processActivities() {
             break;
 
         case 'C':
-            giveCheck(tableID);
+            checkPartyOut(tableID);
             break;
+
+        default:
+            throw formatError + line
+                    + "\nExpected command P, O, S, or C. Found command: "
+                    + command;
         }
     }
-    actvityfile.close();
 }
 
 void Restaurant::seatParty(int partySize, int tableID) {
@@ -177,11 +198,11 @@ void Restaurant::placeOrder(const string& entryList, int tableID) {
 }
 
 void Restaurant::serve(int tableID) {
-
+    tables[tableID - 1]->partyServed();
 }
 
-void Restaurant::giveCheck(int tableID) {
-
+void Restaurant::checkPartyOut(int tableID) {
+    tables[tableID - 1]->partyCheckout();
 }
 
 void Restaurant::printTables() const {

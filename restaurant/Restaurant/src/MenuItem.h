@@ -9,6 +9,8 @@ public:
 
     std::string getCode() const;
 
+    double getPrice() const;
+
     void print() const;
 
 private:

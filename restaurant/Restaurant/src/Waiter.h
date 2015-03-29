@@ -20,7 +20,6 @@ private:
     int tableAssignmentCount;
     std::string myName;
     Table **myTables;
-
     void assignTablesToWaiter(const std::string& tableList, Table **tables);
 };
 

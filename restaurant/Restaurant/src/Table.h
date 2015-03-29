@@ -9,7 +9,7 @@
  * has a waiter and is ready for a party to be seated.
  */
 enum TableStatus {
-    IDLE, READY, SEATED, ORDERED, SERVED
+    NO_WAITER, IDLE, SEATED, ORDERED, SERVED
 };
 
 class Waiter;
@@ -37,7 +37,7 @@ private:
     Order *order;
     Waiter *waiter;
     const int MAX_SEATS;
-    int tableId;
+    int tableID;
     int numPeople;
 };
 

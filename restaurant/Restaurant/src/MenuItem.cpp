@@ -16,3 +16,7 @@ void MenuItem::print() const {
 string MenuItem::getCode() const {
     return code;
 }
+
+double MenuItem::getPrice() const {
+    return price;
+}

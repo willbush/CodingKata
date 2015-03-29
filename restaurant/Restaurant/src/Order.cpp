@@ -3,10 +3,11 @@
 
 using namespace std;
 
-Order::Order(string entryList, Menu* menu) :
-        MAX_ITEMS(entryList.length()) {
+Order::Order(string entryList, Menu* menu)
+        : MAX_ITEMS(entryList.length()) {
 
     numItems = 0;
+    total = 0;
     items = new MenuItem*[MAX_ITEMS];
 
     for (int i = 0; i < MAX_ITEMS; i++)
@@ -16,9 +17,6 @@ Order::Order(string entryList, Menu* menu) :
 }
 
 Order::~Order() {
-//    for (int i = 0; i < MAX_ITEMS; i++)
-//        delete items[i];
-
     delete[] items;
     items = NULL;
 }
@@ -26,6 +24,14 @@ Order::~Order() {
 void Order::buildOrder(const string& entryList, Menu* menu) {
     istringstream ss(entryList);
     string entryCode;
-    while (ss >> entryCode)
-        items[numItems++] = menu->findItem(entryCode);
+
+    while (ss >> entryCode) {
+        items[numItems] = menu->findItem(entryCode);
+        total += items[numItems]->getPrice();
+        numItems++;
+    }
+}
+
+double Order::getTotal() const {
+    return total;
 }

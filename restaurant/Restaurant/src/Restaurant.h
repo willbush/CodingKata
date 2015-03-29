@@ -55,6 +55,8 @@ private:
 
     void loadEntriesFromConfig();
 
+    void openActivityFile();
+
     void processActivities();
 
     void seatParty(int partySize, int tableID);
@@ -63,7 +65,7 @@ private:
 
     void serve(int tableID);
 
-    void giveCheck(int tableID);
+    void checkPartyOut(int tableID);
 };
 
 #endif
