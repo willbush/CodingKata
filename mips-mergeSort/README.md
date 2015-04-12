@@ -1,0 +1,1 @@
+merge sort for list sizes in powers of 2 (e.g. 2, 4, 8, 16, 32) up to 32 max, implemented using mips assembly. I wrote it in Java first and then wrote it in mips.
