@@ -1,5 +1,7 @@
-#student name: William Bush
-# assignment 4: merge sort
+# This program promps user for size of the array,
+# which must be a power of 2 at most 32 size. Then the program
+# ask the user to input the values of the array. The program then
+# merge sorts the array and displaces the sorted array.
 
   .data
 
