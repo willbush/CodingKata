@@ -38,17 +38,26 @@ void LookupTable<T>::addRange(int start, int end) {
 
 template<class T>
 T &LookupTable<T>::operator[](int value) {
-    // find the range
-    // if the valid range is found
-    //   return aptr[i][value - rangeStart[i]];
-    // else
-    //  return defaultValue;
+    int foundStartRange = -1;
+    int rangeIndex = -1;
+
+    for (int i = 0; i < numOfRanges; i++) {
+        if (value >= rangeStart[i] && value <= rangeEnd[i]) {
+            foundStartRange = rangeStart[i];
+            rangeIndex = i;
+        }
+    }
+
+    if (foundStartRange > -1)
+        return aptr[rangeIndex][value - foundStartRange];
+    else
+        return defaultValue;
 }
 
 template<class T>
 LookupTable<T>::~LookupTable() {
-    // use a loop for in numOfRanges
-    // delete [] aptr[i];
+    for (int i = 0; i < numOfRanges; i++)
+        delete[] aptr[i];
 }
 
 #endif

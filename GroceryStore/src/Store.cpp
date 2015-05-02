@@ -6,11 +6,12 @@
 using namespace std;
 
 LookupTable<Product *> table;
-string inventoryLoc = "inventory.csv";
+const string inventoryLoc = "inventory.csv";
 fstream inventoryFile;
 
 void readInventory();
 void loadProducts();
+void processElement(int, const string&);
 
 int main() {
     table.addRange(0, 9999);
@@ -26,18 +27,41 @@ void readInventory() {
 }
 
 void loadProducts() {
-    string line = "";
     string buffer;
+    string line = "";
+    int element;
 
     while (getline(inventoryFile, line)) {
         buffer = "";
+        element = 0;
         for (string::size_type i = 0; i < line.size(); i++) {
             if (line[i] == ',') {
-                cout << buffer << " ";
+                processElement(element, buffer);
+                element++;
                 buffer = "";
             } else
                 buffer += line[i];
         }
-        cout << buffer << " " << endl;
+        processElement(element, buffer);
+    }
+}
+
+void processElement(int element, const string& buffer) {
+    switch (element) {
+    case 0:
+        cout << "plu is " << buffer << endl;
+        break;
+    case 1:
+        cout << "name is " << buffer << endl;
+        break;
+    case 2:
+        cout << "is sold by weight " << buffer << endl;
+        break;
+    case 3:
+        cout << "price is " << buffer << endl;
+        break;
+    case 4:
+        cout << "inv is " << buffer << endl;
+        break;
     }
 }
