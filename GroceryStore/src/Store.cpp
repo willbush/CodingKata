@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include "stdlib.h"
 #include "Product.h"
 #include "LookupTable.h"
 
@@ -11,12 +12,13 @@ fstream inventoryFile;
 
 void readInventory();
 void loadProducts();
-void processElement(int, const string&);
+void writeTable();
 
 int main() {
     table.addRange(0, 9999);
     table.addRange(90000, 99999);
     readInventory();
+    writeTable();
     return 0;
 }
 
@@ -33,35 +35,44 @@ void loadProducts() {
 
     while (getline(inventoryFile, line)) {
         buffer = "";
-        element = 0;
+        element = 0; // line element number
+
+        // parameters for the Product object
+        int pluCode = -1;
+        string name = "";
+        bool isSoldByWeight = false;
+        double price = 0.0, inventory = 0.0;
+
         for (string::size_type i = 0; i < line.size(); i++) {
             if (line[i] == ',') {
-                processElement(element, buffer);
+                switch (element) {
+                case 0:
+                    pluCode = atoi(buffer.c_str());
+                    break;
+                case 1:
+                    name = buffer;
+                    break;
+                case 2:
+                    isSoldByWeight = atoi(buffer.c_str());
+                    break;
+                case 3:
+                    price = atof(buffer.c_str());
+                    break;
+                }
                 element++;
                 buffer = "";
             } else
                 buffer += line[i];
         }
-        processElement(element, buffer);
+        inventory = atof(buffer.c_str()); // last element is the inventory number
+
+        table[pluCode] = new Product(pluCode, name, isSoldByWeight, price,
+                inventory);
+        cout << pluCode << endl;
+        delete table[pluCode];
     }
+
 }
 
-void processElement(int element, const string& buffer) {
-    switch (element) {
-    case 0:
-        cout << "plu is " << buffer << endl;
-        break;
-    case 1:
-        cout << "name is " << buffer << endl;
-        break;
-    case 2:
-        cout << "is sold by weight " << buffer << endl;
-        break;
-    case 3:
-        cout << "price is " << buffer << endl;
-        break;
-    case 4:
-        cout << "inv is " << buffer << endl;
-        break;
-    }
+void writeTable() {
 }

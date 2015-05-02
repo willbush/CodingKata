@@ -16,7 +16,7 @@ public:
     void addRange(int start, int end);
     T &operator[](int value);
 private:
-    T *aptr[MAX_RANGE];
+    T *tablePtr[MAX_RANGE];
     int rangeStart[MAX_RANGE];
     int rangeEnd[MAX_RANGE];
     int numOfRanges;
@@ -32,7 +32,7 @@ template<class T>
 void LookupTable<T>::addRange(int start, int end) {
     rangeStart[numOfRanges] = start;
     rangeEnd[numOfRanges] = end;
-    aptr[numOfRanges] = new T[end - start + 1];
+    tablePtr[numOfRanges] = new T[end - start + 1];
     numOfRanges++;
 }
 
@@ -45,11 +45,12 @@ T &LookupTable<T>::operator[](int value) {
         if (value >= rangeStart[i] && value <= rangeEnd[i]) {
             foundStartRange = rangeStart[i];
             rangeIndex = i;
+            break;
         }
     }
 
     if (foundStartRange > -1)
-        return aptr[rangeIndex][value - foundStartRange];
+        return tablePtr[rangeIndex][value - foundStartRange];
     else
         return defaultValue;
 }
@@ -57,7 +58,7 @@ T &LookupTable<T>::operator[](int value) {
 template<class T>
 LookupTable<T>::~LookupTable() {
     for (int i = 0; i < numOfRanges; i++)
-        delete[] aptr[i];
+        delete[] tablePtr[i];
 }
 
 #endif
