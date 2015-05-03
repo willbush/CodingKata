@@ -21,12 +21,16 @@ double Product::computeCost(double units) {
     return units * price;
 }
 
+int Product::getPluCode() {
+    return pluCode;
+}
+
 string Product::getName() {
     return name;
 }
 
-int Product::getPluCode() {
-    return pluCode;
+bool Product::getIsSoldByWeight() {
+    return isSoldByWeight;
 }
 
 double Product::getPrice() {

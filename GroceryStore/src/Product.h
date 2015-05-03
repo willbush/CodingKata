@@ -12,8 +12,9 @@ public:
             double price = 0.0, double inv = 0.0);
     bool soldByWeight(void);
     double computeCost(double units);
-    string getName(void);
     int getPluCode(void);
+    string getName(void);
+    bool getIsSoldByWeight(void);
     double getPrice(void);
     double getInventory(void);
 
