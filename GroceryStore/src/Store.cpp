@@ -11,6 +11,7 @@ using namespace std;
 
 const string inventoryLoc = "inventory.csv";
 const string outputName = "output.csv";
+const double discountRate = 0.05;
 LookupTable<Product *> table;
 List<int> *pluList;
 fstream inventoryFile;
@@ -18,6 +19,8 @@ ofstream outputFile;
 
 void readInventory();
 void loadProducts();
+void checkout();
+double getProductTotal(int);
 void writeTableAndFree();
 void buildOSS(ostringstream &, int);
 
@@ -27,6 +30,7 @@ int main() {
     table.addRange(90000, 99999);
 
     readInventory();
+    checkout();
     writeTableAndFree();
     return 0;
 }
@@ -79,6 +83,52 @@ void loadProducts() {
                 inventory);
         pluList->add(pluCode);
     }
+}
+
+void checkout() {
+    string enterPlu = "Enter PLU code or 0 to complete checkout: ";
+    int pluCode = 0;
+    double total = 0;
+
+    cout << enterPlu;
+    cin >> pluCode;
+
+    while (pluCode != 0) {
+        if (table[pluCode])
+            total += getProductTotal(pluCode);
+
+        cout.precision(2);
+        cout << "Total so far $" << fixed << total << endl;
+        cout << enterPlu;
+        cin >> pluCode;
+    }
+    double discount = total * discountRate;
+    double amountDue = total - discount;
+
+    cout << "Total: $" << total << endl;
+    cout << "Discount: $" << discount << endl;
+    cout << "Amount due: $" << amountDue << endl;
+    cout << "Press y to check out another customer (any other key to quit): ";
+
+    char input;
+    cin >> input;
+    if (input == 'y')
+        checkout();
+}
+
+double getProductTotal(int plu) {
+    double total = 0;
+    double weight = 0;
+    Product *item = table[plu];
+
+    if (item->getIsSoldByWeight()) {
+        cout << "Enter weight for " << item->getName() << ": ";
+        cin >> weight;
+        total = weight * item->getPrice();
+    } else
+        total = item->getPrice();
+
+    return total;
 }
 
 void writeTableAndFree() {
