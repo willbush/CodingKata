@@ -84,7 +84,6 @@ void writeTable() {
 void freeMemory() {
     while (pluList->hasNext()) {
         int pluCode = pluList->removeHead();
-        cout << pluCode << endl;
         delete table[pluCode];
     }
     delete pluList;
