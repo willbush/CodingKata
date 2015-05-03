@@ -3,10 +3,12 @@
 #include "stdlib.h"
 #include "Product.h"
 #include "LookupTable.h"
+#include "List.h"
 
 using namespace std;
 
 LookupTable<Product *> table;
+List<int> *pluList;
 const string inventoryLoc = "inventory.csv";
 fstream inventoryFile;
 
@@ -15,10 +17,12 @@ void loadProducts();
 void writeTable();
 
 int main() {
+    pluList = new List<int>();
     table.addRange(0, 9999);
     table.addRange(90000, 99999);
     readInventory();
     writeTable();
+    delete pluList;
     return 0;
 }
 
@@ -68,7 +72,9 @@ void loadProducts() {
 
         table[pluCode] = new Product(pluCode, name, isSoldByWeight, price,
                 inventory);
-        cout << pluCode << endl;
+        pluList->add(pluCode);
+        int test = pluList->removeHead();
+        cout << test << endl;
         delete table[pluCode];
     }
 
