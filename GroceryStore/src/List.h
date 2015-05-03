@@ -55,8 +55,10 @@ void List<T>::add(T element) {
     if (head == NULL) {
         head = n;
         tail = n;
-    } else
+    } else {
         tail->next = n;
+        tail = n;
+    }
 }
 
 template<class T>
@@ -67,8 +69,12 @@ T List<T>::removeHead() {
     temp = head->next;
     delete head;
     head = temp;
-    delete temp;
     return headData;
+}
+
+template<class T>
+bool List<T>::hasNext() {
+    return head != NULL;
 }
 
 #endif

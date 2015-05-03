@@ -15,6 +15,7 @@ fstream inventoryFile;
 void readInventory();
 void loadProducts();
 void writeTable();
+void freeMemory();
 
 int main() {
     pluList = new List<int>();
@@ -22,7 +23,7 @@ int main() {
     table.addRange(90000, 99999);
     readInventory();
     writeTable();
-    delete pluList;
+    freeMemory();
     return 0;
 }
 
@@ -73,12 +74,18 @@ void loadProducts() {
         table[pluCode] = new Product(pluCode, name, isSoldByWeight, price,
                 inventory);
         pluList->add(pluCode);
-        int test = pluList->removeHead();
-        cout << test << endl;
-        delete table[pluCode];
     }
 
 }
 
 void writeTable() {
+}
+
+void freeMemory() {
+    while (pluList->hasNext()) {
+        int pluCode = pluList->removeHead();
+        cout << pluCode << endl;
+        delete table[pluCode];
+    }
+    delete pluList;
 }
