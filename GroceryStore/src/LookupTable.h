@@ -1,10 +1,6 @@
 #ifndef LOOKUPTABLE_H
 #define LOOKUPTABLE_H
 
-#include <iostream>
-
-using namespace std;
-
 #define MAX_RANGE 10
 
 template<class T>

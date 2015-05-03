@@ -1,11 +1,12 @@
+#include <stdlib.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <iostream>
-#include "stdlib.h"
-#include "Product.h"
-#include "LookupTable.h"
+#include <string>
+
 #include "List.h"
+#include "LookupTable.h"
+#include "Product.h"
 
 using namespace std;
 

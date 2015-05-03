@@ -1,6 +1,3 @@
-#include <iostream>
-#include <string>
-
 #include "Product.h"
 
 Product::Product(int pluCode, string name, bool isSoldByWeight, double price,

@@ -1,6 +1,8 @@
 #ifndef LIST_H_
 #define LIST_H_
 
+#include <stddef.h>
+
 template<class T>
 class Node {
 public:
