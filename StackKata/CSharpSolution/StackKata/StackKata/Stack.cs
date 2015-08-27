@@ -43,12 +43,15 @@ namespace StackKata {
 
         public T Pop() {
             if (IsEmpty)
-                throw new StackUnderflowException("Cannot pop the stack because it is empty");
+                throw new StackUnderflowException("Cannot pop empty stack.");
 
             return _elements[--Size];
         }
 
         public T Top() {
+            if (IsEmpty)
+                throw new StackEmptyException("Cannot top empty stack.");
+
             return _elements[Size - 1];
         }
 

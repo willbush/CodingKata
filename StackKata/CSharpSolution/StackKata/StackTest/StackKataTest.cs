@@ -37,16 +37,6 @@ namespace StackTest {
         }
 
         [Fact]
-        public void WhenPushedPastCapacity_StackOverflows() {
-            const int capacity = 2;
-            IStack<int> stack = Stack<int>.Make(capacity);
-            stack.Push(1);
-            stack.Push(2);
-            Exception ex = Assert.Throws<StackOverflowException>(() => stack.Push(3));
-            Assert.Equal($"Stack exceeded the capacity of {capacity}", ex.Message);
-        }
-
-        [Fact]
         public void CanPopWhatIsPushed() {
             AssertCanPushThenPop(new[] { 1 });
             AssertCanPushThenPop(new[] { 1, 2 });
@@ -66,16 +56,15 @@ namespace StackTest {
         }
 
         [Fact]
-        public void NegativeCapacityCausesIllegalCapacityException() {
-            const int illegalCapacity = -1;
-            Exception ex = Assert.Throws<IllegalCapacityException>(() => Stack<int>.Make(illegalCapacity));
-            Assert.Equal($"Cannot create stack of capacity {illegalCapacity}", ex.Message);
-        }
-
-        [Fact]
         public void CanTopWhatIsOnTop() {
             _stack.Push(1);
             Assert.Equal(1, _stack.Top());
+        }
+
+        [Fact]
+        public void FindNullReturnsNull() {
+            IStack<object> stack = Stack<object>.Make(2);
+            Assert.Null(stack.FindDistanceFromTop(null));
         }
 
         [Fact]
@@ -110,6 +99,35 @@ namespace StackTest {
             Assert.True(_stack.Contains(9));
             Assert.True(_stack.Contains(5));
             Assert.False(_stack.Contains(100));
+        }
+
+        [Fact]
+        public void NegativeCapacityCausesIllegalCapacityException() {
+            const int illegalCapacity = -1;
+            Exception ex = Assert.Throws<IllegalCapacityException>(() => Stack<int>.Make(illegalCapacity));
+            Assert.Equal($"Cannot create stack of capacity {illegalCapacity}", ex.Message);
+        }
+
+        [Fact]
+        public void WhenPushedPastCapacity_StackOverflows() {
+            const int capacity = 2;
+            IStack<int> stack = Stack<int>.Make(capacity);
+            stack.Push(1);
+            stack.Push(2);
+            Exception ex = Assert.Throws<StackOverflowException>(() => stack.Push(3));
+            Assert.Equal($"Stack exceeded the capacity of {capacity}", ex.Message);
+        }
+
+        [Fact]
+        public void WhenPoppingAnEmptyStack_StackUnderflows() {
+            Exception ex = Assert.Throws<StackUnderflowException>(() => _stack.Pop());
+            Assert.Equal("Cannot pop empty stack.", ex.Message);
+        }
+
+        [Fact]
+        public void ToppingAnEmptyStackCauses_EmptyStackException() {
+            Exception ex = Assert.Throws<StackEmptyException>(() => _stack.Top());
+            Assert.Equal("Cannot top empty stack.", ex.Message);
         }
     }
 }
