@@ -1,112 +1,58 @@
 ﻿using System;
-using System.Linq;
 
 namespace StackKata {
-    public interface IStack<T> {
-        bool IsEmpty { get; }
-        int Size { get; }
-        void Push(T element);
-        T Pop();
-        T Top();
-        int? FindDistanceFromTop(T element);
-        bool Contains(T element);
-    }
-
-    public class Stack<T> : IStack<T> {
+    public class Stack {
         private readonly int _capacity;
-        private readonly T[] _elements;
-
-        public static IStack<T> Make(int capacity) {
-            if (capacity < 0)
-                throw new IllegalCapacityException($"Cannot create stack of capacity {capacity}");
-            if (capacity == 0)
-                return new ZeroCapacityStack<T>();
-
-            return new Stack<T>(capacity);
-        }
-
-        private Stack(int capacity) {
-            _capacity = capacity;
-            _elements = new T[capacity];
-        }
-
-        public bool IsEmpty => Size == 0;
-
+        private readonly int[] _elements;
         public int Size { get; private set; }
 
-        public void Push(T element) {
-            if (Size == _capacity)
-                throw new StackOverflowException($"Stack exceeded the capacity of {_capacity}");
+        public Stack(int capacity) {
+            if (capacity < 0)
+                throw new IllegalCapacityException();
+            _capacity = capacity;
+            _elements = new int[capacity];
+        }
 
+        public void Push(int element) {
+            if (IsFull())
+                throw new OverflowException();
             _elements[Size++] = element;
         }
 
-        public T Pop() {
-            if (IsEmpty)
-                throw new StackUnderflowException("Cannot pop empty stack.");
+        public bool IsFull() {
+            return Size == _capacity;
+        }
 
+        public int Pop() {
+            if (IsEmpty())
+                throw new UnderflowException();
             return _elements[--Size];
         }
 
-        public T Top() {
-            if (IsEmpty)
-                throw new StackEmptyException("Cannot top empty stack.");
-
+        public int Top() {
+            if (IsEmpty())
+                throw new EmptyException();
             return _elements[Size - 1];
         }
 
-        public int? FindDistanceFromTop(T element) {
-            if (element == null) return null;
+        public bool IsEmpty() {
+            return Size == 0;
+        }
 
-            for (int i = 0; i < _elements.Length; i++)
-                if (_elements[i].Equals(element))
+        public int FindDistanceFromTop(int element) {
+            for (int i = Size - 1; i >= 0; i--)
+                if (_elements[i] == element)
                     return (Size - 1) - i;
 
-            return null;
-        }
-
-        public bool Contains(T element) {
-            return _elements.Contains(element);
+            return -1;
         }
     }
 
-    public class ZeroCapacityStack<T> : IStack<T> {
-        public bool IsEmpty { get; } = true;
-        public int Size { get; } = 0;
+    public class OverflowException : Exception {}
 
-        public void Push(T element) {
-            throw new StackOverflowException("Stack exceeded the capacity of 0");
-        }
+    public class UnderflowException : Exception {}
 
-        public T Pop() {
-            throw new StackUnderflowException("Cannot pop empty stack.");
-        }
+    public class EmptyException : Exception {}
 
-        public T Top() {
-            throw new StackEmptyException("Cannot top empty stack.");
-        }
-
-        public int? FindDistanceFromTop(T element) {
-            return null;
-        }
-
-        public bool Contains(T element) {
-            return false;
-        }
-    }
-
-    public class StackUnderflowException : Exception {
-        public StackUnderflowException() {}
-        public StackUnderflowException(string message) : base(message) {}
-    }
-
-    public class IllegalCapacityException : Exception {
-        public IllegalCapacityException() {}
-        public IllegalCapacityException(string message) : base(message) {}
-    }
-
-    public class StackEmptyException : Exception {
-        public StackEmptyException() {}
-        public StackEmptyException(string message) : base(message) {}
-    }
+    public class IllegalCapacityException : Exception {}
 }
