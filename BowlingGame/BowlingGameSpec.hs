@@ -14,7 +14,6 @@ main = hspec $
   describe "Bowling Game" $
     describe "score method" $ do
       it "returns a score of 0 when given a gutter game" $ do
-        scoreGame [] `shouldBe` (0 :: Int)
         let gutterBall = 0 :: Int
         scoreGame (replicate maxNumOfRolls gutterBall) `shouldBe` 0
       it "returns a score of 20 when given a game of all ones" $
