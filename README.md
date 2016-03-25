@@ -1,4 +1,4 @@
 graveyard
 ===============
 
-A place for storing tutorials, exercises, and other dead things with no pulse.
+A place for storing programming tutorials, exercises, and other dead things with no pulse.
