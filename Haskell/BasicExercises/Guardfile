@@ -17,6 +17,6 @@
 
 guard :shell do
   watch(%r{.*hs}) do
-    system('stack runhaskell BasicFunctions.hs')
+    system('stack runhaskell BasicFunctionsSpec.hs')
   end
 end

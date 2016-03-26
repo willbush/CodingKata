@@ -1,7 +1,7 @@
-module ToySpec where
+module BasicFunctionsSpec where
 
 import Test.Hspec
-import Toy
+import BasicFunctions
 
 main :: IO ()
 main = hspec $ do
@@ -39,3 +39,14 @@ main = hspec $ do
       isSorted ['c','b','a'] `shouldBe` False
       isSorted ([4,3,2,1] :: [Int]) `shouldBe` False
       isSorted ([2,1] :: [Int]) `shouldBe` False
+
+  describe "getElemAtIndex" $ do
+    it "returns Nothing when given an index out of bounds or an empty list." $ do
+      getElemAtIndex [] 0 `shouldBe` (Nothing :: Maybe Int)
+      getElemAtIndex [1] (-1 :: Int) `shouldBe` (Nothing :: Maybe Int)
+      getElemAtIndex [1, 2, 3] 3 `shouldBe` (Nothing :: Maybe Int)
+    it "returns the element of the given index." $ do
+      getElemAtIndex [1, 2, 3] 0 `shouldBe` (Just 1 :: Maybe Int)
+      getElemAtIndex [1, 2, 3] 1 `shouldBe` (Just 2 :: Maybe Int)
+      getElemAtIndex [1, 2, 3] 2 `shouldBe` (Just 3 :: Maybe Int)
+

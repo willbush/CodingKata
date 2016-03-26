@@ -1,4 +1,4 @@
-module Toy where
+module BasicFunctions where
 
 import Data.List
 
@@ -36,3 +36,9 @@ isSorted :: Ord a => [a] -> Bool
 isSorted (x:y:ys) | x <= y = isSorted ys
                   | otherwise = False
 isSorted _ = True
+
+getElemAtIndex :: [a] -> Int -> Maybe a
+getElemAtIndex [] _ = Nothing
+getElemAtIndex (x:xs) i
+  | i == 0 = Just x
+  | otherwise = getElemAtIndex xs (i - 1)
