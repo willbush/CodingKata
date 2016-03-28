@@ -69,6 +69,16 @@ public class HuffmanCoding {
         return frequencies;
     }
 
+    private PriorityQueue<Node> buildQueue(int[] frequencies) {
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+
+        for (int i = 0; i < frequencies.length; ++i)
+            if (frequencies[i] > 0)
+                pq.offer(new Leaf((char) i, frequencies[i]));
+
+        return pq;
+    }
+
     private CharStat[] buildCharStats(Node rootOfTree) {
         final int maxAsciiCodes = 256;
         CharStat[] stats = new CharStat[maxAsciiCodes];
@@ -91,7 +101,7 @@ public class HuffmanCoding {
     }
 
     private void printCharacterStats() {
-        final String format = "%-12s%-12s%-12s";
+        final String format = "%-12s%-12s%-12s"; // table left justified with even spacing
         System.out.format(format, "Character", "Frequency", "CodeWord");
         System.out.println();
 
@@ -101,25 +111,6 @@ public class HuffmanCoding {
                 System.out.println(s);
             }
         }
-    }
-
-    private PriorityQueue<Node> buildQueue(int[] frequencies) {
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-
-        for (int i = 0; i < frequencies.length; ++i)
-            if (frequencies[i] > 0)
-                pq.offer(new Leaf((char) i, frequencies[i]));
-
-        return pq;
-    }
-
-    public static void main(String[] args) {
-        if (args.length != 1) {
-            System.err.println("Provide the string to encode as an argument.");
-            System.exit(1);
-        }
-        HuffmanCoding hc = new HuffmanCoding(args[0]);
-        hc.printCharacterStats();
     }
 
     int getFrequency(char c) {
@@ -134,5 +125,14 @@ public class HuffmanCoding {
             return charStats[c].codeWord;
 
         return "";
+    }
+
+    public static void main(String[] args) {
+        if (args.length != 1) {
+            System.err.println("Provide the string to encode as an argument.");
+            System.exit(1);
+        }
+        HuffmanCoding hc = new HuffmanCoding(args[0]);
+        hc.printCharacterStats();
     }
 }

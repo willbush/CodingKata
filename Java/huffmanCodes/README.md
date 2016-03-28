@@ -1,6 +1,6 @@
 #Huffman Codes
 
-This is a Java implementation of Huffman encoding as described in Introduction to Algorithms 3rd edition (aka CLRS) in section 16.3.
+This is a Java implementation of Huffman encoding as described in Introduction to Algorithms 3rd edition (aka CLRS) in section 16.3. For an understanding of how the Huffman algorithm works please see that book or other online tutorials.
 
 Example input:
 ```
