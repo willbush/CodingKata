@@ -42,7 +42,7 @@ class CharStat {
     }
 }
 
-public class HuffmanCoding {
+class HuffmanCoding {
     private final CharStat[] charStats;
 
     HuffmanCoding(String s) {
