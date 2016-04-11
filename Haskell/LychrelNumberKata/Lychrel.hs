@@ -1,5 +1,6 @@
 module Lychrel where
 
+limit :: Integer
 limit = 1000
 
 getLychrelInteration :: Integer -> Integer
