@@ -100,13 +100,19 @@ test(does_not_have_bookends) :-
   \+ has_bookends([7], [4], [1, 2, 3, 4]),
   \+ has_bookends([1, 3], [3, 4], [1, 2, 3, 4]).
 
-test(drop) :-
+test(dropped) :-
   drop(0, [], []),
   drop(1, [], []),
   drop(1, [1, 2], [2]),
   drop(2, [1, 2], []),
   drop(2, ['a', 'b', 'c'], ['c']),
   drop(3, [1, 2, 3, 4, 5, 6], [4, 5, 6]).
+
+test(not_dropped) :-
+    \+ drop(1, [1, 2], [1, 2]),
+    \+ drop(2, [1, 2], [2]),
+    \+ drop(2, ['a', 'b', 'c'], ['b', 'c']),
+    \+ drop(3, [1, 2, 3, 4, 5, 6], [3, 4, 5, 6]).
 
 % Drops elements from the given list until the given element is reached.
 % if element is not reached, then everything is dropped.
@@ -117,6 +123,12 @@ test(drop_until_elem) :-
   drop_until_elem(3, [1, 2, 3], [3]),
   drop_until_elem(1, [3, 2, 1, 2, 3, 4], [1, 2, 3, 4]),
   drop_until_elem('a', ['b', 'a', 'c'], ['a', 'c']).
+
+test(not_drop_until_elem) :-
+  \+ drop_until_elem(5, [1], [1]),
+  \+ drop_until_elem(3, [1, 2, 3], [2, 3]),
+  \+ drop_until_elem(1, [3, 2, 1, 2, 3, 4], [2, 1, 2, 3, 4]),
+  \+ drop_until_elem('a', ['b', 'a', 'c'], ['b', 'a', 'c']).
 
 % Returns true if the given sub-list is a sub-list of the given list.
 test(has_sublist) :-

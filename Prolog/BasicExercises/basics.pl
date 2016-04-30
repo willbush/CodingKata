@@ -94,7 +94,10 @@ has_sublist(SubList, List) :-
 % drops elements from a list starting at the head until a given element is reached.
 % drops the entire list if element is not found.
 drop_until_elem(_ , [], []) :- !.
-drop_until_elem(E, [Head | Result], [Head | Result]) :- E == Head, !.
+drop_until_elem(E, [Head | Tail], Result) :-
+    E == Head,
+    Result = [Head | Tail], !.
+
 drop_until_elem(E, [_ | Tail], Result) :-
   drop_until_elem(E, Tail, Result).
 
