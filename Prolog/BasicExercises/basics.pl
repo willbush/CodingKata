@@ -6,12 +6,11 @@
 is_even(N) :- is_divisible(N, 2).
 
 % defined for whole numbers (e.g. {0, 1, 2, ...}).
-% returns 1 for negative numbers for simplicity sake and to avoid crashing.
-my_factorial(X, 1) :- X < 0, !.
 my_factorial(X, Result) :- my_factorial(X, 1, Result).
 
-my_factorial(0, Result, Result) :- !.
+my_factorial(0, Acc, Result) :- Result is Acc, !.
 my_factorial(X, Acc, Result) :-
+  X >= 0,
   NewX is X - 1,
   NewAcc is Acc * X,
   my_factorial(NewX, NewAcc, Result).
@@ -43,17 +42,20 @@ split_evens_odds([Head | Tail], EvenAcc, OddAcc, Evens, Odds) :-
 my_reverse(List, Result) :- my_reverse(List, [], Result).
 
 my_reverse([], Result, Result).
-my_reverse([Head | Tail], Acc, _) :-
-  my_reverse(Tail, [Head | Acc], _).
+my_reverse([Head | Tail], Acc, Result) :-
+  my_reverse(Tail, [Head | Acc], Result).
 
 % returns the product of each number in the given list.
 product_list([], 0) :- !.
-product_list(List, Product) :- product_list(List, 1, Product).
+product_list(List, Product) :-
+  length(List, Len),
+  Len > 0,
+  product_list(List, 1, Product).
 
-product_list([], Product, Product).
-product_list([Head | Tail], Acc, _) :-
+product_list([], Acc, Product) :- Product is Acc, !.
+product_list([Head | Tail], Acc, Product) :-
   NewAcc is Acc * Head,
-  product_list(Tail, NewAcc, _).
+  product_list(Tail, NewAcc, Product).
 
 % returns true if the given prefix and suffix is a
 % prefix and suffix of the given list.
