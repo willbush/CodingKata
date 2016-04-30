@@ -91,14 +91,14 @@ test(has_bookends) :-
   has_bookends(['a'], ['c'], ['a', 'b', 'c']),
   has_bookends([1], [3, 4, 5], [1, 2, 3, 4, 5]),
   has_bookends([], [4], [1, 2, 3, 4]),
-  has_bookends([1, 2, 3], [3, 4], [1, 2, 3, 4]),
+  has_bookends([1, 2, 3], [3, 4], [1, 2, 3, 4]).
 
 test(does_not_have_bookends) :-
-  \+ has_bookends([5], [2, 3], [1, 2, 3, 4]).
+  \+ has_bookends([5], [2, 3], [1, 2, 3, 4]),
   \+ has_bookends(['d'], ['c'], ['a', 'b', 'c']),
-  \+ has_bookends([1], [3, 4, 5], [1, 2, 3, 4, 5]),
+  \+ has_bookends([7], [3, 4, 5], [1, 2, 3, 4, 5]),
   \+ has_bookends([7], [4], [1, 2, 3, 4]),
-  \+ has_bookends([1, 3], [3, 4], [1, 2, 3, 4]),
+  \+ has_bookends([1, 3], [3, 4], [1, 2, 3, 4]).
 
 test(drop) :-
   drop(0, [], []),
