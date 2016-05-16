@@ -34,8 +34,8 @@ takeFromLogFile numToTake filePath = take numToTake . parse <$> readFile filePat
 -- level and the file path to the error log. the returned IO list is sorted by
 -- time stamp and contains only the filtered error message string.
 filterLogFileByErrorLevelThat :: (ErrorLevel -> Bool) -> FilePath -> IO [String]
-filterLogFileByErrorLevelThat predicate file
-  = filterLogMsgsByErrorLevelThat predicate . parse <$> readFile file
+filterLogFileByErrorLevelThat predicate file =
+  filterLogMsgsByErrorLevelThat predicate . parse <$> readFile file
 
 -- | This takes a string which may contain multiple lines of log messages
 -- and parses it into a list of log messages.
