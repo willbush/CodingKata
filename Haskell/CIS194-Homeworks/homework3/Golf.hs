@@ -38,7 +38,7 @@ histogram list = go (buildFrequencies list) "==========\n0123456789\n"
           in case chartFreqs of
             "          " -> chart
             _            -> go (V.map (\n -> n - 1) freqs) (chartFreqs ++ "\n" ++ chart)
-                   
+
 -- | builds a vector of frequencies where the value at an index is the number
 -- of occurrences for a number in the given int list. The number in the given
 -- int list is used as the index into the vector array.

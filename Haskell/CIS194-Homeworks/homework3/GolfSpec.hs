@@ -55,11 +55,11 @@ main = hspec $ do
   describe "histogram" $ do
     it "returns an empty histogram chart when given an empty list" $
       histogram [] `shouldBe` "==========\n0123456789\n"
-    it "can create a histogram chart of simple list" $ do
+    it "can create a histogram chart from a simple list" $ do
       let given = [0,1,2,3,4,5,6,7,8,9]
       let exptected = "**********\n==========\n0123456789\n"
       histogram given `shouldBe` exptected
-    it "can create a histogram chart of complicated list" $ do
+    it "can create a histogram chart from a complicated list" $ do
       let given = [0,0,0,2,2,3,4,4,5,5,5,6,7]
       let exptected = "*    *    \n* * **    \n* ******  \n==========\n0123456789\n"
       histogram given `shouldBe` exptected
