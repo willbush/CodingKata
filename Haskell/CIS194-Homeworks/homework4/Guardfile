@@ -1,0 +1,11 @@
+# More info at https://github.com/guard/guard#readme
+
+# the regex in the watch method matches on file names that end with .hs
+# except for file names that contain 'flycheck' in their name since those
+# are generated in the background by emacs.
+guard :shell do
+  watch(%r{^(?!.*flycheck).+\.1?hs$}) do
+    system('stack runhaskell *Spec.hs')
+  end
+end
+

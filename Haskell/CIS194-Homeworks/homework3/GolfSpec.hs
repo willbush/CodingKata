@@ -1,6 +1,5 @@
-import Test.Hspec
-
 import Golf
+import Test.Hspec
 import qualified Data.Vector.Unboxed as V
 
 main :: IO ()

@@ -1,6 +1,6 @@
 module Golf where
 
-import Data.List (genericDrop)
+import Data.List (genericDrop, foldl')
 import qualified Data.Vector.Unboxed as V
 
 -- | builds a list of skipBy lists for the given list where the nth number
@@ -43,7 +43,7 @@ histogram list = go (buildFrequencies list) "==========\n0123456789\n"
 -- of occurrences for a number in the given int list. The number in the given
 -- int list is used as the index into the vector array.
 buildFrequencies :: [Int] -> V.Vector Int
-buildFrequencies = foldl f (V.replicate 10 0)
+buildFrequencies = foldl' f (V.replicate 10 0)
   where f acc x = acc V.// [(x, acc V.! x + 1)]
 
 -- | Takes a vector of frequencies and builds a string where the character at
