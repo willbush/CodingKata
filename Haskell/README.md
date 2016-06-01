@@ -6,7 +6,9 @@ I use [spacemacs](http://spacemacs.org/) for development in Haskell and I like t
 
 Basic steps to get [Guard](https://github.com/guard/guard) working:
 
-Guard requires Ruby version 2.2 or higher. Ironically the easiest way I have found to install this is to [compile from source](https://www.ruby-lang.org/en/documentation/installation/#building-from-source), but there are [other ways](https://www.ruby-lang.org/en/documentation/installation/). I personally would not bother with the extra complexity of using RVM to install Ruby unless you need to use its features. RVM requires your shell to run as a login shell, which is fine but I have run into bugs getting the bashrc file to source correct from a shell in spacemacs.
+Guard requires Ruby version 2.2 or higher. ~~Ironically the easiest way I have found to install this is to [compile from source](https://www.ruby-lang.org/en/documentation/installation/#building-from-source),~~ but there are [other ways](https://www.ruby-lang.org/en/documentation/installation/). I personally would not bother with the extra complexity of using RVM to install Ruby unless you need to use its features. RVM requires your shell to run as a login shell, which is fine but I have run into bugs getting the bashrc file to source correct from a shell in spacemacs.
+
+After formatting and re-installing a newer version of my Linux distro, I have discovered that compiling ruby from source and having Bundler and Guard just work was just luck the last time I did it. I now think it is easier to get ruby up and running properly with [rbenv](https://github.com/rbenv/rbenv).
 
 Now after installing ruby the command `ruby -v` should return something like `ruby 2.3.1`
 
